@@ -1,0 +1,23 @@
+.title {
+  display: inline-block;
+  padding-top: $padding-top-title;
+  user-select: none;
+
+  &__location {
+    @include font-bold;
+    font-size: $font-size-location;
+    line-height: 5.4rem;
+    text-transform: uppercase;
+  }
+
+  &__date,
+  &__time {
+    @include font-semi-bold;
+    font-size: $font-size-date-time;
+    line-height: 2.9rem;
+  }
+
+  &__time {
+    padding-left: 1.8rem;
+  }
+}

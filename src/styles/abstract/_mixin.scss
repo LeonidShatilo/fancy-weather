@@ -1,0 +1,43 @@
+@mixin buttons-wrapper {
+  display: flex;
+  align-content: stretch;
+  margin: 0 0 0 1rem;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: $font-size-language;
+}
+
+@mixin button {
+  height: $height-button;
+  width: $width-button;
+  font-weight: $font-weight-bold;
+  background: $background-button;
+  color: $color-text;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+@mixin border-radius-left {
+  border-radius: $border-radius 0 0 $border-radius;
+}
+
+@mixin border-radius-right {
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
+@mixin font-bold {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+}
+
+@mixin font-semi-bold {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-semi-bold;
+  color: $color-text;
+}
+
+@mixin font-regular {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-regular;
+  color: $color-text;
+}

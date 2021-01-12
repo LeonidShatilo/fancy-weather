@@ -1,0 +1,111 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: $padding-top-header;
+  user-select: none;
+
+  &__buttons-panel {
+    display: flex;
+  }
+
+  &__button-refresh-bg {
+    min-width: $width-button;
+    min-height: $height-button;
+    border-radius: $border-radius;
+    background: $background-button-refresh;
+    background-image: url('../../assets/images/svg/refresh-button.svg');
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: 0.5s;
+
+    &:hover {
+      background: lighten($background-button-refresh, 40%);
+      background-image: url('../../assets/images/svg/refresh-button.svg');
+    }
+  }
+
+  &__refresh-circle-arrows {
+    position: relative;
+    top: 3%;
+  }
+
+  &__language,
+  &__temperature {
+    @include buttons-wrapper;
+  }
+
+  &__button-eng-lang,
+  &__button-ru-lang,
+  &__button-fahrenheit-deg,
+  &__button-celsius-deg {
+    @include button;
+
+    &:hover {
+      background: $background-button-active;
+    }
+  }
+
+  &__button-eng-lang,
+  &__button-fahrenheit-deg {
+    @include border-radius-left;
+  }
+
+  &__button-ru-lang,
+  &__button-celsius-deg {
+    @include border-radius-right;
+  }
+
+  &__button--active {
+    background: $background-button-active;
+    cursor: default;
+  }
+}
+
+.search {
+  display: flex;
+  margin-left: 1rem;
+
+  &__input {
+    @include font-regular;
+    @include border-radius-left;
+    width: 274px;
+    height: 44px;
+    min-width: 274px;
+    min-height: 44px;
+    padding-left: 15px;
+    font-size: $font-size-search;
+    border: $border-search-input;
+    background: $background-search-input;
+
+    &::placeholder {
+      color: $color-text;
+    }
+  }
+
+  &__voice {
+    position: absolute;
+    background: none;
+    transform: translate(245px, 13px);
+
+    &-icon {
+      cursor: pointer;
+    }
+  }
+
+  &__button {
+    @include font-bold;
+    @include border-radius-right;
+    width: $width-button-search;
+    line-height: 1.7rem;
+    text-align: center;
+    font-size: $font-size-search;
+    text-transform: uppercase;
+    background: $background-button-search;
+    transition: 0.5s;
+    cursor: pointer;
+
+    &:hover {
+      background: lighten($background-button-search, 15%);
+    }
+  }
+}

@@ -1,0 +1,111 @@
+.container-weather-map {
+  display: flex;
+  justify-content: space-between;
+  height: max-content;
+
+  .weather {
+    width: max-content;
+    height: max-content;
+
+    &__today {
+      display: flex;
+      margin-right: 5rem;
+      width: max-content;
+      user-select: none;
+
+      &-description {
+        @include font-bold;
+        position: relative;
+        top: -55px;
+        margin-left: 3.2rem;
+        font-size: 2.2rem;
+        height: fit-content;
+        line-height: 3.7rem;
+        text-transform: uppercase;
+      }
+    }
+
+    &__temp-today {
+      @include font-bold;
+      font-size: 30.6rem;
+      text-transform: uppercase;
+    }
+
+    &__deg-today {
+      @include font-bold;
+      position: relative;
+      top: 25px;
+      width: max-content;
+      height: max-content;
+      vertical-align: top;
+      font-size: 20rem;
+    }
+
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__icon-today {
+      position: relative;
+      left: 10px;
+      top: -50px;
+      width: 200px;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      background-image: url('../../assets/images/svg/partly-cloudy-day-rain.svg');
+    }
+
+    &__next-three-days {
+      @include font-bold;
+      display: flex;
+      width: max-content;
+      height: max-content;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    &__day {
+      margin-right: 2rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &-title {
+        margin-bottom: 1rem;
+      }
+    }
+
+    &__day-temp {
+      display: flex;
+      font-size: 8rem;
+
+      & span {
+        width: max-content;
+        height: max-content;
+      }
+    }
+
+    &__icon {
+      position: relative;
+      top: -15px;
+      width: 100px;
+      height: 100px;
+    }
+
+    &__icon-first-day {
+      background-image: url('../../assets/images/svg/partly-cloudy-day-snow.svg');
+    }
+
+    &__icon-second-day {
+      background-image: url('../../assets/images/svg/partly-cloudy-day-hail.svg');
+    }
+
+    &__icon-third-day {
+      background-image: url('../../assets/images/svg/partly-cloudy-night-drizzle.svg');
+    }
+  }
+}
