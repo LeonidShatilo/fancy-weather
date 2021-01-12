@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link type="image/ico" sizes="32x32" rel="icon" href="./assets/favicon.ico">
+    <title>Fancy Weather</title>
+  <link href="./src/styles/main.css" rel="stylesheet"></head>
+  <body>
+    <div class="overlay"></div>
+    <div class="background-image"></div>
+    <div class="wrapper">
+      <div class="header">
+        <div class="header__buttons-panel">
+          <button class="header__button-refresh-bg">
+            <img class="header__refresh-circle-arrows" src="../assets/images/svg/refresh-circle-arrows.svg" alt="refresh-circle-arrows">
+          </button>
+          <div class="header__language">
+            <button class="header__button-eng-lang header__button--active">
+              EN
+            </button>
+            <button class="header__button-ru-lang">RU</button>
+          </div>
+          <div class="header__temperature">
+            <button class="header__button-fahrenheit-deg">°F</button>
+            <button class="header__button-celsius-deg header__button--active">
+              °C
+            </button>
+          </div>
+        </div>
+        <div class="search">
+          <input class="search__input" placeholder="Search city or ZIP" type="text">
+          <button class="search__voice">
+            <img class="search__voice-icon" src="../assets/images/svg/voice-search.svg" alt="voice-search">
+          </button>
+          <button class="search__button">Search</button>
+        </div>
+      </div>
+      <div class="title">
+        <p class="title__location">Minsk, Belarus</p>
+        <span class="title__date">Mon 28 October</span>
+        <span class="title__time">17:23:45</span>
+      </div>
+      <div class="container-weather-map">
+        <div class="weather">
+          <div class="weather__today">
+            <span class="weather__temp-today">10</span><span class="weather__deg-today">°</span>
+            <div class="weather__wrapper">
+              <div class="weather__icon-today"></div>
+              <div class="weather__today-description">
+                <p>
+                  <span>Overcast</span>
+                </p>
+                <p>
+                  <span>Feels like: </span>
+                  <span class="weather__feels-like">7</span><span>°</span>
+                </p>
+                <p>
+                  <span>Wind: </span>
+                  <span class="weather__wind">2</span>
+                  <span>m/s</span>
+                </p>
+                <p>
+                  <span>Humidity: </span>
+                  <span class="weather__humidity">83</span><span>%</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="weather__next-three-days">
+            <div class="weather__day weather__first-day">
+              <div class="weather__day-title weather__title-first-day">
+                Tuesday
+              </div>
+              <div class="weather__day-temp">
+                <span class="weather__temp-first-day">7</span><span>°</span>
+                <div class="weather__icon weather__icon-first-day"></div>
+              </div>
+            </div>
+            <div class="weather__day weather__second-day">
+              <div class="weather__day-title weather__title-second-day">
+                Wednesday
+              </div>
+              <div class="weather__day-temp">
+                <span class="weather__temp-second-day">6</span><span>°</span>
+                <div class="weather__icon weather__icon-second-day"></div>
+              </div>
+            </div>
+            <div class="weather__day weather__third-day">
+              <div class="weather__day-title weather__title-third-day">
+                Thursday
+              </div>
+              <div class="weather__day-temp">
+                <span class="weather__temp-third-day">3</span><span>°</span>
+                <div class="weather__icon weather__icon-third-day"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="map">
+          <div id="map" class="map__img"></div>
+          <div class="map__coordinates">
+            <p>
+              <span class="title-latitude">Latitude: </span>
+              <span class="latitude">52°03'88"</span>
+            </p>
+            <p>
+              <span class="title-longitude">Longitude: </span>
+              <span class="longitude">29°20'93"</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <script src="./src/scripts/vendors-node_modules_babel_polyfill_lib_index_js-node_modules_html-loader_dist_runtime_getUrl_js.js"></script><script src="./src/scripts/main.js"></script></body>
+</html>
