@@ -26,38 +26,60 @@ __webpack_require__.r(__webpack_exports__);
   \***************************/
 /***/ (() => {
 
-var BACKGROUND_IMAGE = document.querySelector('.background-image');
+var BACKGROUND = document.querySelector('.background');
+var BACKGROUND_IMAGE = document.querySelector('.background__image');
 var REFRESH_BUTTON = document.querySelector('.header__button-refresh-bg');
 var CIRCLE_ARROWS = document.querySelector('.header__refresh-circle-arrows');
 var ENG_LANG_BUTTON = document.querySelector('.header__button-eng-lang');
 var RU_LANG_BUTTON = document.querySelector('.header__button-ru-lang');
 var F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
 var C_DEG_BUTTON = document.querySelector('.header__button-celsius-deg');
-var UNSPLASH_ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
 var angleRotation = 360;
 
-function loadImage(url) {
-  var IMAGE = new Image();
-  IMAGE.src = url;
+function removeBackgroundElement() {
+  BACKGROUND.removeChild(BACKGROUND.children[0]);
+}
 
-  IMAGE.onload = function () {
-    BACKGROUND_IMAGE.style.backgroundImage = "url(".concat(IMAGE.src, ")");
-  };
+function changeVisibility() {
+  var BACKGROUND_IMAGES = document.querySelectorAll('.background__image');
+  BACKGROUND_IMAGES[1].classList.add('visible');
+  setTimeout(function () {
+    removeBackgroundElement();
+  }, 700);
+}
+
+function loadImage(url) {
+  var IMAGE_ELEMENT = document.createElement('div');
+  IMAGE_ELEMENT.className = 'background__image';
+  IMAGE_ELEMENT.src = url;
+  IMAGE_ELEMENT.style.backgroundImage = "url(".concat(IMAGE_ELEMENT.src, ")");
+  BACKGROUND.append(IMAGE_ELEMENT);
 }
 
 function getImageLink() {
-  var URL = "https://api.unsplash.com/photos/random?query=morning&client_id=".concat(UNSPLASH_ACCESS_KEY);
+  var PARAMETERS = 'orientation=landscape&query=nature&per_page=1';
+  var ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
+  var URL = "https://api.unsplash.com/photos/random?".concat(PARAMETERS, "&client_id=").concat(ACCESS_KEY);
   fetch(URL).then(function (response) {
     return response.json();
   }).then(function (data) {
     loadImage(data.urls.regular);
+  })["catch"](function () {
+    return;
   });
 }
 
 REFRESH_BUTTON.addEventListener('click', function () {
-  CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
-  angleRotation += 360;
-  getImageLink();
+  try {
+    CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
+    angleRotation += 360;
+    changeVisibility();
+    setTimeout(function () {
+      getImageLink();
+    }, 1000);
+  } catch (error) {
+    alert('Oops! Something went wrong. You cannot update the background.');
+  }
 });
 ENG_LANG_BUTTON.addEventListener('click', function () {
   ENG_LANG_BUTTON.classList.add('header__button--active');
@@ -75,6 +97,10 @@ C_DEG_BUTTON.addEventListener('click', function () {
   C_DEG_BUTTON.classList.add('header__button--active');
   F_DEG_BUTTON.classList.remove('header__button--active');
 });
+
+window.onload = function () {
+  getImageLink();
+};
 
 /***/ }),
 
@@ -121,7 +147,7 @@ var ___HTML_LOADER_IMPORT_1___ = __webpack_require__(/*! ../assets/images/svg/vo
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_1___);
-var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background-image\"></div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang header__button--active\">\r\n              EN\r\n            </button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg header__button--active\">\r\n              °C\r\n            </button>\r\n          </div>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <img\r\n              class=\"search__voice-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"voice-search\"\r\n            />\r\n          </button>\r\n          <button class=\"search__button\">Search</button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\">Minsk, Belarus</p>\r\n        <span class=\"title__date\">Mon 28 October</span>\r\n        <span class=\"title__time\">17:23:45</span>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\">10</span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-description\">\r\n                <p>\r\n                  <span>Overcast</span>\r\n                </p>\r\n                <p>\r\n                  <span>Feels like: </span>\r\n                  <span class=\"weather__feels-like\">7</span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span>Wind: </span>\r\n                  <span class=\"weather__wind\">2</span>\r\n                  <span>m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span>Humidity: </span>\r\n                  <span class=\"weather__humidity\">83</span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\">\r\n                Tuesday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\">7</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\">\r\n                Wednesday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\">6</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\">\r\n                Thursday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\">3</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\">Latitude: </span>\r\n              <span class=\"latitude\">52°03'88\"</span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\">Longitude: </span>\r\n              <span class=\"longitude\">29°20'93\"</span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
+var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background\">\r\n      <div class=\"background__image default\"></div>\r\n    </div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang header__button--active\">\r\n              EN\r\n            </button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg header__button--active\">\r\n              °C\r\n            </button>\r\n          </div>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <img\r\n              class=\"search__voice-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"voice-search\"\r\n            />\r\n          </button>\r\n          <button class=\"search__button\">Search</button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\">Minsk, Belarus</p>\r\n        <span class=\"title__date\">Mon 28 October</span>\r\n        <span class=\"title__time\">17:23:45</span>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\">10</span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-description\">\r\n                <p>\r\n                  <span>Overcast</span>\r\n                </p>\r\n                <p>\r\n                  <span>Feels like: </span>\r\n                  <span class=\"weather__feels-like\">7</span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span>Wind: </span>\r\n                  <span class=\"weather__wind\">2</span>\r\n                  <span>m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span>Humidity: </span>\r\n                  <span class=\"weather__humidity\">83</span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\">\r\n                Tuesday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\">7</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\">\r\n                Wednesday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\">6</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\">\r\n                Thursday\r\n              </div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\">3</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\">Latitude: </span>\r\n              <span class=\"latitude\">52°03'88\"</span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\">Longitude: </span>\r\n              <span class=\"longitude\">29°20'93\"</span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
 // Exports
 module.exports = code;
 
