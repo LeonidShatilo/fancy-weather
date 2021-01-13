@@ -1,3 +1,21 @@
+@mixin font-bold {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+}
+
+@mixin font-semi-bold {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-semi-bold;
+  color: $color-text;
+}
+
+@mixin font-regular {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: $font-weight-regular;
+  color: $color-text;
+}
+
 @mixin buttons-wrapper {
   display: flex;
   align-content: stretch;
@@ -24,20 +42,11 @@
   border-radius: 0 $border-radius $border-radius 0;
 }
 
-@mixin font-bold {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: $font-weight-bold;
-  color: $color-text;
-}
-
-@mixin font-semi-bold {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: $font-weight-semi-bold;
-  color: $color-text;
-}
-
-@mixin font-regular {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: $font-weight-regular;
-  color: $color-text;
+@mixin background-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
 }
