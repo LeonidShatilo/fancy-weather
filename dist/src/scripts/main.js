@@ -12,8 +12,69 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./index.html");
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_html__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main.scss */ "./main.scss");
+/* harmony import */ var _scripts_header_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/header.js */ "./scripts/header.js");
+/* harmony import */ var _scripts_header_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_scripts_header_js__WEBPACK_IMPORTED_MODULE_2__);
 
 
+
+
+/***/ }),
+
+/***/ "./scripts/header.js":
+/*!***************************!*\
+  !*** ./scripts/header.js ***!
+  \***************************/
+/***/ (() => {
+
+var BACKGROUND_IMAGE = document.querySelector('.background-image');
+var REFRESH_BUTTON = document.querySelector('.header__button-refresh-bg');
+var CIRCLE_ARROWS = document.querySelector('.header__refresh-circle-arrows');
+var ENG_LANG_BUTTON = document.querySelector('.header__button-eng-lang');
+var RU_LANG_BUTTON = document.querySelector('.header__button-ru-lang');
+var F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
+var C_DEG_BUTTON = document.querySelector('.header__button-celsius-deg');
+var UNSPLASH_ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
+var angleRotation = 360;
+
+function loadImage(url) {
+  var IMAGE = new Image();
+  IMAGE.src = url;
+
+  IMAGE.onload = function () {
+    BACKGROUND_IMAGE.style.backgroundImage = "url(".concat(IMAGE.src, ")");
+  };
+}
+
+function getImageLink() {
+  var URL = "https://api.unsplash.com/photos/random?query=morning&client_id=".concat(UNSPLASH_ACCESS_KEY);
+  fetch(URL).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    loadImage(data.urls.regular);
+  });
+}
+
+REFRESH_BUTTON.addEventListener('click', function () {
+  CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
+  angleRotation += 360;
+  getImageLink();
+});
+ENG_LANG_BUTTON.addEventListener('click', function () {
+  ENG_LANG_BUTTON.classList.add('header__button--active');
+  RU_LANG_BUTTON.classList.remove('header__button--active');
+});
+RU_LANG_BUTTON.addEventListener('click', function () {
+  RU_LANG_BUTTON.classList.add('header__button--active');
+  ENG_LANG_BUTTON.classList.remove('header__button--active');
+});
+F_DEG_BUTTON.addEventListener('click', function () {
+  F_DEG_BUTTON.classList.add('header__button--active');
+  C_DEG_BUTTON.classList.remove('header__button--active');
+});
+C_DEG_BUTTON.addEventListener('click', function () {
+  C_DEG_BUTTON.classList.add('header__button--active');
+  F_DEG_BUTTON.classList.remove('header__button--active');
+});
 
 /***/ }),
 

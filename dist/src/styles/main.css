@@ -380,7 +380,8 @@ body {
       background-image: url("../../assets/images/svg/refresh-button.svg"); }
   .header__refresh-circle-arrows {
     position: relative;
-    top: 3%; }
+    top: 3%;
+    transition: 0.8s; }
   .header__language, .header__temperature {
     display: flex;
     align-content: stretch;
