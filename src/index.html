@@ -12,6 +12,10 @@
     <title>Fancy Weather</title>
   </head>
   <body>
+    <div class="error">
+      <p class="error__message"></p>
+      <button class="error__confirm-button">Ok</button>
+    </div>
     <div class="overlay"></div>
     <div class="background">
       <div class="background__image default"></div>
@@ -27,16 +31,12 @@
             />
           </button>
           <div class="header__language">
-            <button class="header__button-eng-lang header__button--active">
-              EN
-            </button>
+            <button class="header__button-eng-lang">EN</button>
             <button class="header__button-ru-lang">RU</button>
           </div>
           <div class="header__temperature">
             <button class="header__button-fahrenheit-deg">°F</button>
-            <button class="header__button-celsius-deg header__button--active">
-              °C
-            </button>
+            <button class="header__button-celsius-deg">°C</button>
           </div>
         </div>
         <div class="search">
@@ -57,8 +57,8 @@
       </div>
       <div class="title">
         <p class="title__location">Minsk, Belarus</p>
-        <span class="title__date">Mon 28 October</span>
-        <span class="title__time">17:23:45</span>
+        <span class="title__date"></span>
+        <span class="title__time"></span>
       </div>
       <div class="container-weather-map">
         <div class="weather">
