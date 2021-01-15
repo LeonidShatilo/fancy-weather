@@ -1,5 +1,6 @@
 $background-button: rgba(76, 82, 85, 0.4);
 $background-button-active: rgba(174, 181, 185, 0.5);
+$background-button-error: #ffffff;
 $background-button-refresh: rgba(180, 184, 187, 0.4);
 $background-button-search: rgba(174, 181, 185, 0.5);
 $background-overlay: linear-gradient(
@@ -20,6 +21,7 @@ $font-weight-bold: 700;
 $font-weight-regular: 400;
 $font-weight-semi-bold: 600;
 $height-button: 4.4rem;
+$margin-top-error: 4rem;
 $padding-top-header: 4rem;
 $padding-top-title: 6rem;
 $padding-wrapper: 9rem;

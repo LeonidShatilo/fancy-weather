@@ -599,5 +599,51 @@ body {
     text-transform: capitalize;
     user-select: none; }
 
+.error {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: 4rem;
+  padding-bottom: 4rem;
+  max-width: 800px;
+  font-size: 2rem;
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transform: translateY(-100vh);
+  transition: transform 0.4s ease-in-out;
+  user-select: none;
+  opacity: 0;
+  z-index: 5; }
+  .error__message {
+    padding: 5rem 3rem 4rem;
+    text-align: center; }
+  .error__confirm-button {
+    width: 80px;
+    height: 40px;
+    border-radius: 1rem;
+    font-weight: 700;
+    background: #ffffff;
+    text-transform: uppercase;
+    cursor: pointer; }
+    .error__confirm-button:active {
+      transform: scale(0.95); }
+  .error__visible {
+    opacity: 1;
+    transform: translateY(0); }
+  .error__hide {
+    transform: translateY(-100vh); }
+
 
 /*# sourceMappingURL=main.css.map*/
