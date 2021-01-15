@@ -292,6 +292,8 @@ var SEARCH_BUTTON = document.querySelector('.search__button');
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+
 
 var DATE = document.querySelector('.title__date');
 var TIME = document.querySelector('.title__time');
@@ -317,7 +319,7 @@ function showDate() {
   var dayWeek = today.getDay();
   var dayDate = today.getDate();
   var dayMonth = today.getMonth();
-  DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek.en[dayWeek], ",\n                    ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month.en[dayMonth]);
+  DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek[_header_js__WEBPACK_IMPORTED_MODULE_1__.currentLanguage][dayWeek], ",\n                    ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month[_header_js__WEBPACK_IMPORTED_MODULE_1__.currentLanguage][dayMonth]);
 }
 
 showTime();
