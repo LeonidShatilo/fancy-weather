@@ -40,9 +40,7 @@ function getImageLink() {
   const URL = `https://api.unsplash.com/photos/random?${PARAMETERS}&client_id=${ACCESS_KEY}`;
 
   fetch(URL)
-    .then((response) => {
-      return response.json();
-    })
+    .then((response) => response.json())
     .then((data) => {
       loadImage(data.urls.regular);
     })
@@ -140,3 +138,4 @@ getLanguageInLocalStorage();
 getUnitOfTemperatureInLocalStorage();
 setLanguageInLocalStorage();
 setUnitOfTemperatureInLocalStorage();
+translate();
