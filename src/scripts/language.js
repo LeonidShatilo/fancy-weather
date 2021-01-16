@@ -83,5 +83,11 @@ export const LANGUAGE = {
       ru:
         'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.',
     },
+    userCoordinates: {
+      en:
+        'Unfortunately, your coordinates have not been received.<br>Please try again later.',
+      ru:
+        'К сожалению, ваши координаты не были получены.<br>Пожалуйста, попробуйте позже.',
+    },
   },
 };
