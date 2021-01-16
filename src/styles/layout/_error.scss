@@ -11,7 +11,7 @@
   right: 0;
   margin-top: $margin-top-error;
   padding-bottom: 4rem;
-  max-width: 800px;
+  max-width: max-content;
   font-size: 2rem;
   border-radius: 2rem;
   background: rgba(0, 0, 0, 0.5);
@@ -25,7 +25,7 @@
   z-index: 5;
 
   &__message {
-    padding: 5rem 3rem 4rem;
+    padding: 5rem 5rem 4rem 5rem;
     text-align: center;
   }
 
