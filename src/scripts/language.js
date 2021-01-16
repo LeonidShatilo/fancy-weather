@@ -1,11 +1,3 @@
-import { currentLanguage } from './header.js';
-import { SEARCH_INPUT, SEARCH_BUTTON } from './search.js';
-
-export function translate() {
-  SEARCH_INPUT.placeholder = LANGUAGE.searchInput[currentLanguage];
-  SEARCH_BUTTON.innerHTML = LANGUAGE.searchButton[currentLanguage];
-}
-
 export const LANGUAGE = {
   searchInput: {
     en: 'Search city or ZIP',
@@ -83,8 +75,13 @@ export const LANGUAGE = {
   },
   error: {
     background: {
-      en: 'Oops! Something went wrong. You cannot update the background.',
-      ru: 'Упс! Что-то пошло не так. Вы не можете обновить фон.',
+      en: 'Oops! Something went wrong.<br>You cannot update the background.',
+      ru: 'Упс! Что-то пошло не так.<br>Вы не можете обновить фон.',
+    },
+    weather: {
+      en: 'The weather data could not be obtained.<br>Please, try again later.',
+      ru:
+        'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.',
     },
   },
 };
