@@ -12,11 +12,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./index.html");
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_html__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main.scss */ "./main.scss");
-/* harmony import */ var _scripts_language_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/language.js */ "./scripts/language.js");
-/* harmony import */ var _scripts_error_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripts/error.js */ "./scripts/error.js");
-/* harmony import */ var _scripts_header_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripts/header.js */ "./scripts/header.js");
-/* harmony import */ var _scripts_search_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scripts/search.js */ "./scripts/search.js");
+/* harmony import */ var _scripts_utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./scripts/utils.js */ "./scripts/utils.js");
+/* harmony import */ var _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./scripts/data.js */ "./scripts/data.js");
+/* harmony import */ var _scripts_language_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./scripts/language.js */ "./scripts/language.js");
+/* harmony import */ var _scripts_error_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./scripts/error.js */ "./scripts/error.js");
 /* harmony import */ var _scripts_time_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./scripts/time.js */ "./scripts/time.js");
+/* harmony import */ var _scripts_header_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./scripts/header.js */ "./scripts/header.js");
+/* harmony import */ var _scripts_search_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./scripts/search.js */ "./scripts/search.js");
+/* harmony import */ var _scripts_weather_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scripts/weather.js */ "./scripts/weather.js");
 
 
 
@@ -24,6 +27,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+/***/ }),
+
+/***/ "./scripts/data.js":
+/*!*************************!*\
+  !*** ./scripts/data.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "allData": () => /* binding */ allData
+/* harmony export */ });
+var allData = {
+  currentLanguage: 'en',
+  currentUnitOfTemperature: 'celsius',
+  coordinate: {
+    lat: 52.424638,
+    lng: 31.014255
+  }
+};
 
 /***/ }),
 
@@ -36,6 +64,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ERROR_MESSAGE": () => /* binding */ ERROR_MESSAGE,
 /* harmony export */   "showError": () => /* binding */ showError
 /* harmony export */ });
 var ERROR = document.querySelector('.error');
@@ -65,11 +94,12 @@ ERROR_CONFIRM_BUTTON.addEventListener('click', function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "currentLanguage": () => /* binding */ currentLanguage
-/* harmony export */ });
-/* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
-/* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./scripts/utils.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
+/* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
+
+
 
 
 var BACKGROUND = document.querySelector('.background');
@@ -80,8 +110,6 @@ var RU_LANG_BUTTON = document.querySelector('.header__button-ru-lang');
 var F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
 var C_DEG_BUTTON = document.querySelector('.header__button-celsius-deg');
 var angleRotation = 360;
-var currentLanguage = 'en';
-var currentUnitOfTemperature = 'celsius';
 
 function removeBackgroundElement() {
   BACKGROUND.removeChild(BACKGROUND.children[0]);
@@ -118,30 +146,30 @@ function getImageLink() {
 
 function getLanguageInLocalStorage() {
   if (localStorage.getItem('language') === null || localStorage.getItem('language') === 'en') {
-    currentLanguage = 'en';
+    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'en';
     ENG_LANG_BUTTON.classList.toggle('header__button--active');
   } else {
-    currentLanguage = 'ru';
+    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'ru';
     RU_LANG_BUTTON.classList.toggle('header__button--active');
   }
 }
 
 function setLanguageInLocalStorage() {
-  localStorage.setItem('language', currentLanguage);
+  localStorage.setItem('language', _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage);
 }
 
 function getUnitOfTemperatureInLocalStorage() {
   if (localStorage.getItem('unit-of-temperature') === null || localStorage.getItem('unit-of-temperature') === 'celsius') {
-    currentUnitOfTemperature = 'celsius';
+    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'celsius';
     C_DEG_BUTTON.classList.toggle('header__button--active');
   } else {
-    currentUnitOfTemperature = 'fahrenheit';
+    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'fahrenheit';
     F_DEG_BUTTON.classList.toggle('header__button--active');
   }
 }
 
 function setUnitOfTemperatureInLocalStorage() {
-  localStorage.setItem('unit-of-temperature', currentUnitOfTemperature);
+  localStorage.setItem('unit-of-temperature', _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature);
 }
 
 REFRESH_BUTTON.addEventListener('click', function () {
@@ -153,43 +181,39 @@ REFRESH_BUTTON.addEventListener('click', function () {
       getImageLink();
     }, 100);
   } catch (error) {
-    (0,_error_js__WEBPACK_IMPORTED_MODULE_0__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_1__.LANGUAGE.error.background[currentLanguage]);
+    (0,_error_js__WEBPACK_IMPORTED_MODULE_3__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.background[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage]);
     return;
   }
 });
+
+function changeStateButtons(firstButton, secondButton) {
+  firstButton.disabled = true;
+  secondButton.disabled = false;
+  firstButton.classList.add('header__button--active');
+  secondButton.classList.remove('header__button--active');
+}
+
 ENG_LANG_BUTTON.addEventListener('click', function () {
-  currentLanguage = 'en';
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
-  (0,_language_js__WEBPACK_IMPORTED_MODULE_1__.translate)();
-  ENG_LANG_BUTTON.disabled = true;
-  RU_LANG_BUTTON.disabled = false;
-  ENG_LANG_BUTTON.classList.add('header__button--active');
-  RU_LANG_BUTTON.classList.remove('header__button--active');
+  (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
+  changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
 });
 RU_LANG_BUTTON.addEventListener('click', function () {
-  currentLanguage = 'ru';
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
-  (0,_language_js__WEBPACK_IMPORTED_MODULE_1__.translate)();
-  RU_LANG_BUTTON.disabled = true;
-  ENG_LANG_BUTTON.disabled = false;
-  RU_LANG_BUTTON.classList.add('header__button--active');
-  ENG_LANG_BUTTON.classList.remove('header__button--active');
+  (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
+  changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);
 });
 F_DEG_BUTTON.addEventListener('click', function () {
-  currentUnitOfTemperature = 'fahrenheit';
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'fahrenheit';
   setUnitOfTemperatureInLocalStorage();
-  F_DEG_BUTTON.disabled = true;
-  C_DEG_BUTTON.disabled = false;
-  F_DEG_BUTTON.classList.add('header__button--active');
-  C_DEG_BUTTON.classList.remove('header__button--active');
+  changeStateButtons(F_DEG_BUTTON, C_DEG_BUTTON);
 });
 C_DEG_BUTTON.addEventListener('click', function () {
-  currentUnitOfTemperature = 'celsius';
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'celsius';
   setUnitOfTemperatureInLocalStorage();
-  C_DEG_BUTTON.disabled = true;
-  F_DEG_BUTTON.disabled = false;
-  C_DEG_BUTTON.classList.add('header__button--active');
-  F_DEG_BUTTON.classList.remove('header__button--active');
+  changeStateButtons(C_DEG_BUTTON, F_DEG_BUTTON);
 });
 
 window.onload = function () {
@@ -212,17 +236,8 @@ setUnitOfTemperatureInLocalStorage();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "translate": () => /* binding */ translate,
 /* harmony export */   "LANGUAGE": () => /* binding */ LANGUAGE
 /* harmony export */ });
-/* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
-/* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./search.js */ "./scripts/search.js");
-
-
-function translate() {
-  _search_js__WEBPACK_IMPORTED_MODULE_1__.SEARCH_INPUT.placeholder = LANGUAGE.searchInput[_header_js__WEBPACK_IMPORTED_MODULE_0__.currentLanguage];
-  _search_js__WEBPACK_IMPORTED_MODULE_1__.SEARCH_BUTTON.innerHTML = LANGUAGE.searchButton[_header_js__WEBPACK_IMPORTED_MODULE_0__.currentLanguage];
-}
 var LANGUAGE = {
   searchInput: {
     en: 'Search city or ZIP',
@@ -258,8 +273,12 @@ var LANGUAGE = {
   },
   error: {
     background: {
-      en: 'Oops! Something went wrong. You cannot update the background.',
-      ru: 'Упс! Что-то пошло не так. Вы не можете обновить фон.'
+      en: 'Oops! Something went wrong.<br>You cannot update the background.',
+      ru: 'Упс! Что-то пошло не так.<br>Вы не можете обновить фон.'
+    },
+    weather: {
+      en: 'The weather data could not be obtained.<br>Please, try again later.',
+      ru: 'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.'
     }
   }
 };
@@ -291,15 +310,18 @@ var SEARCH_BUTTON = document.querySelector('.search__button');
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "showDate": () => /* binding */ showDate
+/* harmony export */ });
 /* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
-/* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
 
 
 var DATE = document.querySelector('.title__date');
 var TIME = document.querySelector('.title__time');
 var FIRST_DAY = document.querySelector('.weather__title-first-day');
-var SECOND_DAY = document.querySelector('.weather__second-day');
-var THIRD_DAY = document.querySelector('.weather__third-day');
+var SECOND_DAY = document.querySelector('.weather__title-second-day');
+var THIRD_DAY = document.querySelector('.weather__title-third-day');
 
 function addZero(n) {
   return (parseInt(n, 10) < 10 ? '0' : '') + n;
@@ -319,11 +341,85 @@ function showDate() {
   var dayWeek = today.getDay();
   var dayDate = today.getDate();
   var dayMonth = today.getMonth();
-  DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek[_header_js__WEBPACK_IMPORTED_MODULE_1__.currentLanguage][dayWeek], ",\n                    ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month[_header_js__WEBPACK_IMPORTED_MODULE_1__.currentLanguage][dayMonth]);
+  DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayWeek], ",\n  ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayMonth]);
+  today.setDate(today.getDate() + 1);
+  var firstDay = today.getDay();
+  today.setDate(today.getDate() + 1);
+  var secondDay = today.getDay();
+  today.setDate(today.getDate() + 1);
+  var thirdDay = today.getDay();
+  FIRST_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][firstDay]);
+  SECOND_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][secondDay]);
+  THIRD_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][thirdDay]);
 }
-
 showTime();
 showDate();
+
+/***/ }),
+
+/***/ "./scripts/utils.js":
+/*!**************************!*\
+  !*** ./scripts/utils.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "translate": () => /* binding */ translate
+/* harmony export */ });
+/* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./search.js */ "./scripts/search.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
+/* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _time_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./time.js */ "./scripts/time.js");
+
+
+
+
+function translate() {
+  _search_js__WEBPACK_IMPORTED_MODULE_0__.SEARCH_INPUT.placeholder = _language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.searchInput[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage];
+  _search_js__WEBPACK_IMPORTED_MODULE_0__.SEARCH_BUTTON.innerHTML = _language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.searchButton[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage];
+  (0,_time_js__WEBPACK_IMPORTED_MODULE_3__.showDate)();
+}
+
+/***/ }),
+
+/***/ "./scripts/weather.js":
+/*!****************************!*\
+  !*** ./scripts/weather.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getWeather": () => /* binding */ getWeather
+/* harmony export */ });
+/* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
+/* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
+
+
+
+function getWeather(lat, lon) {
+  var COORDINATES = "lat=".concat(lat, "&lon=").concat(lon);
+  var PARAMETERS = '&unit_system=si&start_time=now&fields=feels_like%2Ctemp%2Chumidity%2Cwind_speed%2Cweather_code';
+  var API_KEY = 'EBOBHqriA20kiUR6JNdEI9MkjWywRbwC';
+  var URL = "https://api.climacell.co/v3/weather/forecast/daily?".concat(COORDINATES).concat(PARAMETERS, "&apikey=").concat(API_KEY);
+  fetch(URL).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log(data);
+
+    if (data.message === 'You cannot consume this service') {
+      (0,_error_js__WEBPACK_IMPORTED_MODULE_0__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_1__.LANGUAGE.error.weather[_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage]);
+    }
+  })["catch"](function () {
+    console.log('error');
+    (0,_error_js__WEBPACK_IMPORTED_MODULE_0__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_1__.LANGUAGE.error.weather[_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage]);
+  });
+}
+getWeather('52.424638', '31.014255');
 
 /***/ }),
 
