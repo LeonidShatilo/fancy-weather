@@ -7,4 +7,5 @@ import './scripts/error.js';
 import './scripts/time.js';
 import './scripts/header.js';
 import './scripts/search.js';
+import './scripts/geolocation.js';
 import './scripts/weather.js';
