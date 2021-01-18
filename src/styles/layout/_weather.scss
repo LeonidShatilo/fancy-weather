@@ -13,10 +13,10 @@
       width: max-content;
       user-select: none;
 
-      &-description {
+      &-details {
         @include font-bold;
         position: relative;
-        top: -55px;
+        top: -50px;
         margin-left: 3.2rem;
         font-size: 2.2rem;
         height: fit-content;
@@ -54,7 +54,7 @@
       height: 200px;
       background-size: cover;
       background-position: center;
-      background-image: url('../../assets/images/svg/partly-cloudy-day-rain.svg');
+      // background-image: url('../../assets/images/svg/partly-cloudy-day-rain.svg');
     }
 
     &__next-three-days {
@@ -96,16 +96,16 @@
       height: 100px;
     }
 
-    &__icon-first-day {
-      background-image: url('../../assets/images/svg/partly-cloudy-day-snow.svg');
-    }
+    // &__icon-first-day {
+    //   background-image: url('../../assets/images/svg/partly-cloudy-day-snow.svg');
+    // }
 
-    &__icon-second-day {
-      background-image: url('../../assets/images/svg/partly-cloudy-day-hail.svg');
-    }
+    // &__icon-second-day {
+    //   background-image: url('../../assets/images/svg/partly-cloudy-day-hail.svg');
+    // }
 
-    &__icon-third-day {
-      background-image: url('../../assets/images/svg/partly-cloudy-night-drizzle.svg');
-    }
+    // &__icon-third-day {
+    //   background-image: url('../../assets/images/svg/partly-cloudy-night-drizzle.svg');
+    // }
   }
 }

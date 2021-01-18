@@ -1,0 +1,32 @@
+.preloader {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: $background-preloader;
+  user-select: none;
+  opacity: 1;
+  z-index: 3;
+
+  &__icon {
+    width: 100px;
+    height: 100px;
+    background-size: 100%;
+    background-image: url('../../assets/images/svg/preloader.svg');
+    background-repeat: no-repeat;
+  }
+
+  &__text {
+    @include font-semi-bold;
+    margin-top: 3rem;
+    font-size: 3rem;
+    text-transform: uppercase;
+  }
+
+  &--hide {
+    opacity: 0;
+  }
+}

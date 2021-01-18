@@ -492,12 +492,12 @@ body {
       margin-right: 5rem;
       width: max-content;
       user-select: none; }
-      .container-weather-map .weather__today-description {
+      .container-weather-map .weather__today-details {
         font-family: 'Montserrat', Arial, Helvetica, sans-serif;
         font-weight: 700;
         color: #ffffff;
         position: relative;
-        top: -55px;
+        top: -50px;
         margin-left: 3.2rem;
         font-size: 2.2rem;
         height: fit-content;
@@ -529,8 +529,7 @@ body {
       width: 200px;
       height: 200px;
       background-size: cover;
-      background-position: center;
-      background-image: url("../../assets/images/svg/partly-cloudy-day-rain.svg"); }
+      background-position: center; }
     .container-weather-map .weather__next-three-days {
       font-family: 'Montserrat', Arial, Helvetica, sans-serif;
       font-weight: 700;
@@ -558,12 +557,6 @@ body {
       top: -15px;
       width: 100px;
       height: 100px; }
-    .container-weather-map .weather__icon-first-day {
-      background-image: url("../../assets/images/svg/partly-cloudy-day-snow.svg"); }
-    .container-weather-map .weather__icon-second-day {
-      background-image: url("../../assets/images/svg/partly-cloudy-day-hail.svg"); }
-    .container-weather-map .weather__icon-third-day {
-      background-image: url("../../assets/images/svg/partly-cloudy-night-drizzle.svg"); }
 
 .map {
   position: relative;
@@ -644,6 +637,34 @@ body {
     transform: translateY(0); }
   .error__hide {
     transform: translateY(-100vh); }
+
+.preloader {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #59a9c2;
+  user-select: none;
+  opacity: 1;
+  z-index: 3; }
+  .preloader__icon {
+    width: 100px;
+    height: 100px;
+    background-size: 100%;
+    background-image: url("../../assets/images/svg/preloader.svg");
+    background-repeat: no-repeat; }
+  .preloader__text {
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 3rem;
+    font-size: 3rem;
+    text-transform: uppercase; }
+  .preloader--hide {
+    opacity: 0; }
 
 
 /*# sourceMappingURL=main.css.map*/
