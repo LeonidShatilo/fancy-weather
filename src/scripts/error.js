@@ -1,5 +1,5 @@
 const ERROR = document.querySelector('.error');
-const ERROR_MESSAGE = document.querySelector('.error__message');
+export const ERROR_MESSAGE = document.querySelector('.error__message');
 const ERROR_CONFIRM_BUTTON = document.querySelector('.error__confirm-button');
 
 export function showError(descriprion) {
