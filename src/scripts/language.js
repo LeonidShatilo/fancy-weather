@@ -62,8 +62,26 @@ export const LANGUAGE = {
     ],
   },
   weatherConditions: {
-    en: ['Feels like: ', 'Wind: ', 'm/s', 'Humidity: '],
-    ru: ['Ощущается как: ', 'Ветер: ', 'м/с', 'Влажность: '],
+    description: {
+      en: '',
+      ru: '',
+    },
+    feelsLike: {
+      en: 'Feels like: ',
+      ru: 'Ощущается как: ',
+    },
+    wind: {
+      en: 'Wind: ',
+      ru: 'Ветер: ',
+    },
+    windUnit: {
+      en: 'm/s',
+      ru: 'м/с',
+    },
+    humidity: {
+      en: 'Humidity: ',
+      ru: 'Влажность: ',
+    },
   },
   latitude: {
     en: 'Latitude: ',
@@ -89,5 +107,9 @@ export const LANGUAGE = {
       ru:
         'К сожалению, ваши координаты не были получены.<br>Пожалуйста, попробуйте позже.',
     },
+  },
+  preloader: {
+    en: 'Loading...',
+    ru: 'Загрузка...',
   },
 };
