@@ -2,6 +2,14 @@ import { translate } from './utils.js';
 import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
+import {
+  getWeather,
+  TEMP_TODAY,
+  TEMP_FIRST,
+  TEMP_SECOND,
+  TEMP_THIRD,
+} from './weather.js';
+import { getPlace } from './geolocation.js';
 
 const BACKGROUND = document.querySelector('.background');
 const REFRESH_BUTTON = document.querySelector('.header__button-refresh-bg');
@@ -34,7 +42,7 @@ function loadImage(url) {
   BACKGROUND.append(IMAGE_ELEMENT);
 }
 
-function getImageLink() {
+export function getImageLink() {
   const PARAMETERS = 'orientation=landscape&query=nature&per_page=1';
   const ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
   const URL = `https://api.unsplash.com/photos/random?${PARAMETERS}&client_id=${ACCESS_KEY}`;
@@ -49,7 +57,7 @@ function getImageLink() {
     });
 }
 
-function getLanguageInLocalStorage() {
+export function getLanguageInLocalStorage() {
   if (
     localStorage.getItem('language') === null ||
     localStorage.getItem('language') === 'en'
@@ -62,25 +70,49 @@ function getLanguageInLocalStorage() {
   }
 }
 
-function setLanguageInLocalStorage() {
+export function setLanguageInLocalStorage() {
   localStorage.setItem('language', allData.currentLanguage);
 }
 
-function getUnitOfTemperatureInLocalStorage() {
+export function getUnitOfTemperatureInLocalStorage() {
   if (
     localStorage.getItem('unit-of-temperature') === null ||
     localStorage.getItem('unit-of-temperature') === 'celsius'
   ) {
     allData.currentUnitOfTemperature = 'celsius';
+    convertTemperature();
     C_DEG_BUTTON.classList.toggle('header__button--active');
   } else {
     allData.currentUnitOfTemperature = 'fahrenheit';
+    convertTemperature();
     F_DEG_BUTTON.classList.toggle('header__button--active');
   }
 }
 
-function setUnitOfTemperatureInLocalStorage() {
+export function setUnitOfTemperatureInLocalStorage() {
   localStorage.setItem('unit-of-temperature', allData.currentUnitOfTemperature);
+}
+
+function changeStateButtons(firstButton, secondButton) {
+  firstButton.disabled = true;
+  secondButton.disabled = false;
+  firstButton.classList.add('header__button--active');
+  secondButton.classList.remove('header__button--active');
+}
+
+function convertTemperature() {
+  if (allData.currentUnitOfTemperature === 'celsius') {
+    TEMP_TODAY.innerHTML = allData.temperatureToday;
+    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
+    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
+    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
+  }
+  if (allData.currentUnitOfTemperature === 'fahrenheit') {
+    TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
+    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
+    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
+    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
+  }
 }
 
 REFRESH_BUTTON.addEventListener('click', () => {
@@ -97,17 +129,12 @@ REFRESH_BUTTON.addEventListener('click', () => {
   }
 });
 
-function changeStateButtons(firstButton, secondButton) {
-  firstButton.disabled = true;
-  secondButton.disabled = false;
-  firstButton.classList.add('header__button--active');
-  secondButton.classList.remove('header__button--active');
-}
-
 ENG_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
   translate();
+  getWeather(allData.userCoordinates.lat, allData.userCoordinates.lng);
+  getPlace(allData.userCoordinates.lat, allData.userCoordinates.lng);
   changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
 });
 
@@ -115,27 +142,21 @@ RU_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
   translate();
+  getWeather(allData.userCoordinates.lat, allData.userCoordinates.lng);
+  getPlace(allData.userCoordinates.lat, allData.userCoordinates.lng);
   changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);
 });
 
 F_DEG_BUTTON.addEventListener('click', () => {
   allData.currentUnitOfTemperature = 'fahrenheit';
   setUnitOfTemperatureInLocalStorage();
+  convertTemperature();
   changeStateButtons(F_DEG_BUTTON, C_DEG_BUTTON);
 });
 
 C_DEG_BUTTON.addEventListener('click', () => {
   allData.currentUnitOfTemperature = 'celsius';
   setUnitOfTemperatureInLocalStorage();
+  convertTemperature();
   changeStateButtons(C_DEG_BUTTON, F_DEG_BUTTON);
 });
-
-window.onload = () => {
-  getImageLink();
-};
-
-getLanguageInLocalStorage();
-getUnitOfTemperatureInLocalStorage();
-setLanguageInLocalStorage();
-setUnitOfTemperatureInLocalStorage();
-translate();
