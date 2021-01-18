@@ -11,21 +11,23 @@ function addZero(n) {
   return (parseInt(n, 10) < 10 ? '0' : '') + n;
 }
 
-function showTime() {
-  let today = new Date();
-  let hour = today.getHours();
-  let min = today.getMinutes();
-  let sec = today.getSeconds();
-
-  TIME.innerHTML = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
-  setTimeout(showTime, 1000);
-}
-
 export function showDate() {
   let today = new Date();
   let dayWeek = today.getDay();
   let dayDate = today.getDate();
   let dayMonth = today.getMonth();
+  let year = today.getFullYear();
+
+  allData.date.year = year;
+  allData.date.month = dayMonth + 1;
+  allData.date.day = dayDate;
+
+  if (allData.date.month < 9) {
+    allData.date.month = `0${dayMonth + 1}`;
+  }
+  if (allData.date.day < 10) {
+    allData.date.day = `0${dayDate}`;
+  }
 
   DATE.innerHTML = `${
     LANGUAGE.shortDayOfWeek[allData.currentLanguage][dayWeek]
@@ -50,5 +52,17 @@ export function showDate() {
   }`;
 }
 
-showTime();
-showDate();
+export function showTime() {
+  let today = new Date();
+  let hour = today.getHours();
+  let min = today.getMinutes();
+  let sec = today.getSeconds();
+
+  TIME.innerHTML = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
+
+  if (hour === 0 && min === 0) {
+    showDate();
+  }
+
+  setTimeout(showTime, 1000);
+}
