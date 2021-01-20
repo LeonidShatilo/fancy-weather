@@ -16,8 +16,8 @@ export function addPreloaderText() {
 export function removePreloader() {
   setTimeout(() => {
     PRELOADER.classList.add('preloader--hide');
-  }, 400);
+  }, 800);
   setTimeout(() => {
     document.body.removeChild(document.body.children[1]);
-  }, 500);
+  }, 900);
 }

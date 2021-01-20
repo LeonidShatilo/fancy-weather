@@ -7,7 +7,7 @@ export function showError(descriprion) {
   ERROR.classList.add('error__visible');
 }
 
-ERROR_CONFIRM_BUTTON.addEventListener('click', () => {
+function hideError() {
   ERROR.classList.add('error__hide');
   setTimeout(() => {
     ERROR.classList.remove('error__visible');
@@ -15,4 +15,6 @@ ERROR_CONFIRM_BUTTON.addEventListener('click', () => {
   setTimeout(() => {
     ERROR.classList.remove('error__hide');
   }, 500);
-});
+}
+
+ERROR_CONFIRM_BUTTON.addEventListener('click', hideError);

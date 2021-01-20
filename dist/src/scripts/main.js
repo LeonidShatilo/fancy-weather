@@ -22,6 +22,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./scripts/geolocation.js */ "./scripts/geolocation.js");
 /* harmony import */ var _scripts_weather_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./scripts/weather.js */ "./scripts/weather.js");
 /* harmony import */ var _scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./scripts/preloader.js */ "./scripts/preloader.js");
+/* harmony import */ var _scripts_map_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./scripts/map.js */ "./scripts/map.js");
+
+
 
 
 
@@ -82,30 +85,27 @@ function addText() {
 }
 
 function runApp() {
-  (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserCoordinates)().then(function () {
-    return getAndSetLanguage();
-  }).then(function () {
+  getAndSetLanguage().then(function () {
     return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.addPreloaderText)();
   }).then(function () {
-    return setTime();
-  }).then(function () {
-    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserCoordinates)();
-  }).then(function () {
-    return (0,_scripts_weather_js__WEBPACK_IMPORTED_MODULE_10__.getWeather)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.userCoordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.userCoordinates.lng);
+    (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.setMap)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+    (0,_scripts_weather_js__WEBPACK_IMPORTED_MODULE_10__.getWeather)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+    (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getPlace)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+    (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.insertTextLocation)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
   }).then(function () {
     return getAndSetUnitOfTemperature();
   }).then(function () {
-    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getPlace)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.userCoordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.userCoordinates.lng);
+    return setTime();
   }).then(function () {
     return addText();
   }).then(function () {
     return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.removePreloader)();
+  }).then(function () {
+    window.onload = function () {
+      (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.getImageLink)();
+    };
   });
 }
-
-window.onload = function () {
-  (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.getImageLink)();
-};
 
 runApp();
 
@@ -126,27 +126,24 @@ var allData = {
   currentLanguage: 'en',
   currentUnitOfTemperature: 'celsius',
   coordinates: {
-    lat: 0,
-    lng: 0
+    lat: 53.902334,
+    lng: 27.561879
   },
-  userCoordinates: {
-    lat: 0,
-    lng: 0
-  },
-  userCoordinatesText: {
+  convertedCoordinates: {
     lat: '',
     lng: ''
   },
-  temperatureToday: '',
-  temperatureTodayInFahrenheit: '',
+  temperatureToday: 0,
+  temperatureTodayInFahrenheit: 0,
   temperatureNextThreeDays: [0, 0, 0],
   temperatureNextThreeDaysInFahrenheit: [0, 0, 0],
   weatherIcon: {
     today: '',
-    nextThreeDays: [0, 0, 0]
+    nextThreeDays: ['', '', '']
   },
   weather: '',
   feelsLike: '',
+  feelsLikeInFahrenheit: '',
   humidity: '',
   wind: '',
   place: '',
@@ -181,7 +178,8 @@ function showError(descriprion) {
   ERROR_MESSAGE.innerHTML = descriprion;
   ERROR.classList.add('error__visible');
 }
-ERROR_CONFIRM_BUTTON.addEventListener('click', function () {
+
+function hideError() {
   ERROR.classList.add('error__hide');
   setTimeout(function () {
     ERROR.classList.remove('error__visible');
@@ -189,7 +187,9 @@ ERROR_CONFIRM_BUTTON.addEventListener('click', function () {
   setTimeout(function () {
     ERROR.classList.remove('error__hide');
   }, 500);
-});
+}
+
+ERROR_CONFIRM_BUTTON.addEventListener('click', hideError);
 
 /***/ }),
 
@@ -202,14 +202,25 @@ ERROR_CONFIRM_BUTTON.addEventListener('click', function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "LATITUDE": () => /* binding */ LATITUDE,
+/* harmony export */   "LONGITUDE": () => /* binding */ LONGITUDE,
 /* harmony export */   "TITLE_LATITUDE": () => /* binding */ TITLE_LATITUDE,
 /* harmony export */   "TITLE_LONGITUDE": () => /* binding */ TITLE_LONGITUDE,
-/* harmony export */   "getUserCoordinates": () => /* binding */ getUserCoordinates,
-/* harmony export */   "getPlace": () => /* binding */ getPlace
+/* harmony export */   "insertTextLocation": () => /* binding */ insertTextLocation,
+/* harmony export */   "getUserLocation": () => /* binding */ getUserLocation,
+/* harmony export */   "convertCoordinates": () => /* binding */ convertCoordinates,
+/* harmony export */   "getPlace": () => /* binding */ getPlace,
+/* harmony export */   "findCity": () => /* binding */ findCity
 /* harmony export */ });
 /* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
 /* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
 /* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./map.js */ "./scripts/map.js");
+/* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
+/* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+
+
+
 
 
 
@@ -218,51 +229,110 @@ var LATITUDE = document.querySelector('.latitude');
 var LONGITUDE = document.querySelector('.longitude');
 var TITLE_LATITUDE = document.querySelector('.title-latitude');
 var TITLE_LONGITUDE = document.querySelector('.title-longitude');
-var isText;
-
-function coordinateTransformation(loc, name) {
-  var index;
-  name === 'lat' ? index = 0 : index = 1;
-  var n = loc.split(',')[index].split('');
-
-  if (isText) {
-    return "".concat(n[0] + n[1], "\xB0").concat(n[3] + n[4], "'").concat(n[5] + n[6], "''");
-  } else {
-    return "".concat(n[0] + n[1], ".").concat(n[3] + n[4]).concat(n[5] + n[6]);
-  }
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+function insertTextLocation(lat, lng) {
+  LATITUDE.innerHTML = convertCoordinates(lat);
+  LONGITUDE.innerHTML = convertCoordinates(lng);
 }
 
-function getUserCoordinates() {
-  var TOKEN = 'a360badf914741';
-  var URL = "https://ipinfo.io/json?token=".concat(TOKEN);
-  return fetch(URL).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    isText = false;
-    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinates.lat = coordinateTransformation(data.loc, 'lat');
-    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinates.lng = coordinateTransformation(data.loc, 'lng');
-    isText = true;
-    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinatesText.lat = coordinateTransformation(data.loc, 'lat');
-    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinatesText.lng = coordinateTransformation(data.loc, 'lng');
-    LATITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinatesText.lat;
-    LONGITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.userCoordinatesText.lng;
-    return 'ok';
-  })["catch"](function (e) {
-    (0,_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.userCoordinates[_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage]);
-    return;
-  });
+function success(position) {
+  var coordinates = position.coords;
+  _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat = coordinates.latitude;
+  _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng = coordinates.longitude;
+  (0,_map_js__WEBPACK_IMPORTED_MODULE_3__.updateMap)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+  (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+  getPlace(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+  insertTextLocation(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+  (0,_header_js__WEBPACK_IMPORTED_MODULE_5__.updateBackground)();
+  return 'ok';
+}
+
+function error() {
+  (0,_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.currentCoordinates[_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage]);
+}
+
+function getUserLocation() {
+  navigator.geolocation.getCurrentPosition(success, error, options);
+}
+function convertCoordinates(loc) {
+  var n = String(loc).split('.');
+  var ddd = Number(loc);
+  var dd = "".concat(Math.abs(n[0]));
+  var mm = Math.floor((ddd - dd) * 60);
+  var ss = Math.abs(Number((((ddd - dd) * 60 - mm) * 60).toFixed(1)));
+
+  if (Math.abs(mm) < 10) {
+    mm = "0".concat(mm);
+  } else {
+    mm = Math.abs(mm);
+  }
+
+  if (ss < 10) {
+    ss = "0".concat(ss);
+  } else {
+    if (ss % 10 === 0) {
+      ss = "".concat(Math.abs(ss), ".0");
+    } else {
+      ss = Math.abs(ss);
+    }
+  }
+
+  return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"");
 }
 function getPlace(lat, lng) {
   var KEY = "504abf1b2bce4c898926036946d632ee";
   var URL = "https://api.opencagedata.com/geocode/v1/json?q=".concat(lat, "%2C%20").concat(lng, "&key=").concat(KEY, "&language=").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage);
-  fetch(URL).then(function (response) {
+  return fetch(URL).then(function (response) {
     return response.json();
   }).then(function (data) {
-    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.results[0].components.city;
+    if (data.results[0].components.city) {
+      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.results[0].components.city;
+    } else {
+      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.results[0].components.county;
+    }
+
     _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country = data.results[0].components.country;
-    TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+
+    if (data.results[0].components.city || data.results[0].components.county) {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    } else {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    }
+
+    return 'ok';
   })["catch"](function (e) {
-    alert('Ошибка! Место не найдено.');
+    return;
+  });
+}
+function findCity(query) {
+  var KEY = "504abf1b2bce4c898926036946d632ee";
+  var URL = "https://api.opencagedata.com/geocode/v1/json?q=".concat(query, "&key=").concat(KEY, "&language=").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage);
+  return fetch(URL).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    if (data.results[0].components.city) {
+      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.results[0].components.city;
+    } else {
+      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.results[0].components.county;
+    }
+
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country = data.results[0].components.country;
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat = data.results[0].geometry.lat;
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng = data.results[0].geometry.lng;
+
+    if (data.results[0].components.city || data.results[0].components.county) {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    } else {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    }
+
+    return data.total_results;
+  })["catch"](function (e) {
+    (0,_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.query[_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage]);
     return;
   });
 }
@@ -282,7 +352,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getLanguageInLocalStorage": () => /* binding */ getLanguageInLocalStorage,
 /* harmony export */   "setLanguageInLocalStorage": () => /* binding */ setLanguageInLocalStorage,
 /* harmony export */   "getUnitOfTemperatureInLocalStorage": () => /* binding */ getUnitOfTemperatureInLocalStorage,
-/* harmony export */   "setUnitOfTemperatureInLocalStorage": () => /* binding */ setUnitOfTemperatureInLocalStorage
+/* harmony export */   "setUnitOfTemperatureInLocalStorage": () => /* binding */ setUnitOfTemperatureInLocalStorage,
+/* harmony export */   "updateBackground": () => /* binding */ updateBackground
 /* harmony export */ });
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./scripts/utils.js");
 /* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
@@ -303,13 +374,14 @@ var ENG_LANG_BUTTON = document.querySelector('.header__button-eng-lang');
 var RU_LANG_BUTTON = document.querySelector('.header__button-ru-lang');
 var F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
 var C_DEG_BUTTON = document.querySelector('.header__button-celsius-deg');
+var CURRENT_LOCATION = document.querySelector('.header__button-current-location');
 var angleRotation = 360;
 
 function removeBackgroundElement() {
   BACKGROUND.removeChild(BACKGROUND.children[0]);
 }
 
-function changeVisibility() {
+function changeBackgroundVisibility() {
   var BACKGROUND_IMAGES = document.querySelectorAll('.background__image');
   BACKGROUND_IMAGES[1].classList.add('visible');
   setTimeout(function () {
@@ -377,6 +449,7 @@ function convertTemperature() {
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[0];
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[1];
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[2];
+    _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLike;
   }
 
   if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature === 'fahrenheit') {
@@ -384,17 +457,21 @@ function convertTemperature() {
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[0];
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[1];
     _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[2];
+    _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLikeInFahrenheit;
   }
 }
 
+function updateBackground() {
+  changeBackgroundVisibility();
+  setTimeout(function () {
+    getImageLink();
+  }, 100);
+}
 REFRESH_BUTTON.addEventListener('click', function () {
   try {
     CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
     angleRotation += 360;
-    changeVisibility();
-    setTimeout(function () {
-      getImageLink();
-    }, 100);
+    updateBackground();
   } catch (error) {
     (0,_error_js__WEBPACK_IMPORTED_MODULE_3__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.background[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage]);
     return;
@@ -404,16 +481,16 @@ ENG_LANG_BUTTON.addEventListener('click', function () {
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
-  (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lng);
-  (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lng);
+  (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeatherDescription)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
+  (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
 });
 RU_LANG_BUTTON.addEventListener('click', function () {
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
-  (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lng);
-  (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.userCoordinates.lng);
+  (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeatherDescription)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
+  (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);
 });
 F_DEG_BUTTON.addEventListener('click', function () {
@@ -428,6 +505,7 @@ C_DEG_BUTTON.addEventListener('click', function () {
   convertTemperature();
   changeStateButtons(C_DEG_BUTTON, F_DEG_BUTTON);
 });
+CURRENT_LOCATION.addEventListener('click', _geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getUserLocation);
 
 /***/ }),
 
@@ -502,9 +580,13 @@ var LANGUAGE = {
       en: 'The weather data could not be obtained.<br>Please, try again later.',
       ru: 'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.'
     },
-    userCoordinates: {
-      en: 'Unfortunately, your coordinates have not been received.<br>Please try again later.',
-      ru: 'К сожалению, ваши координаты не были получены.<br>Пожалуйста, попробуйте позже.'
+    currentCoordinates: {
+      en: 'Unfortunately, your coordinates have not been received.',
+      ru: 'К сожалению, ваши координаты не были получены.'
+    },
+    query: {
+      en: 'Request error. City not found.',
+      ru: 'Ошибка запроса. Город не найден.'
     }
   },
   preloader: {
@@ -512,6 +594,45 @@ var LANGUAGE = {
     ru: 'Загрузка...'
   }
 };
+
+/***/ }),
+
+/***/ "./scripts/map.js":
+/*!************************!*\
+  !*** ./scripts/map.js ***!
+  \************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "map": () => /* binding */ map,
+/* harmony export */   "marker": () => /* binding */ marker,
+/* harmony export */   "setMap": () => /* binding */ setMap,
+/* harmony export */   "updateMap": () => /* binding */ updateMap
+/* harmony export */ });
+/* eslint-disable */
+var map;
+var marker;
+function setMap(lat, lng) {
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhdGlsb2xlb25pZCIsImEiOiJja2szdHIyaTcweDE5Mm9xb3YyZnJoYnNkIn0.ex05JiXyZjfejBymZpv-5A';
+  map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [lng, lat],
+    zoom: 11
+  });
+  marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+  return 'ok';
+}
+function updateMap(lat, lng) {
+  map.flyTo({
+    center: [lng, lat],
+    essential: true
+  });
+  marker.remove();
+  marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
+}
 
 /***/ }),
 
@@ -544,10 +665,10 @@ function addPreloaderText() {
 function removePreloader() {
   setTimeout(function () {
     PRELOADER.classList.add('preloader--hide');
-  }, 400);
+  }, 800);
   setTimeout(function () {
     document.body.removeChild(document.body.children[1]);
-  }, 500);
+  }, 900);
 }
 
 /***/ }),
@@ -562,10 +683,43 @@ function removePreloader() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SEARCH_INPUT": () => /* binding */ SEARCH_INPUT,
-/* harmony export */   "SEARCH_BUTTON": () => /* binding */ SEARCH_BUTTON
+/* harmony export */   "SEARCH_BUTTON": () => /* binding */ SEARCH_BUTTON,
+/* harmony export */   "runSearch": () => /* binding */ runSearch
 /* harmony export */ });
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
+/* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./map.js */ "./scripts/map.js");
+/* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
+/* harmony import */ var _geolocation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./geolocation.js */ "./scripts/geolocation.js");
+/* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+
+
+
+
+
 var SEARCH_INPUT = document.querySelector('.search__input');
 var SEARCH_BUTTON = document.querySelector('.search__button');
+function runSearch() {
+  (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_3__.findCity)(SEARCH_INPUT.value).then(function (result) {
+    (0,_map_js__WEBPACK_IMPORTED_MODULE_1__.updateMap)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+    (0,_weather_js__WEBPACK_IMPORTED_MODULE_2__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+    (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_3__.insertTextLocation)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+
+    if (result > 0) {
+      (0,_header_js__WEBPACK_IMPORTED_MODULE_4__.updateBackground)();
+    }
+  })["catch"](function (e) {
+    return;
+  });
+}
+SEARCH_INPUT.addEventListener('keypress', function (event) {
+  if (event.key === 'Enter') {
+    runSearch();
+  }
+});
+SEARCH_INPUT.addEventListener('focus', function () {
+  return SEARCH_INPUT.value = '';
+});
+SEARCH_BUTTON.addEventListener('click', runSearch);
 
 /***/ }),
 
@@ -583,6 +737,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
 /* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
+/* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
+
 
 
 var DATE = document.querySelector('.title__date');
@@ -633,6 +789,7 @@ function showTime() {
 
   if (hour === 0 && min === 0) {
     showDate();
+    (0,_weather_js__WEBPACK_IMPORTED_MODULE_2__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   }
 
   setTimeout(showTime, 1000);
@@ -649,7 +806,8 @@ function showTime() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "translate": () => /* binding */ translate
+/* harmony export */   "translate": () => /* binding */ translate,
+/* harmony export */   "insertCoordinatesData": () => /* binding */ insertCoordinatesData
 /* harmony export */ });
 /* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./search.js */ "./scripts/search.js");
 /* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
@@ -674,6 +832,12 @@ function translate() {
   _weather_js__WEBPACK_IMPORTED_MODULE_5__.TITLE_HUMIDITY.innerHTML = _language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.weatherConditions.humidity[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage];
   (0,_time_js__WEBPACK_IMPORTED_MODULE_3__.showDate)();
 }
+function insertCoordinatesData(lat, lng) {
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lat);
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lng);
+  _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LATITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat;
+  _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LONGITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng;
+}
 
 /***/ }),
 
@@ -690,11 +854,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TEMP_FIRST": () => /* binding */ TEMP_FIRST,
 /* harmony export */   "TEMP_SECOND": () => /* binding */ TEMP_SECOND,
 /* harmony export */   "TEMP_THIRD": () => /* binding */ TEMP_THIRD,
+/* harmony export */   "FEELS_LIKE": () => /* binding */ FEELS_LIKE,
 /* harmony export */   "TITLE_WIND": () => /* binding */ TITLE_WIND,
 /* harmony export */   "WIND_UNIT": () => /* binding */ WIND_UNIT,
 /* harmony export */   "TITLE_FEELS_LIKE": () => /* binding */ TITLE_FEELS_LIKE,
 /* harmony export */   "TITLE_HUMIDITY": () => /* binding */ TITLE_HUMIDITY,
-/* harmony export */   "getWeather": () => /* binding */ getWeather
+/* harmony export */   "getWeather": () => /* binding */ getWeather,
+/* harmony export */   "getWeatherDescription": () => /* binding */ getWeatherDescription
 /* harmony export */ });
 /* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
 /* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
@@ -702,14 +868,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var WEATHER = document.querySelector('.weather__today-description');
+var WIND = document.querySelector('.weather__wind');
+var HUMIDITY = document.querySelector('.weather__humidity');
 var TEMP_TODAY = document.querySelector('.weather__temp-today');
 var TEMP_FIRST = document.querySelector('.weather__temp-first-day');
 var TEMP_SECOND = document.querySelector('.weather__temp-second-day');
 var TEMP_THIRD = document.querySelector('.weather__temp-third-day');
-var WEATHER = document.querySelector('.weather__today-description');
-var WIND = document.querySelector('.weather__wind');
 var FEELS_LIKE = document.querySelector('.weather__feels-like');
-var HUMIDITY = document.querySelector('.weather__humidity');
 var TITLE_WIND = document.querySelector('.weather__title-wind');
 var WIND_UNIT = document.querySelector('.weather__wind-unit');
 var TITLE_FEELS_LIKE = document.querySelector('.weather__title-feels-like');
@@ -724,9 +890,19 @@ function getTemperatureInFahrenheit() {
   _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[0] = Math.round(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[0] * 9 / 5 + 32);
   _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[1] = Math.round(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[1] * 9 / 5 + 32);
   _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[2] = Math.round(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[2] * 9 / 5 + 32);
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLikeInFahrenheit = Math.round(Number(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLike) * 9 / 5 + 32);
 }
 
-function getDataForNextDays(data) {
+function getDataWeatherToday(data) {
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weather = data.list[0].weather[0].description;
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureToday = Math.round(data.list[0].main.temp);
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLike = Math.round(data.list[0].main.feels_like);
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.wind = data.list[0].wind.speed.toFixed(1);
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.humidity = Math.round(data.list[0].main.humidity);
+  _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weatherIcon.today = data.list[0].weather[0].icon;
+}
+
+function getDataWeatherForNextDays(data) {
   var nextDay = 1;
   var indexDays = 0;
 
@@ -740,7 +916,7 @@ function getDataForNextDays(data) {
   }
 }
 
-function insertDataIntoHtml() {
+function insertWeatherData() {
   TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureToday;
   TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[0];
   TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[1];
@@ -762,18 +938,13 @@ function getWeather(lat, lng) {
   var LANG = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage;
   var APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
   var URL = "https://api.openweathermap.org/data/2.5/forecast?lat=".concat(lat, "&lon=").concat(lng, "&lang=").concat(LANG, "&units=metric&appid=").concat(APP_ID);
-  return fetch(URL).then(function (response) {
+  fetch(URL).then(function (response) {
     return response.json();
   }).then(function (data) {
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weather = data.list[0].weather[0].description;
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureToday = Math.round(data.list[0].main.temp);
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLike = Math.round(data.list[0].main.feels_like);
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.wind = data.list[0].wind.speed.toFixed(1);
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.humidity = Math.round(data.list[0].main.humidity);
-    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weatherIcon.today = data.list[0].weather[0].icon;
-    getDataForNextDays(data);
+    getDataWeatherToday(data);
+    getDataWeatherForNextDays(data);
     getTemperatureInFahrenheit();
-    insertDataIntoHtml();
+    insertWeatherData();
     addIcons();
     return 'ok';
   })["catch"](function (e) {
@@ -781,6 +952,34 @@ function getWeather(lat, lng) {
     return;
   });
 }
+function getWeatherDescription(lat, lng) {
+  var LANG = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage;
+  var APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
+  var URL = "https://api.openweathermap.org/data/2.5/forecast?lat=".concat(lat, "&lon=").concat(lng, "&lang=").concat(LANG, "&units=metric&appid=").concat(APP_ID);
+  fetch(URL).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weather = data.list[0].weather[0].description;
+    WEATHER.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weather;
+  })["catch"](function (e) {
+    return;
+  });
+}
+
+/***/ }),
+
+/***/ "../assets/images/svg/current-location.svg":
+/*!*************************************************!*\
+  !*** ../assets/images/svg/current-location.svg ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "../assets/images/svg/current-location.svg");
 
 /***/ }),
 
@@ -823,11 +1022,13 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 var ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___ = __webpack_require__(/*! ../node_modules/html-loader/dist/runtime/getUrl.js */ "../node_modules/html-loader/dist/runtime/getUrl.js");
 var ___HTML_LOADER_IMPORT_0___ = __webpack_require__(/*! ../assets/images/svg/refresh-circle-arrows.svg */ "../assets/images/svg/refresh-circle-arrows.svg");
-var ___HTML_LOADER_IMPORT_1___ = __webpack_require__(/*! ../assets/images/svg/voice-search.svg */ "../assets/images/svg/voice-search.svg");
+var ___HTML_LOADER_IMPORT_1___ = __webpack_require__(/*! ../assets/images/svg/current-location.svg */ "../assets/images/svg/current-location.svg");
+var ___HTML_LOADER_IMPORT_2___ = __webpack_require__(/*! ../assets/images/svg/voice-search.svg */ "../assets/images/svg/voice-search.svg");
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_1___);
-var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body>\r\n    <div class=\"error\">\r\n      <p class=\"error__message\"></p>\r\n      <button class=\"error__confirm-button\">Ok</button>\r\n    </div>\r\n    <div class=\"preloader\">\r\n      <div class=\"preloader__icon\"></div>\r\n      <div class=\"preloader__text\"></div>\r\n    </div>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background\">\r\n      <div class=\"background__image default\"></div>\r\n    </div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang\">EN</button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg\">°C</button>\r\n          </div>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <img\r\n              class=\"search__voice-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"voice-search\"\r\n            />\r\n          </button>\r\n          <button class=\"search__button\">Search</button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\"></p>\r\n        <span class=\"title__date\"></span>\r\n        <span class=\"title__time\"></span>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\"></span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-details\">\r\n                <p>\r\n                  <span class=\"weather__today-description\"></span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-feels-like\"></span>\r\n                  <span class=\"weather__feels-like\"></span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-wind\"></span>\r\n                  <span class=\"weather__wind\"></span>\r\n                  <span class=\"weather__wind-unit\">m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-humidity\"></span>\r\n                  <span class=\"weather__humidity\"></span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\"></span>\r\n              <span class=\"latitude\"></span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\"></span>\r\n              <span class=\"longitude\"></span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
+var ___HTML_LOADER_REPLACEMENT_2___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_2___);
+var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <script src=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js\"></script>\r\n    <link\r\n      href=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css\"\r\n      rel=\"stylesheet\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body>\r\n    <div class=\"error\">\r\n      <p class=\"error__message\"></p>\r\n      <button class=\"error__confirm-button\">Ok</button>\r\n    </div>\r\n    <div class=\"preloader\">\r\n      <div class=\"preloader__icon\"></div>\r\n      <div class=\"preloader__text\"></div>\r\n    </div>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background\">\r\n      <div class=\"background__image default\"></div>\r\n    </div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang\">EN</button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg\">°C</button>\r\n          </div>\r\n          <button class=\"header__button-current-location\">\r\n            <img\r\n              class=\"header__current-location-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"current-location\"\r\n            />\r\n          </button>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <img\r\n              class=\"search__voice-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_2___ + "\"\r\n              alt=\"voice-search\"\r\n            />\r\n          </button>\r\n          <button class=\"search__button\">Search</button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\"></p>\r\n        <span class=\"title__date\"></span>\r\n        <span class=\"title__time\"></span>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\"></span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-details\">\r\n                <p>\r\n                  <span class=\"weather__today-description\"></span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-feels-like\"></span>\r\n                  <span class=\"weather__feels-like\"></span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-wind\"></span>\r\n                  <span class=\"weather__wind\"></span>\r\n                  <span class=\"weather__wind-unit\">m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-humidity\"></span>\r\n                  <span class=\"weather__humidity\"></span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\">0</span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\"></span>\r\n              <span class=\"latitude\"></span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\"></span>\r\n              <span class=\"longitude\"></span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
 // Exports
 module.exports = code;
 

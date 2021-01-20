@@ -101,11 +101,15 @@ export const LANGUAGE = {
       ru:
         'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.',
     },
-    userCoordinates: {
+    currentCoordinates: {
       en:
-        'Unfortunately, your coordinates have not been received.<br>Please try again later.',
+        'Unfortunately, your coordinates have not been received.',
       ru:
-        'К сожалению, ваши координаты не были получены.<br>Пожалуйста, попробуйте позже.',
+        'К сожалению, ваши координаты не были получены.',
+    },
+    query: {
+      en: 'Request error. City not found.',
+      ru: 'Ошибка запроса. Город не найден.',
     },
   },
   preloader: {

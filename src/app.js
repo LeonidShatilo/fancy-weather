@@ -10,9 +10,10 @@ import './scripts/search.js';
 import './scripts/geolocation.js';
 import './scripts/weather.js';
 import './scripts/preloader.js';
+import './scripts/map.js';
 
 import { showTime, showDate } from './scripts/time.js';
-import { getUserCoordinates, getPlace } from './scripts/geolocation.js';
+import { getPlace, insertTextLocation } from './scripts/geolocation.js';
 import { translate } from './scripts/utils.js';
 import {
   getImageLink,
@@ -24,6 +25,7 @@ import {
 import { getWeather } from './scripts/weather.js';
 import { allData } from './scripts/data.js';
 import { addPreloaderText, removePreloader } from './scripts/preloader.js';
+import { setMap } from './scripts/map.js';
 
 function getAndSetLanguage() {
   return new Promise((resolve) => {
@@ -65,24 +67,23 @@ function addText() {
 }
 
 function runApp() {
-  getUserCoordinates()
-    .then(() => getAndSetLanguage())
+  getAndSetLanguage()
     .then(() => addPreloaderText())
-    .then(() => setTime())
-    .then(() => getUserCoordinates())
-    .then(() =>
-      getWeather(allData.userCoordinates.lat, allData.userCoordinates.lng)
-    )
+    .then(() => {
+      setMap(allData.coordinates.lat, allData.coordinates.lng);
+      getWeather(allData.coordinates.lat, allData.coordinates.lng);
+      getPlace(allData.coordinates.lat, allData.coordinates.lng);
+      insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
+    })
     .then(() => getAndSetUnitOfTemperature())
-    .then(() =>
-      getPlace(allData.userCoordinates.lat, allData.userCoordinates.lng)
-    )
+    .then(() => setTime())
     .then(() => addText())
-    .then(() => removePreloader());
+    .then(() => removePreloader())
+    .then(() => {
+      window.onload = () => {
+        getImageLink();
+      };
+    });
 }
-
-window.onload = () => {
-  getImageLink();
-};
 
 runApp();
