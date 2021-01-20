@@ -1,5 +1,6 @@
 import { LANGUAGE } from './language.js';
 import { allData } from './data.js';
+import { getWeather } from './weather.js';
 
 const DATE = document.querySelector('.title__date');
 const TIME = document.querySelector('.title__time');
@@ -62,6 +63,7 @@ export function showTime() {
 
   if (hour === 0 && min === 0) {
     showDate();
+    getWeather(allData.coordinates.lat, allData.coordinates.lng);
   }
 
   setTimeout(showTime, 1000);
