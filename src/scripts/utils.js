@@ -2,7 +2,13 @@ import { SEARCH_INPUT, SEARCH_BUTTON } from './search.js';
 import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showDate } from './time.js';
-import { TITLE_LATITUDE, TITLE_LONGITUDE } from './geolocation.js';
+import {
+  TITLE_LATITUDE,
+  TITLE_LONGITUDE,
+  LATITUDE,
+  LONGITUDE,
+  convertCoordinates,
+} from './geolocation.js';
 import {
   TITLE_FEELS_LIKE,
   TITLE_WIND,
@@ -24,4 +30,12 @@ export function translate() {
   TITLE_HUMIDITY.innerHTML =
     LANGUAGE.weatherConditions.humidity[allData.currentLanguage];
   showDate();
+}
+
+export function insertCoordinatesData(lat, lng) {
+  allData.convertedCoordinates.lat = convertCoordinates(lat);
+  allData.convertedCoordinates.lng = convertCoordinates(lng);
+
+  LATITUDE.innerHTML = allData.convertedCoordinates.lat;
+  LONGITUDE.innerHTML = allData.convertedCoordinates.lng;
 }
