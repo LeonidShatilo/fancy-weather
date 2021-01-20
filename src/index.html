@@ -9,6 +9,11 @@
       rel="icon"
       href="./assets/favicon.ico"
     />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
     <title>Fancy Weather</title>
   </head>
   <body>
@@ -42,6 +47,13 @@
             <button class="header__button-fahrenheit-deg">°F</button>
             <button class="header__button-celsius-deg">°C</button>
           </div>
+          <button class="header__button-current-location">
+            <img
+              class="header__current-location-icon"
+              src="../assets/images/svg/current-location.svg"
+              alt="current-location"
+            />
+          </button>
         </div>
         <div class="search">
           <input
