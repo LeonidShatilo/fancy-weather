@@ -3,13 +3,14 @@ import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import {
-  getWeather,
+  getWeatherDescription,
   TEMP_TODAY,
   TEMP_FIRST,
   TEMP_SECOND,
   TEMP_THIRD,
+  FEELS_LIKE,
 } from './weather.js';
-import { getPlace } from './geolocation.js';
+import { getPlace, getUserLocation } from './geolocation.js';
 
 const BACKGROUND = document.querySelector('.background');
 const REFRESH_BUTTON = document.querySelector('.header__button-refresh-bg');
@@ -18,6 +19,9 @@ const ENG_LANG_BUTTON = document.querySelector('.header__button-eng-lang');
 const RU_LANG_BUTTON = document.querySelector('.header__button-ru-lang');
 const F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
 const C_DEG_BUTTON = document.querySelector('.header__button-celsius-deg');
+const CURRENT_LOCATION = document.querySelector(
+  '.header__button-current-location'
+);
 
 let angleRotation = 360;
 
@@ -25,7 +29,7 @@ function removeBackgroundElement() {
   BACKGROUND.removeChild(BACKGROUND.children[0]);
 }
 
-function changeVisibility() {
+function changeBackgroundVisibility() {
   const BACKGROUND_IMAGES = document.querySelectorAll('.background__image');
 
   BACKGROUND_IMAGES[1].classList.add('visible');
@@ -106,23 +110,29 @@ function convertTemperature() {
     TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
     TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
     TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
+    FEELS_LIKE.innerHTML = allData.feelsLike;
   }
   if (allData.currentUnitOfTemperature === 'fahrenheit') {
     TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
     TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
     TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
     TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
+    FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
   }
+}
+
+export function updateBackground() {
+  changeBackgroundVisibility();
+  setTimeout(() => {
+    getImageLink();
+  }, 100);
 }
 
 REFRESH_BUTTON.addEventListener('click', () => {
   try {
     CIRCLE_ARROWS.style.transform = `rotate(${angleRotation}deg)`;
     angleRotation += 360;
-    changeVisibility();
-    setTimeout(() => {
-      getImageLink();
-    }, 100);
+    updateBackground();
   } catch (error) {
     showError(LANGUAGE.error.background[allData.currentLanguage]);
     return;
@@ -133,8 +143,8 @@ ENG_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
   translate();
-  getWeather(allData.userCoordinates.lat, allData.userCoordinates.lng);
-  getPlace(allData.userCoordinates.lat, allData.userCoordinates.lng);
+  getWeatherDescription(allData.coordinates.lat, allData.coordinates.lng);
+  getPlace(allData.coordinates.lat, allData.coordinates.lng);
   changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
 });
 
@@ -142,8 +152,8 @@ RU_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
   translate();
-  getWeather(allData.userCoordinates.lat, allData.userCoordinates.lng);
-  getPlace(allData.userCoordinates.lat, allData.userCoordinates.lng);
+  getWeatherDescription(allData.coordinates.lat, allData.coordinates.lng);
+  getPlace(allData.coordinates.lat, allData.coordinates.lng);
   changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);
 });
 
@@ -160,3 +170,5 @@ C_DEG_BUTTON.addEventListener('click', () => {
   convertTemperature();
   changeStateButtons(C_DEG_BUTTON, F_DEG_BUTTON);
 });
+
+CURRENT_LOCATION.addEventListener('click', getUserLocation);
