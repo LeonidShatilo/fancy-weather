@@ -12,23 +12,11 @@
     min-width: 375px;
     min-height: 375px;
     border-radius: 3rem;
-    background-color: #55a948;
-
-    &:before {
-      content: '';
-      position: relative;
-      top: 405px;
-      left: 275px;
-      width: 50px;
-      height: 50px;
-      border-top: 100px solid #55a948;
-      border-left: 100px solid transparent;
-    }
   }
 
   &__coordinates {
     @include font-semi-bold;
-    margin-top: 3.8rem;
+    margin-top: 2rem;
     font-size: 2rem;
     text-align: right;
     line-height: 3rem;

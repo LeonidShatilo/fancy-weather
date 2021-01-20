@@ -56,6 +56,25 @@
     @include border-radius-right;
   }
 
+  &__button-current-location {
+    min-width: $width-button;
+    min-height: $height-button;
+    margin-left: 1rem;
+    border-radius: $border-radius;
+    background: $background-button-location;
+    cursor: pointer;
+    transition: 0.5s;
+
+    &:hover {
+      background: lighten($background-button-location, 20%);
+    }
+  }
+
+  &__current-location-icon {
+    position: relative;
+    top: 3%;
+  }
+
   &__button--active {
     background: $background-button-active;
     cursor: default;

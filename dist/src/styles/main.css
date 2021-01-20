@@ -416,6 +416,19 @@ body {
     border-radius: 0.5rem 0 0 0.5rem; }
   .header__button-ru-lang, .header__button-celsius-deg {
     border-radius: 0 0.5rem 0.5rem 0; }
+  .header__button-current-location {
+    min-width: 4.4rem;
+    min-height: 4.4rem;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+    background: rgba(174, 181, 185, 0.5);
+    cursor: pointer;
+    transition: 0.5s; }
+    .header__button-current-location:hover {
+      background: rgba(229, 231, 232, 0.5); }
+  .header__current-location-icon {
+    position: relative;
+    top: 3%; }
   .header__button--active {
     background: rgba(174, 181, 185, 0.5);
     cursor: default; }
@@ -570,22 +583,12 @@ body {
     height: 375px;
     min-width: 375px;
     min-height: 375px;
-    border-radius: 3rem;
-    background-color: #55a948; }
-    .map__img:before {
-      content: '';
-      position: relative;
-      top: 405px;
-      left: 275px;
-      width: 50px;
-      height: 50px;
-      border-top: 100px solid #55a948;
-      border-left: 100px solid transparent; }
+    border-radius: 3rem; }
   .map__coordinates {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     font-weight: 600;
     color: #ffffff;
-    margin-top: 3.8rem;
+    margin-top: 2rem;
     font-size: 2rem;
     text-align: right;
     line-height: 3rem;
