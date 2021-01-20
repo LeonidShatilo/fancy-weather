@@ -1,68 +1,133 @@
 import { allData } from './data.js';
 import { showError } from './error.js';
 import { LANGUAGE } from './language.js';
+import { updateMap } from './map.js';
+import { getWeather } from './weather.js';
+import { updateBackground } from './header.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
-const LATITUDE = document.querySelector('.latitude');
-const LONGITUDE = document.querySelector('.longitude');
+export const LATITUDE = document.querySelector('.latitude');
+export const LONGITUDE = document.querySelector('.longitude');
 export const TITLE_LATITUDE = document.querySelector('.title-latitude');
 export const TITLE_LONGITUDE = document.querySelector('.title-longitude');
 
-let isText;
+let options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
 
-function coordinateTransformation(loc, name) {
-  let index;
-  name === 'lat' ? (index = 0) : (index = 1);
-  let n = loc.split(',')[index].split('');
-  if (isText) {
-    return `${n[0] + n[1]}°${n[3] + n[4]}'${n[5] + n[6]}''`;
-  } else {
-    return `${n[0] + n[1]}.${n[3] + n[4]}${n[5] + n[6]}`;
-  }
+export function insertTextLocation(lat, lng) {
+  LATITUDE.innerHTML = convertCoordinates(lat);
+  LONGITUDE.innerHTML = convertCoordinates(lng);
 }
 
-export function getUserCoordinates() {
-  const TOKEN = 'a360badf914741';
-  const URL = `https://ipinfo.io/json?token=${TOKEN}`;
+function success(position) {
+  let coordinates = position.coords;
 
-  return fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      isText = false;
-      allData.userCoordinates.lat = coordinateTransformation(data.loc, 'lat');
-      allData.userCoordinates.lng = coordinateTransformation(data.loc, 'lng');
-      isText = true;
-      allData.userCoordinatesText.lat = coordinateTransformation(
-        data.loc,
-        'lat'
-      );
-      allData.userCoordinatesText.lng = coordinateTransformation(
-        data.loc,
-        'lng'
-      );
-      LATITUDE.innerHTML = allData.userCoordinatesText.lat;
-      LONGITUDE.innerHTML = allData.userCoordinatesText.lng;
-      return 'ok';
-    })
-    .catch((e) => {
-      showError(LANGUAGE.error.userCoordinates[allData.currentLanguage]);
-      return;
-    });
+  allData.coordinates.lat = coordinates.latitude;
+  allData.coordinates.lng = coordinates.longitude;
+  updateMap(allData.coordinates.lat, allData.coordinates.lng);
+  getWeather(allData.coordinates.lat, allData.coordinates.lng);
+  getPlace(allData.coordinates.lat, allData.coordinates.lng);
+  insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
+  updateBackground();
+
+  return 'ok';
+}
+
+function error() {
+  showError(LANGUAGE.error.currentCoordinates[allData.currentLanguage]);
+}
+
+export function getUserLocation() {
+  navigator.geolocation.getCurrentPosition(success, error, options);
+}
+
+export function convertCoordinates(loc) {
+  let n = String(loc).split('.');
+  let ddd = Number(loc);
+  let dd = `${Math.abs(n[0])}`;
+  let mm = Math.floor((ddd - dd) * 60);
+  let ss = Math.abs(Number((((ddd - dd) * 60 - mm) * 60).toFixed(1)));
+
+  if (Math.abs(mm) < 10) {
+    mm = `0${mm}`;
+  } else {
+    mm = Math.abs(mm);
+  }
+  if (ss < 10) {
+    ss = `0${ss}`;
+  } else {
+    if (ss % 10 === 0) {
+      ss = `${Math.abs(ss)}.0`;
+    } else {
+      ss = Math.abs(ss);
+    }
+  }
+
+  return `${dd}°${mm}'${ss}"`;
 }
 
 export function getPlace(lat, lng) {
   const KEY = `504abf1b2bce4c898926036946d632ee`;
   const URL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=${KEY}&language=${allData.currentLanguage}`;
 
-  fetch(URL)
+  return fetch(URL)
     .then((response) => response.json())
     .then((data) => {
-      allData.city = data.results[0].components.city;
+      if (data.results[0].components.city) {
+        allData.city = data.results[0].components.city;
+      } else {
+        allData.city = data.results[0].components.county;
+      }
       allData.country = data.results[0].components.country;
-      TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
+
+      if (
+        data.results[0].components.city ||
+        data.results[0].components.county
+      ) {
+        TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.innerHTML = `${allData.country}`;
+      }
+
+      return 'ok';
     })
     .catch((e) => {
-      alert('Ошибка! Место не найдено.');
+      return;
+    });
+}
+
+export function findCity(query) {
+  const KEY = `504abf1b2bce4c898926036946d632ee`;
+  const URL = `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${KEY}&language=${allData.currentLanguage}`;
+
+  return fetch(URL)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.results[0].components.city) {
+        allData.city = data.results[0].components.city;
+      } else {
+        allData.city = data.results[0].components.county;
+      }
+      allData.country = data.results[0].components.country;
+      allData.coordinates.lat = data.results[0].geometry.lat;
+      allData.coordinates.lng = data.results[0].geometry.lng;
+
+      if (
+        data.results[0].components.city ||
+        data.results[0].components.county
+      ) {
+        TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.innerHTML = `${allData.country}`;
+      }
+
+      return data.total_results;
+    })
+    .catch((e) => {
+      showError(LANGUAGE.error.query[allData.currentLanguage]);
       return;
     });
 }
