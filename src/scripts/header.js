@@ -11,6 +11,7 @@ import {
   FEELS_LIKE,
 } from './weather.js';
 import { getPlace, getUserLocation } from './geolocation.js';
+import { changeLanguageOfMap } from './map.js';
 
 const BACKGROUND = document.querySelector('.background');
 const REFRESH_BUTTON = document.querySelector('.header__button-refresh-bg');
@@ -143,6 +144,7 @@ ENG_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
   translate();
+  changeLanguageOfMap();
   getWeatherDescription(allData.coordinates.lat, allData.coordinates.lng);
   getPlace(allData.coordinates.lat, allData.coordinates.lng);
   changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
@@ -152,6 +154,7 @@ RU_LANG_BUTTON.addEventListener('click', () => {
   allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
   translate();
+  changeLanguageOfMap();
   getWeatherDescription(allData.coordinates.lat, allData.coordinates.lng);
   getPlace(allData.coordinates.lat, allData.coordinates.lng);
   changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);

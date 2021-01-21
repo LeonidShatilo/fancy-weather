@@ -102,6 +102,7 @@ function runApp() {
     return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.removePreloader)();
   }).then(function () {
     window.onload = function () {
+      (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.changeLanguageOfMap)();
       (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.getImageLink)();
     };
   });
@@ -361,6 +362,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
 /* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
 /* harmony import */ var _geolocation_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./geolocation.js */ "./scripts/geolocation.js");
+/* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map.js */ "./scripts/map.js");
+
 
 
 
@@ -481,6 +484,7 @@ ENG_LANG_BUTTON.addEventListener('click', function () {
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'en';
   setLanguageInLocalStorage();
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
+  (0,_map_js__WEBPACK_IMPORTED_MODULE_6__.changeLanguageOfMap)();
   (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeatherDescription)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   changeStateButtons(ENG_LANG_BUTTON, RU_LANG_BUTTON);
@@ -489,6 +493,7 @@ RU_LANG_BUTTON.addEventListener('click', function () {
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage = 'ru';
   setLanguageInLocalStorage();
   (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.translate)();
+  (0,_map_js__WEBPACK_IMPORTED_MODULE_6__.changeLanguageOfMap)();
   (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeatherDescription)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_5__.getPlace)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   changeStateButtons(RU_LANG_BUTTON, ENG_LANG_BUTTON);
@@ -608,12 +613,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "map": () => /* binding */ map,
 /* harmony export */   "marker": () => /* binding */ marker,
+/* harmony export */   "changeLanguageOfMap": () => /* binding */ changeLanguageOfMap,
 /* harmony export */   "setMap": () => /* binding */ setMap,
 /* harmony export */   "updateMap": () => /* binding */ updateMap
 /* harmony export */ });
+/* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
 /* eslint-disable */
+
 var map;
 var marker;
+function changeLanguageOfMap() {
+  map.getStyle().layers.map(function (each) {
+    if (each.hasOwnProperty('layout') && each.layout.hasOwnProperty('text-field')) {
+      if (!each.id.includes('road')) map.setLayoutProperty(each.id, 'text-field', ['get', "name_".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage)]);
+    }
+  });
+}
 function setMap(lat, lng) {
   mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhdGlsb2xlb25pZCIsImEiOiJja2szdHIyaTcweDE5Mm9xb3YyZnJoYnNkIn0.ex05JiXyZjfejBymZpv-5A';
   map = new mapboxgl.Map({

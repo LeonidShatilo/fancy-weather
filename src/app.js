@@ -25,7 +25,7 @@ import {
 import { getWeather } from './scripts/weather.js';
 import { allData } from './scripts/data.js';
 import { addPreloaderText, removePreloader } from './scripts/preloader.js';
-import { setMap } from './scripts/map.js';
+import { setMap, changeLanguageOfMap } from './scripts/map.js';
 
 function getAndSetLanguage() {
   return new Promise((resolve) => {
@@ -81,6 +81,7 @@ function runApp() {
     .then(() => removePreloader())
     .then(() => {
       window.onload = () => {
+        changeLanguageOfMap();
         getImageLink();
       };
     });

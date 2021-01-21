@@ -1,7 +1,24 @@
 /* eslint-disable */
 
+import { allData } from './data.js';
+
 export let map;
 export let marker;
+
+export function changeLanguageOfMap() {
+  map.getStyle().layers.map((each) => {
+    if (
+      each.hasOwnProperty('layout') &&
+      each.layout.hasOwnProperty('text-field')
+    ) {
+      if (!each.id.includes('road'))
+        map.setLayoutProperty(each.id, 'text-field', [
+          'get',
+          `name_${allData.currentLanguage}`,
+        ]);
+    }
+  });
+}
 
 export function setMap(lat, lng) {
   mapboxgl.accessToken =
