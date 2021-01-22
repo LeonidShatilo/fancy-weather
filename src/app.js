@@ -15,7 +15,7 @@ import './scripts/speechRecognition.js';
 
 import { showTime, showDate } from './scripts/time.js';
 import { getPlace, insertTextLocation } from './scripts/geolocation.js';
-import { translate } from './scripts/utils.js';
+import { translate, updateTime } from './scripts/utils.js';
 import {
   getImageLink,
   getLanguageInLocalStorage,
@@ -49,10 +49,11 @@ function getAndSetUnitOfTemperature() {
   });
 }
 
-export function setTime(offset) {
+export function setTime() {
   return new Promise((resolve) => {
-    showTime(offset);
+    showTime();
     showDate();
+    updateTime(allData.offset);
     setTimeout(() => {
       resolve();
     }, 0);

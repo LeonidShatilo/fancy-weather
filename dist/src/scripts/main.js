@@ -71,10 +71,11 @@ function getAndSetUnitOfTemperature() {
   });
 }
 
-function setTime(offset) {
+function setTime() {
   return new Promise(function (resolve) {
-    (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showTime)(offset);
+    (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showTime)();
     (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showDate)();
+    (0,_scripts_utils_js__WEBPACK_IMPORTED_MODULE_2__.updateTime)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.offset);
     setTimeout(function () {
       resolve();
     }, 0);
@@ -226,7 +227,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./map.js */ "./scripts/map.js");
 /* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
 /* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./scripts/utils.js");
+/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../app.js */ "./app.js");
 
 
 
@@ -245,8 +246,8 @@ var options = {
   maximumAge: 0
 };
 function insertTextLocation(lat, lng) {
-  LATITUDE.innerHTML = convertCoordinates(lat);
-  LONGITUDE.innerHTML = convertCoordinates(lng);
+  LATITUDE.innerHTML = convertCoordinates(lat, 'latitude');
+  LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
 }
 
 function success(position) {
@@ -256,8 +257,8 @@ function success(position) {
   (0,_map_js__WEBPACK_IMPORTED_MODULE_3__.updateMap)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
   (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
   getPlace(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+  (0,_app_js__WEBPACK_IMPORTED_MODULE_6__.setTime)();
   insertTextLocation(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
-  (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.updateTime)();
 
   try {
     (0,_header_js__WEBPACK_IMPORTED_MODULE_5__.updateBackground)();
@@ -276,30 +277,45 @@ function error() {
 function getUserLocation() {
   navigator.geolocation.getCurrentPosition(success, error, options);
 }
-function convertCoordinates(loc) {
-  var n = String(loc).split('.');
+function convertCoordinates(loc, coordinate) {
+  var x = String(loc).split('.');
   var ddd = Number(loc);
-  var dd = "".concat(Math.abs(n[0]));
-  var mm = Math.floor((ddd - dd) * 60);
-  var ss = Math.abs(Number((((ddd - dd) * 60 - mm) * 60).toFixed(1)));
+  var dd = "".concat(x[0]);
+  var mm = (ddd - dd) * 60;
+  var y = String(mm).split('.');
+  mm = Number(y[0]);
+  var ss = Number((((ddd - dd) * 60 - mm) * 60).toFixed(1));
+  dd = Math.abs(dd);
+  mm = Math.abs(mm);
+  ss = Math.abs(ss);
 
-  if (Math.abs(mm) < 10) {
+  if (mm < 10) {
     mm = "0".concat(mm);
-  } else {
-    mm = Math.abs(mm);
   }
 
   if (ss < 10) {
     ss = "0".concat(ss);
-  } else {
-    if (ss % 10 === 0) {
-      ss = "".concat(Math.abs(ss), ".0");
-    } else {
-      ss = Math.abs(ss);
-    }
   }
 
-  return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"");
+  if (Number.isInteger(ss)) {
+    ss = "".concat(ss, ".0");
+  }
+
+  if (loc > 0 && coordinate === 'latitude') {
+    return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"N");
+  }
+
+  if (loc < 0 && coordinate === 'latitude') {
+    return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"S");
+  }
+
+  if (loc > 0 && coordinate === 'longitude') {
+    return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"E");
+  }
+
+  if (loc < 0 && coordinate === 'longitude') {
+    return "".concat(dd, "\xB0").concat(mm, "'").concat(ss, "\"W");
+  }
 }
 function getPlace(lat, lng) {
   var KEY = "504abf1b2bce4c898926036946d632ee";
@@ -886,11 +902,10 @@ function showTime(offset) {
   if (offset === undefined) {
     _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.offset = 0 - timeOffset;
     incomeOffset = timeOffset;
-  } else {
-    incomeOffset = offset || 0;
-    today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
   }
 
+  incomeOffset = offset || 0;
+  today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
   var hour = today.getHours();
   var min = today.getMinutes();
   var sec = today.getSeconds();
@@ -942,8 +957,8 @@ function translate() {
   (0,_time_js__WEBPACK_IMPORTED_MODULE_3__.showDate)();
 }
 function insertCoordinatesData(lat, lng) {
-  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lat);
-  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lng);
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lat, 'latitude');
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lng, 'longitude');
   _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LATITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat;
   _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LONGITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng;
 }

@@ -64,10 +64,10 @@ export function showTime(offset) {
   if (offset === undefined) {
     allData.offset = 0 - timeOffset;
     incomeOffset = timeOffset;
-  } else {
-    incomeOffset = offset || 0;
-    today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
   }
+
+  incomeOffset = offset || 0;
+  today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
 
   let hour = today.getHours();
   let min = today.getMinutes();
