@@ -8,24 +8,36 @@ export const SEARCH_INPUT = document.querySelector('.search__input');
 export const SEARCH_BUTTON = document.querySelector('.search__button');
 
 export function runSearch() {
-  findCity(SEARCH_INPUT.value)
-    .then((result) => {
-      updateMap(allData.coordinates.lat, allData.coordinates.lng);
-      getWeather(allData.coordinates.lat, allData.coordinates.lng);
-      insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
-      if (result > 0) {
-        updateBackground();
-      }
-    })
-    .catch((e) => {
-      return;
-    });
+  if (SEARCH_INPUT.value === '') {
+    return;
+  } else {
+    findCity(SEARCH_INPUT.value)
+      .then((result) => {
+        updateMap(allData.coordinates.lat, allData.coordinates.lng);
+        getWeather(allData.coordinates.lat, allData.coordinates.lng);
+        insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
+        if (result > 0) {
+          updateBackground();
+        }
+      })
+      .catch((e) => {
+        return;
+      });
+  }
 }
 
+SEARCH_INPUT.addEventListener('focus', () => (SEARCH_INPUT.value = ''));
 SEARCH_INPUT.addEventListener('keypress', (event) => {
   if (event.key === 'Enter') {
     runSearch();
   }
 });
-SEARCH_INPUT.addEventListener('focus', () => (SEARCH_INPUT.value = ''));
+SEARCH_INPUT.addEventListener('input', () => {
+  if (SEARCH_INPUT.value === '') {
+    return;
+  } else {
+    SEARCH_INPUT.value =
+      SEARCH_INPUT.value[0].toUpperCase() + SEARCH_INPUT.value.slice(1);
+  }
+});
 SEARCH_BUTTON.addEventListener('click', runSearch);
