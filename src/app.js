@@ -49,9 +49,9 @@ function getAndSetUnitOfTemperature() {
   });
 }
 
-function setTime() {
+export function setTime(offset) {
   return new Promise((resolve) => {
-    showTime();
+    showTime(offset);
     showDate();
     setTimeout(() => {
       resolve();
@@ -84,7 +84,7 @@ function runApp() {
     .then(() => {
       window.onload = () => {
         changeLanguageOfMap();
-        // getImageLink();
+        getImageLink();
       };
     });
 

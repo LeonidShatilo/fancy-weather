@@ -9,6 +9,9 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setTime": () => /* binding */ setTime
+/* harmony export */ });
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./index.html");
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_html__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _main_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main.scss */ "./main.scss");
@@ -68,9 +71,9 @@ function getAndSetUnitOfTemperature() {
   });
 }
 
-function setTime() {
+function setTime(offset) {
   return new Promise(function (resolve) {
-    (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showTime)();
+    (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showTime)(offset);
     (0,_scripts_time_js__WEBPACK_IMPORTED_MODULE_6__.showDate)();
     setTimeout(function () {
       resolve();
@@ -105,7 +108,8 @@ function runApp() {
     return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.removePreloader)();
   }).then(function () {
     window.onload = function () {
-      (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.changeLanguageOfMap)(); // getImageLink();
+      (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.changeLanguageOfMap)();
+      (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.getImageLink)();
     };
   });
   (0,_scripts_speechRecognition_js__WEBPACK_IMPORTED_MODULE_13__.voiceSearch)();
@@ -153,7 +157,7 @@ var allData = {
   place: '',
   city: '',
   country: '',
-  offset: '',
+  offset: 0,
   date: {
     year: 0,
     month: 0,
@@ -222,6 +226,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _map_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./map.js */ "./scripts/map.js");
 /* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
 /* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils.js */ "./scripts/utils.js");
+
 
 
 
@@ -251,7 +257,15 @@ function success(position) {
   (0,_weather_js__WEBPACK_IMPORTED_MODULE_4__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
   getPlace(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
   insertTextLocation(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
-  (0,_header_js__WEBPACK_IMPORTED_MODULE_5__.updateBackground)();
+  (0,_utils_js__WEBPACK_IMPORTED_MODULE_6__.updateTime)();
+
+  try {
+    (0,_header_js__WEBPACK_IMPORTED_MODULE_5__.updateBackground)();
+  } catch (error) {
+    (0,_error_js__WEBPACK_IMPORTED_MODULE_1__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.background[_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage]);
+    return;
+  }
+
   return 'ok';
 }
 
@@ -300,6 +314,7 @@ function getPlace(lat, lng) {
     }
 
     _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country = data.results[0].components.country;
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.offset = data.results[0].annotations.timezone.offset_sec;
 
     if (data.results[0].components.city || data.results[0].components.county) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
@@ -327,6 +342,7 @@ function findCity(query) {
     _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country = data.results[0].components.country;
     _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat = data.results[0].geometry.lat;
     _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng = data.results[0].geometry.lng;
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.offset = data.results[0].annotations.timezone.offset_sec;
 
     if (data.results[0].components.city || data.results[0].components.county) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
@@ -709,6 +725,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _weather_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./weather.js */ "./scripts/weather.js");
 /* harmony import */ var _geolocation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./geolocation.js */ "./scripts/geolocation.js");
 /* harmony import */ var _header_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./header.js */ "./scripts/header.js");
+/* harmony import */ var _error_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./error.js */ "./scripts/error.js");
+/* harmony import */ var _language_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./language.js */ "./scripts/language.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils.js */ "./scripts/utils.js");
+
+
+
 
 
 
@@ -724,9 +746,15 @@ function runSearch() {
       (0,_map_js__WEBPACK_IMPORTED_MODULE_1__.updateMap)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
       (0,_weather_js__WEBPACK_IMPORTED_MODULE_2__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
       (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_3__.insertTextLocation)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.coordinates.lng);
+      (0,_utils_js__WEBPACK_IMPORTED_MODULE_7__.updateTime)(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.offset);
 
-      if (result > 0) {
-        (0,_header_js__WEBPACK_IMPORTED_MODULE_4__.updateBackground)();
+      try {
+        if (result > 0) {
+          (0,_header_js__WEBPACK_IMPORTED_MODULE_4__.updateBackground)();
+        }
+      } catch (error) {
+        (0,_error_js__WEBPACK_IMPORTED_MODULE_5__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_6__.LANGUAGE.error.background[_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage]);
+        return;
       }
     })["catch"](function (e) {
       return;
@@ -814,6 +842,8 @@ var TIME = document.querySelector('.title__time');
 var FIRST_DAY = document.querySelector('.weather__title-first-day');
 var SECOND_DAY = document.querySelector('.weather__title-second-day');
 var THIRD_DAY = document.querySelector('.weather__title-third-day');
+var timeOffset = 0;
+var incomeOffset;
 
 function addZero(n) {
   return (parseInt(n, 10) < 10 ? '0' : '') + n;
@@ -821,6 +851,7 @@ function addZero(n) {
 
 function showDate() {
   var today = new Date();
+  today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
   var dayWeek = today.getDay();
   var dayDate = today.getDate();
   var dayMonth = today.getMonth();
@@ -848,8 +879,18 @@ function showDate() {
   SECOND_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][secondDay]);
   THIRD_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][thirdDay]);
 }
-function showTime() {
+function showTime(offset) {
   var today = new Date();
+  timeOffset = today.getTimezoneOffset() * 60;
+
+  if (offset === undefined) {
+    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.offset = 0 - timeOffset;
+    incomeOffset = timeOffset;
+  } else {
+    incomeOffset = offset || 0;
+    today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
+  }
+
   var hour = today.getHours();
   var min = today.getMinutes();
   var sec = today.getSeconds();
@@ -859,8 +900,6 @@ function showTime() {
     showDate();
     (0,_weather_js__WEBPACK_IMPORTED_MODULE_2__.getWeather)(_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lat, _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.coordinates.lng);
   }
-
-  setTimeout(showTime, 1000);
 }
 
 /***/ }),
@@ -875,7 +914,8 @@ function showTime() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "translate": () => /* binding */ translate,
-/* harmony export */   "insertCoordinatesData": () => /* binding */ insertCoordinatesData
+/* harmony export */   "insertCoordinatesData": () => /* binding */ insertCoordinatesData,
+/* harmony export */   "updateTime": () => /* binding */ updateTime
 /* harmony export */ });
 /* harmony import */ var _search_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./search.js */ "./scripts/search.js");
 /* harmony import */ var _data_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.js */ "./scripts/data.js");
@@ -889,6 +929,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var time = setInterval(_time_js__WEBPACK_IMPORTED_MODULE_3__.showTime, 1000);
 function translate() {
   _search_js__WEBPACK_IMPORTED_MODULE_0__.SEARCH_INPUT.placeholder = _language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.searchInput[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage];
   _search_js__WEBPACK_IMPORTED_MODULE_0__.SEARCH_BUTTON.innerHTML = _language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.searchButton[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage];
@@ -905,6 +946,12 @@ function insertCoordinatesData(lat, lng) {
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng = (0,_geolocation_js__WEBPACK_IMPORTED_MODULE_4__.convertCoordinates)(lng);
   _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LATITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lat;
   _geolocation_js__WEBPACK_IMPORTED_MODULE_4__.LONGITUDE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.convertedCoordinates.lng;
+}
+function updateTime(offset) {
+  clearInterval(time);
+  (0,_time_js__WEBPACK_IMPORTED_MODULE_3__.showTime)(offset);
+  time = setInterval(_time_js__WEBPACK_IMPORTED_MODULE_3__.showTime, 1000, offset);
+  (0,_time_js__WEBPACK_IMPORTED_MODULE_3__.showDate)();
 }
 
 /***/ }),

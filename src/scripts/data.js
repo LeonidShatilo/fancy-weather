@@ -25,7 +25,7 @@ export let allData = {
   place: '',
   city: '',
   country: '',
-  offset: '',
+  offset: 0,
   date: {
     year: 0,
     month: 0,

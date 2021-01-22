@@ -4,6 +4,7 @@ import { LANGUAGE } from './language.js';
 import { updateMap } from './map.js';
 import { getWeather } from './weather.js';
 import { updateBackground } from './header.js';
+import { updateTime } from './utils.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
 export const LATITUDE = document.querySelector('.latitude');
@@ -31,7 +32,13 @@ function success(position) {
   getWeather(allData.coordinates.lat, allData.coordinates.lng);
   getPlace(allData.coordinates.lat, allData.coordinates.lng);
   insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
-  updateBackground();
+  updateTime();
+  try {
+    updateBackground();
+  } catch (error) {
+    showError(LANGUAGE.error.background[allData.currentLanguage]);
+    return;
+  }
 
   return 'ok';
 }
@@ -82,6 +89,7 @@ export function getPlace(lat, lng) {
         allData.city = data.results[0].components.county;
       }
       allData.country = data.results[0].components.country;
+      allData.offset = data.results[0].annotations.timezone.offset_sec;
 
       if (
         data.results[0].components.city ||
@@ -114,6 +122,7 @@ export function findCity(query) {
       allData.country = data.results[0].components.country;
       allData.coordinates.lat = data.results[0].geometry.lat;
       allData.coordinates.lng = data.results[0].geometry.lng;
+      allData.offset = data.results[0].annotations.timezone.offset_sec;
 
       if (
         data.results[0].components.city ||

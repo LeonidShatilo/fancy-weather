@@ -1,7 +1,7 @@
 import { SEARCH_INPUT, SEARCH_BUTTON } from './search.js';
 import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
-import { showDate } from './time.js';
+import { showDate, showTime } from './time.js';
 import {
   TITLE_LATITUDE,
   TITLE_LONGITUDE,
@@ -15,6 +15,8 @@ import {
   WIND_UNIT,
   TITLE_HUMIDITY,
 } from './weather.js';
+
+let time = setInterval(showTime, 1000);
 
 export function translate() {
   SEARCH_INPUT.placeholder = LANGUAGE.searchInput[allData.currentLanguage];
@@ -38,4 +40,11 @@ export function insertCoordinatesData(lat, lng) {
 
   LATITUDE.innerHTML = allData.convertedCoordinates.lat;
   LONGITUDE.innerHTML = allData.convertedCoordinates.lng;
+}
+
+export function updateTime(offset) {
+  clearInterval(time);
+  showTime(offset);
+  time = setInterval(showTime, 1000, offset);
+  showDate();
 }

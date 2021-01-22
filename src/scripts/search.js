@@ -3,6 +3,9 @@ import { updateMap } from './map.js';
 import { getWeather } from './weather.js';
 import { findCity, insertTextLocation } from './geolocation.js';
 import { updateBackground } from './header.js';
+import { showError } from './error.js';
+import { LANGUAGE } from './language.js';
+import { updateTime } from './utils.js';
 
 export const SEARCH_INPUT = document.querySelector('.search__input');
 export const SEARCH_BUTTON = document.querySelector('.search__button');
@@ -16,8 +19,14 @@ export function runSearch() {
         updateMap(allData.coordinates.lat, allData.coordinates.lng);
         getWeather(allData.coordinates.lat, allData.coordinates.lng);
         insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
-        if (result > 0) {
-          updateBackground();
+        updateTime(allData.offset);
+        try {
+          if (result > 0) {
+            updateBackground();
+          }
+        } catch (error) {
+          showError(LANGUAGE.error.background[allData.currentLanguage]);
+          return;
         }
       })
       .catch((e) => {
