@@ -456,7 +456,17 @@ body {
     background: none;
     transform: translate(245px, 13px); }
     .search__voice-icon {
-      cursor: pointer; }
+      width: 16px;
+      height: 18px;
+      background-image: url("../../assets/images/svg/voice-search.svg");
+      background-repeat: no-repeat;
+      cursor: pointer;
+      transition: background 0.5s ease; }
+      .search__voice-icon--active {
+        width: 16px;
+        height: 18px;
+        background-image: url("../../assets/images/svg/voice-search-active.svg");
+        background-repeat: no-repeat; }
   .search__button {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     font-weight: 700;

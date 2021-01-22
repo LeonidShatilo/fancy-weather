@@ -108,7 +108,19 @@
     transform: translate(245px, 13px);
 
     &-icon {
+      width: 16px;
+      height: 18px;
+      background-image: url('../../assets/images/svg/voice-search.svg');
+      background-repeat: no-repeat;
       cursor: pointer;
+      transition: background 0.5s ease;
+
+      &--active {
+        width: 16px;
+        height: 18px;
+        background-image: url('../../assets/images/svg/voice-search-active.svg');
+        background-repeat: no-repeat;
+      }
     }
   }
 

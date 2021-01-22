@@ -11,6 +11,7 @@ import './scripts/geolocation.js';
 import './scripts/weather.js';
 import './scripts/preloader.js';
 import './scripts/map.js';
+import './scripts/speechRecognition.js';
 
 import { showTime, showDate } from './scripts/time.js';
 import { getPlace, insertTextLocation } from './scripts/geolocation.js';
@@ -26,6 +27,7 @@ import { getWeather } from './scripts/weather.js';
 import { allData } from './scripts/data.js';
 import { addPreloaderText, removePreloader } from './scripts/preloader.js';
 import { setMap, changeLanguageOfMap } from './scripts/map.js';
+import { voiceSearch } from './scripts/speechRecognition.js';
 
 function getAndSetLanguage() {
   return new Promise((resolve) => {
@@ -82,9 +84,11 @@ function runApp() {
     .then(() => {
       window.onload = () => {
         changeLanguageOfMap();
-        getImageLink();
+        // getImageLink();
       };
     });
+
+  voiceSearch();
 }
 
 runApp();
