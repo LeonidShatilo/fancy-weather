@@ -4,7 +4,7 @@ import { LANGUAGE } from './language.js';
 import { updateMap } from './map.js';
 import { getWeather } from './weather.js';
 import { updateBackground } from './header.js';
-import { updateTime } from './utils.js';
+import { setTime } from '../app.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
 export const LATITUDE = document.querySelector('.latitude');
@@ -19,8 +19,8 @@ let options = {
 };
 
 export function insertTextLocation(lat, lng) {
-  LATITUDE.innerHTML = convertCoordinates(lat);
-  LONGITUDE.innerHTML = convertCoordinates(lng);
+  LATITUDE.innerHTML = convertCoordinates(lat, 'latitude');
+  LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
 }
 
 function success(position) {
@@ -31,8 +31,9 @@ function success(position) {
   updateMap(allData.coordinates.lat, allData.coordinates.lng);
   getWeather(allData.coordinates.lat, allData.coordinates.lng);
   getPlace(allData.coordinates.lat, allData.coordinates.lng);
+  setTime();
   insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
-  updateTime();
+
   try {
     updateBackground();
   } catch (error) {
@@ -51,29 +52,41 @@ export function getUserLocation() {
   navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
-export function convertCoordinates(loc) {
-  let n = String(loc).split('.');
+export function convertCoordinates(loc, coordinate) {
+  let x = String(loc).split('.');
   let ddd = Number(loc);
-  let dd = `${Math.abs(n[0])}`;
-  let mm = Math.floor((ddd - dd) * 60);
-  let ss = Math.abs(Number((((ddd - dd) * 60 - mm) * 60).toFixed(1)));
+  let dd = `${x[0]}`;
+  let mm = (ddd - dd) * 60;
+  let y = String(mm).split('.');
+  mm = Number(y[0]);
+  let ss = Number((((ddd - dd) * 60 - mm) * 60).toFixed(1));
 
-  if (Math.abs(mm) < 10) {
+  dd = Math.abs(dd);
+  mm = Math.abs(mm);
+  ss = Math.abs(ss);
+
+  if (mm < 10) {
     mm = `0${mm}`;
-  } else {
-    mm = Math.abs(mm);
   }
   if (ss < 10) {
     ss = `0${ss}`;
-  } else {
-    if (ss % 10 === 0) {
-      ss = `${Math.abs(ss)}.0`;
-    } else {
-      ss = Math.abs(ss);
-    }
+  }
+  if (Number.isInteger(ss)) {
+    ss = `${ss}.0`;
   }
 
-  return `${dd}°${mm}'${ss}"`;
+  if (loc > 0 && coordinate === 'latitude') {
+    return `${dd}°${mm}'${ss}"N`;
+  }
+  if (loc < 0 && coordinate === 'latitude') {
+    return `${dd}°${mm}'${ss}"S`;
+  }
+  if (loc > 0 && coordinate === 'longitude') {
+    return `${dd}°${mm}'${ss}"E`;
+  }
+  if (loc < 0 && coordinate === 'longitude') {
+    return `${dd}°${mm}'${ss}"W`;
+  }
 }
 
 export function getPlace(lat, lng) {

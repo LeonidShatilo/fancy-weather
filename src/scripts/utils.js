@@ -35,8 +35,8 @@ export function translate() {
 }
 
 export function insertCoordinatesData(lat, lng) {
-  allData.convertedCoordinates.lat = convertCoordinates(lat);
-  allData.convertedCoordinates.lng = convertCoordinates(lng);
+  allData.convertedCoordinates.lat = convertCoordinates(lat, 'latitude');
+  allData.convertedCoordinates.lng = convertCoordinates(lng, 'longitude');
 
   LATITUDE.innerHTML = allData.convertedCoordinates.lat;
   LONGITUDE.innerHTML = allData.convertedCoordinates.lng;
