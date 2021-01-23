@@ -50,26 +50,45 @@ function getDataWeatherToday(data) {
   allData.weatherIcon.today = data.list[0].weather[0].icon;
 }
 
-function getDataWeatherForNextDays(data) {
-  let nextDay = 1;
-  let indexDays = 0;
+function averageTemperature(arrayTemp) {
+  return Math.round(arrayTemp.reduce((a, b) => a + b) / arrayTemp.length);
+}
 
-  for (let i = 0; i < data.list.length; i++) {
-    if (
-      data.list[i].dt_txt ===
-        `${allData.date.year}-${allData.date.month}-${
-          allData.date.day + nextDay
-        } 12:00:00` &&
-      nextDay <= 3
-    ) {
-      allData.temperatureNextThreeDays[indexDays] = Math.round(
-        data.list[i].main.temp
-      );
-      allData.weatherIcon.nextThreeDays[indexDays] =
-        data.list[i].weather[0].icon;
-      nextDay++;
-      indexDays++;
+function clearArray(arrayTemp) {
+  while (arrayTemp.length) {
+    arrayTemp.pop();
+  }
+  return arrayTemp;
+}
+
+function getDataWeatherForNextDays(data) {
+  let temperatureArray = [];
+  let indexTempArray = 0;
+  let nextDay = 1;
+
+  for (let indexDays = 0; indexDays <= 2; indexDays++) {
+    for (let i = 0; i < data.list.length; i++) {
+      if (
+        data.list[i].dt_txt.includes(
+          `${allData.date.year}-${allData.date.month}-${
+            allData.date.day + nextDay
+          }`
+        )
+      ) {
+        temperatureArray[indexTempArray] = data.list[i].main.temp;
+        indexTempArray++;
+        if (data.list[i].dt_txt.includes('12:00:00')) {
+          allData.weatherIcon.nextThreeDays[indexDays] =
+            data.list[i].weather[0].icon;
+        }
+      }
     }
+    allData.temperatureNextThreeDays[indexDays] = averageTemperature(
+      temperatureArray
+    );
+    temperatureArray = clearArray(temperatureArray);
+    indexTempArray = 0;
+    nextDay++;
   }
 }
 

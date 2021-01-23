@@ -144,11 +144,11 @@ var allData = {
   },
   temperatureToday: 0,
   temperatureTodayInFahrenheit: 0,
-  temperatureNextThreeDays: [0, 0, 0],
-  temperatureNextThreeDaysInFahrenheit: [0, 0, 0],
+  temperatureNextThreeDays: [],
+  temperatureNextThreeDaysInFahrenheit: [],
   weatherIcon: {
     today: '',
-    nextThreeDays: ['', '', '']
+    nextThreeDays: []
   },
   weather: '',
   feelsLike: '',
@@ -1032,17 +1032,41 @@ function getDataWeatherToday(data) {
   _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weatherIcon.today = data.list[0].weather[0].icon;
 }
 
-function getDataWeatherForNextDays(data) {
-  var nextDay = 1;
-  var indexDays = 0;
+function averageTemperature(arrayTemp) {
+  return Math.round(arrayTemp.reduce(function (a, b) {
+    return a + b;
+  }) / arrayTemp.length);
+}
 
-  for (var i = 0; i < data.list.length; i++) {
-    if (data.list[i].dt_txt === "".concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.year, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.month, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.day + nextDay, " 12:00:00") && nextDay <= 3) {
-      _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[indexDays] = Math.round(data.list[i].main.temp);
-      _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weatherIcon.nextThreeDays[indexDays] = data.list[i].weather[0].icon;
-      nextDay++;
-      indexDays++;
+function clearArray(arrayTemp) {
+  while (arrayTemp.length) {
+    arrayTemp.pop();
+  }
+
+  return arrayTemp;
+}
+
+function getDataWeatherForNextDays(data) {
+  var temperatureArray = [];
+  var indexTempArray = 0;
+  var nextDay = 1;
+
+  for (var indexDays = 0; indexDays <= 2; indexDays++) {
+    for (var i = 0; i < data.list.length; i++) {
+      if (data.list[i].dt_txt.includes("".concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.year, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.month, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.day + nextDay))) {
+        temperatureArray[indexTempArray] = data.list[i].main.temp;
+        indexTempArray++;
+
+        if (data.list[i].dt_txt.includes('12:00:00')) {
+          _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weatherIcon.nextThreeDays[indexDays] = data.list[i].weather[0].icon;
+        }
+      }
     }
+
+    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[indexDays] = averageTemperature(temperatureArray);
+    temperatureArray = clearArray(temperatureArray);
+    indexTempArray = 0;
+    nextDay++;
   }
 }
 
