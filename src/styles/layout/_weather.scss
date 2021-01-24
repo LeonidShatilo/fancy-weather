@@ -3,6 +3,12 @@
   justify-content: space-between;
   height: max-content;
 
+  @media screen and (max-width: $width-laptop) {
+    justify-self: stretch;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .weather {
     width: max-content;
     height: max-content;
@@ -22,6 +28,40 @@
         height: fit-content;
         line-height: 3.7rem;
         text-transform: uppercase;
+
+        @media screen and (max-width: $width-desktop-1) {
+          top: subtractPercent(-50px, 0.2);
+          margin-left: subtractPercent(3.2rem, 0.2);
+          font-size: subtractPercent(2.2rem, 0.2);
+          line-height: subtractPercent(3.7rem, 0.2);
+        }
+
+        @media screen and (max-width: $width-desktop-2) {
+          top: subtractPercent(-50px, 0.3);
+          margin-left: subtractPercent(3.2rem, 0.3);
+          font-size: subtractPercent(2.2rem, 0.3);
+          line-height: subtractPercent(3.7rem, 0.3);
+        }
+
+        @media screen and (max-width: $width-desktop-3) {
+          top: subtractPercent(-50px, 0.4);
+          margin-left: subtractPercent(3.2rem, 0.4);
+          font-size: subtractPercent(2.2rem, 0.4);
+          line-height: subtractPercent(3.7rem, 0.4);
+        }
+
+        @media screen and (max-width: $width-tablet-3) {
+          top: subtractPercent(-50px, 0.5);
+          margin-left: subtractPercent(3.2rem, 0.5);
+          font-size: subtractPercent(2.2rem, 0.5);
+          line-height: subtractPercent(3.7rem, 0.5);
+        }
+      }
+
+      @media screen and (max-width: $width-laptop) {
+        width: auto;
+        justify-content: center;
+        margin-right: 0;
       }
     }
 
@@ -29,6 +69,28 @@
       @include font-bold;
       font-size: 30.6rem;
       text-transform: uppercase;
+
+      @media screen and (max-width: $width-desktop-1) {
+        font-size: subtractPercent(30.6rem, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        font-size: subtractPercent(30.6rem, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        font-size: subtractPercent(30.6rem, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-2) {
+        font-size: subtractPercent(30.6rem, 0.65);
+        padding-top: 7.1rem;
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        font-size: subtractPercent(30.6rem, 0.85);
+        padding-top: 8.9rem;
+      }
     }
 
     &__deg-today {
@@ -39,6 +101,37 @@
       height: max-content;
       vertical-align: top;
       font-size: 20rem;
+
+      @media screen and (max-width: $width-desktop-1) {
+        top: subtractPercent(25px, 0.2);
+        font-size: subtractPercent(20rem, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        top: subtractPercent(25px, 0.3);
+        font-size: subtractPercent(20rem, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        top: subtractPercent(25px, 0.4);
+        font-size: subtractPercent(20rem, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-1) {
+        top: 1.5rem;
+      }
+
+      @media screen and (max-width: $width-tablet-2) {
+        top: subtractPercent(25px, 0.65);
+        font-size: subtractPercent(20rem, 0.65);
+        padding-top: 7.1rem;
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        top: subtractPercent(25px, 0.85);
+        font-size: subtractPercent(20rem, 0.85);
+        padding-top: 8.9rem;
+      }
     }
 
     &__wrapper {
@@ -54,7 +147,34 @@
       height: 200px;
       background-size: cover;
       background-position: center;
-      // background-image: url('../../assets/images/svg/partly-cloudy-day-rain.svg');
+
+      @media screen and (max-width: $width-desktop-1) {
+        left: subtractPercent(10px, 0.2);
+        top: subtractPercent(-50px, 0.2);
+        width: subtractPercent(200px, 0.2);
+        height: subtractPercent(200px, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        left: subtractPercent(10px, 0.3);
+        top: subtractPercent(-50px, 0.3);
+        width: subtractPercent(200px, 0.3);
+        height: subtractPercent(200px, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        left: subtractPercent(10px, 0.4);
+        top: subtractPercent(-50px, 0.4);
+        width: subtractPercent(200px, 0.4);
+        height: subtractPercent(200px, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        left: subtractPercent(10px, 0.55);
+        top: subtractPercent(-50px, 0.55);
+        width: subtractPercent(200px, 0.55);
+        height: subtractPercent(200px, 0.55);
+      }
     }
 
     &__next-three-days {
@@ -65,6 +185,28 @@
       font-size: 2.2rem;
       text-transform: uppercase;
       user-select: none;
+
+      @media screen and (max-width: $width-desktop-1) {
+        font-size: subtractPercent(2.2rem, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        font-size: subtractPercent(2.2rem, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        font-size: subtractPercent(2.2rem, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-1) {
+        width: auto;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        font-size: subtractPercent(2.2rem, 0.5);
+      }
     }
 
     &__day {
@@ -83,6 +225,26 @@
       display: flex;
       font-size: 8rem;
 
+      @media screen and (max-width: $width-desktop-1) {
+        font-size: subtractPercent(8rem, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        font-size: subtractPercent(8rem, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        font-size: subtractPercent(8rem, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-2) {
+        font-size: subtractPercent(8rem, 0.5);
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        font-size: subtractPercent(8rem, 0.75);
+      }
+
       & span {
         width: max-content;
         height: max-content;
@@ -94,18 +256,30 @@
       top: -15px;
       width: 100px;
       height: 100px;
+
+      @media screen and (max-width: $width-desktop-1) {
+        top: subtractPercent(-15px, 0.2);
+        width: subtractPercent(100px, 0.2);
+        height: subtractPercent(100px, 0.2);
+      }
+
+      @media screen and (max-width: $width-desktop-2) {
+        top: subtractPercent(-15px, 0.3);
+        width: subtractPercent(100px, 0.3);
+        height: subtractPercent(100px, 0.3);
+      }
+
+      @media screen and (max-width: $width-desktop-3) {
+        top: subtractPercent(-15px, 0.4);
+        width: subtractPercent(100px, 0.4);
+        height: subtractPercent(100px, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-3) {
+        top: subtractPercent(-15px, 0.65);
+        width: subtractPercent(100px, 0.65);
+        height: subtractPercent(100px, 0.65);
+      }
     }
-
-    // &__icon-first-day {
-    //   background-image: url('../../assets/images/svg/partly-cloudy-day-snow.svg');
-    // }
-
-    // &__icon-second-day {
-    //   background-image: url('../../assets/images/svg/partly-cloudy-day-hail.svg');
-    // }
-
-    // &__icon-third-day {
-    //   background-image: url('../../assets/images/svg/partly-cloudy-night-drizzle.svg');
-    // }
   }
 }

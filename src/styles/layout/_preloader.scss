@@ -6,6 +6,7 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
+  max-height: 100vh;
   background-color: $background-preloader;
   user-select: none;
   opacity: 1;
@@ -17,6 +18,11 @@
     background-size: 100%;
     background-image: url('../../assets/images/svg/preloader.svg');
     background-repeat: no-repeat;
+
+    @media screen and (max-width: $width-mobile-1) {
+      width: 70px;
+      height: 70px;
+    }
   }
 
   &__text {
@@ -24,6 +30,11 @@
     margin-top: 3rem;
     font-size: 3rem;
     text-transform: uppercase;
+
+    @media screen and (max-width: $width-mobile-1) {
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
   }
 
   &--hide {

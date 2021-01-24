@@ -1,13 +1,54 @@
 .title {
   display: inline-block;
   padding-top: $padding-top-title;
+  padding-bottom: 2rem;
   user-select: none;
+
+  @media screen and (max-width: $width-laptop) {
+    padding-top: 4rem;
+  }
+
+  @media screen and (max-width: $width-tablet-1) {
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  @media screen and (max-width: $width-mobile-1) {
+    padding-top: 1rem;
+  }
 
   &__location {
     @include font-bold;
     font-size: $font-size-location;
     line-height: 5.4rem;
     text-transform: uppercase;
+
+    @media screen and (max-width: $width-desktop-1) {
+      font-size: subtractPercent($font-size-location, 0.1);
+      line-height: subtractPercent(5.4rem, 0.1);
+    }
+
+    @media screen and (max-width: $width-desktop-2) {
+      font-size: subtractPercent($font-size-location, 0.2);
+      line-height: subtractPercent(5.4rem, 0.2);
+    }
+
+    @media screen and (max-width: $width-tablet-1) {
+      font-size: subtractPercent($font-size-location, 0.3);
+      line-height: subtractPercent(5.4rem, 0.3);
+    }
+
+    @media screen and (max-width: $width-tablet-3) {
+      font-size: subtractPercent($font-size-location, 0.4);
+      line-height: subtractPercent(5.4rem, 0.4);
+    }
+
+    @media screen and (max-width: $width-mobile-1) {
+      font-size: subtractPercent($font-size-location, 0.5);
+      line-height: subtractPercent(5.4rem, 0.5);
+    }
   }
 
   &__date,
@@ -15,9 +56,27 @@
     @include font-semi-bold;
     font-size: $font-size-date-time;
     line-height: 2.9rem;
+
+    @media screen and (max-width: $width-tablet-1) {
+      font-size: subtractPercent($font-size-date-time, 0.2);
+      line-height: subtractPercent(2.9rem, 0.2);
+    }
+
+    @media screen and (max-width: $width-mobile-1) {
+      font-size: subtractPercent($font-size-date-time, 0.3);
+      line-height: subtractPercent(2.9rem, 0.3);
+    }
   }
 
   &__time {
     padding-left: 1.8rem;
+
+    @media screen and (max-width: $width-tablet-1) {
+      padding-left: subtractPercent(1.8rem, 0.2);
+    }
   }
+}
+
+.date-time-wrapper {
+  padding-top: 0.5rem;
 }

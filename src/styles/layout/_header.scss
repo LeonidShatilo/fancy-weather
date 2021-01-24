@@ -4,6 +4,24 @@
   padding-top: $padding-top-header;
   user-select: none;
 
+  @media screen and (max-width: $width-tablet-1) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media screen and (max-width: $width-tablet-2) {
+    padding-top: 3rem;
+  }
+
+  @media screen and (max-width: $width-tablet-3) {
+    padding-top: 2rem;
+  }
+
+  @media screen and (max-width: $width-mobile-1) {
+    padding-top: 1rem;
+  }
+
   &__buttons-panel {
     display: flex;
   }
@@ -33,6 +51,10 @@
   &__language,
   &__temperature {
     @include buttons-wrapper;
+
+    @media screen and (max-width: $width-tablet-1) {
+      margin: 0 0 0 1.2rem;
+    }
   }
 
   &__button-eng-lang,
@@ -68,6 +90,10 @@
     &:hover {
       background: lighten($background-button-location, 20%);
     }
+
+    @media screen and (max-width: $width-tablet-1) {
+      margin-left: 1.2rem;
+    }
   }
 
   &__current-location-icon {
@@ -85,6 +111,18 @@
   display: flex;
   margin-left: 1rem;
 
+  @media screen and (max-width: $width-tablet-1) {
+    margin-left: 0;
+    margin-top: 2rem;
+
+    font-size: 1.2rem;
+    width: 300px;
+  }
+
+  @media screen and (max-width: $width-mobile-1) {
+    margin-top: 1rem;
+  }
+
   &__input {
     @include font-regular;
     @include border-radius-left;
@@ -99,6 +137,13 @@
 
     &::placeholder {
       color: $color-text;
+    }
+
+    @media screen and (max-width: $width-tablet-1) {
+      width: 230px;
+      min-width: 230px;
+      padding-left: 10px;
+      font-size: 1.1rem;
     }
   }
 
@@ -122,6 +167,10 @@
         background-repeat: no-repeat;
       }
     }
+
+    @media screen and (max-width: $width-tablet-1) {
+      transform: translate(205px, 13px);
+    }
   }
 
   &__button {
@@ -138,6 +187,12 @@
 
     &:hover {
       background: lighten($background-button-search, 15%);
+    }
+
+    @media screen and (max-width: $width-tablet-1) {
+      font-size: 1.1rem;
+      width: 7rem;
+      min-width: 7rem;
     }
   }
 }
