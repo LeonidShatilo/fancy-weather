@@ -15,7 +15,7 @@ import './scripts/speechRecognition.js';
 
 import { showTime, showDate } from './scripts/time.js';
 import {
-  getUserRegion,
+  getUserCity,
   getPlace,
   insertTextLocation,
 } from './scripts/geolocation.js';
@@ -76,7 +76,7 @@ function addText() {
 function runApp() {
   getAndSetLanguage();
   addPreloaderText()
-    .then(() => getUserRegion())
+    .then(() => getUserCity())
     .then(() => setMap(allData.coordinates.lat, allData.coordinates.lng))
     .then(() => {
       getWeather(allData.coordinates.lat, allData.coordinates.lng);

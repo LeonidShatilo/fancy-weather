@@ -94,7 +94,7 @@ function addText() {
 function runApp() {
   getAndSetLanguage();
   (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.addPreloaderText)().then(function () {
-    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserRegion)();
+    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserCity)();
   }).then(function () {
     return (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.setMap)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
   }).then(function () {
@@ -222,7 +222,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TITLE_LATITUDE": () => /* binding */ TITLE_LATITUDE,
 /* harmony export */   "TITLE_LONGITUDE": () => /* binding */ TITLE_LONGITUDE,
 /* harmony export */   "insertTextLocation": () => /* binding */ insertTextLocation,
-/* harmony export */   "getUserRegion": () => /* binding */ getUserRegion,
+/* harmony export */   "getUserCity": () => /* binding */ getUserCity,
 /* harmony export */   "getUserLocation": () => /* binding */ getUserLocation,
 /* harmony export */   "convertCoordinates": () => /* binding */ convertCoordinates,
 /* harmony export */   "getPlace": () => /* binding */ getPlace,
@@ -256,19 +256,15 @@ function insertTextLocation(lat, lng) {
   LATITUDE.innerHTML = convertCoordinates(lat, 'latitude');
   LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
 }
-function getUserRegion() {
-  var KEY = "b2fe6a869486a7e79afc292480571e9e";
-  var URL = "http://api.ipstack.com/check?access_key=".concat(KEY);
+function getUserCity() {
+  var TOKEN = 'a360badf914741';
+  var URL = "https://ipinfo.io/json?token=".concat(TOKEN);
   return fetch(URL).then(function (response) {
     return response.json();
   }).then(function (data) {
-    if (!data.region_name.includes('\\')) {
-      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.region = data.region_name;
-    } else {
-      _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.city;
-    }
+    _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city = data.city;
   }).then(function () {
-    return findCity(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.region || _data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city);
+    return findCity(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city);
   })["catch"](function (e) {
     return;
   });
@@ -359,8 +355,10 @@ function getPlace(lat, lng) {
 
     if (data.results[0].components.city || data.results[0].components.county) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
-    } else {
+    } else if (data.results[0].components.state) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.state, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    } else {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
     }
 
     return 'ok';
@@ -388,8 +386,10 @@ function findCity(query) {
 
     if (data.results[0].components.city || data.results[0].components.county) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.city, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
-    } else {
+    } else if (data.results[0].components.state) {
       TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.state, ", ").concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
+    } else {
+      TITLE_LOCATION.innerHTML = "".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.country);
     }
 
     return data.total_results;

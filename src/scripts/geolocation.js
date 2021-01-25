@@ -23,20 +23,16 @@ export function insertTextLocation(lat, lng) {
   LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
 }
 
-export function getUserRegion() {
-  const KEY = `b2fe6a869486a7e79afc292480571e9e`;
-  const URL = `http://api.ipstack.com/check?access_key=${KEY}`;
+export function getUserCity() {
+  const TOKEN = 'a360badf914741';
+  const URL = `https://ipinfo.io/json?token=${TOKEN}`;
 
   return fetch(URL)
     .then((response) => response.json())
     .then((data) => {
-      if (!data.region_name.includes('\\')) {
-        allData.region = data.region_name;
-      } else {
-        allData.city = data.city;
-      }
+      allData.city = data.city;
     })
-    .then(() => findCity(allData.region || allData.city))
+    .then(() => findCity(allData.city))
     .catch((e) => {
       return;
     });
@@ -129,8 +125,10 @@ export function getPlace(lat, lng) {
         data.results[0].components.county
       ) {
         TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
-      } else {
+      } else if (data.results[0].components.state) {
         TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.innerHTML = `${allData.country}`;
       }
 
       return 'ok';
@@ -163,8 +161,10 @@ export function findCity(query) {
         data.results[0].components.county
       ) {
         TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
-      } else {
+      } else if (data.results[0].components.state) {
         TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.innerHTML = `${allData.country}`;
       }
 
       return data.total_results;
