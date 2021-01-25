@@ -23,6 +23,25 @@ export function insertTextLocation(lat, lng) {
   LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
 }
 
+export function getUserRegion() {
+  const KEY = `b2fe6a869486a7e79afc292480571e9e`;
+  const URL = `http://api.ipstack.com/check?access_key=${KEY}`;
+
+  return fetch(URL)
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.region_name.includes('\\')) {
+        allData.region = data.region_name;
+      } else {
+        allData.city = data.city;
+      }
+    })
+    .then(() => findCity(allData.region || allData.city))
+    .catch((e) => {
+      return;
+    });
+}
+
 function success(position) {
   let coordinates = position.coords;
 
@@ -102,6 +121,7 @@ export function getPlace(lat, lng) {
         allData.city = data.results[0].components.county;
       }
       allData.country = data.results[0].components.country;
+      allData.state = data.results[0].components.state;
       allData.offset = data.results[0].annotations.timezone.offset_sec;
 
       if (
@@ -110,7 +130,7 @@ export function getPlace(lat, lng) {
       ) {
         TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
       } else {
-        TITLE_LOCATION.innerHTML = `${allData.country}`;
+        TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
       }
 
       return 'ok';
@@ -133,6 +153,7 @@ export function findCity(query) {
         allData.city = data.results[0].components.county;
       }
       allData.country = data.results[0].components.country;
+      allData.state = data.results[0].components.state;
       allData.coordinates.lat = data.results[0].geometry.lat;
       allData.coordinates.lng = data.results[0].geometry.lng;
       allData.offset = data.results[0].annotations.timezone.offset_sec;
@@ -143,7 +164,7 @@ export function findCity(query) {
       ) {
         TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
       } else {
-        TITLE_LOCATION.innerHTML = `${allData.country}`;
+        TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
       }
 
       return data.total_results;

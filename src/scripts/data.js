@@ -2,8 +2,8 @@ export let allData = {
   currentLanguage: 'en',
   currentUnitOfTemperature: 'celsius',
   coordinates: {
-    lat: 53.902334,
-    lng: 27.561879,
+    lat: 0,
+    lng: 0,
   },
   convertedCoordinates: {
     lat: '',
@@ -25,6 +25,8 @@ export let allData = {
   place: '',
   city: '',
   country: '',
+  state: '',
+  region: '',
   offset: 0,
   date: {
     year: 0,

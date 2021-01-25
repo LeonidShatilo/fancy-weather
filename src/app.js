@@ -14,7 +14,11 @@ import './scripts/map.js';
 import './scripts/speechRecognition.js';
 
 import { showTime, showDate } from './scripts/time.js';
-import { getPlace, insertTextLocation } from './scripts/geolocation.js';
+import {
+  getUserRegion,
+  getPlace,
+  insertTextLocation,
+} from './scripts/geolocation.js';
 import { translate, updateTime } from './scripts/utils.js';
 import {
   getImageLink,
@@ -70,10 +74,11 @@ function addText() {
 }
 
 function runApp() {
-  getAndSetLanguage()
-    .then(() => addPreloaderText())
+  getAndSetLanguage();
+  addPreloaderText()
+    .then(() => getUserRegion())
+    .then(() => setMap(allData.coordinates.lat, allData.coordinates.lng))
     .then(() => {
-      setMap(allData.coordinates.lat, allData.coordinates.lng);
       getWeather(allData.coordinates.lat, allData.coordinates.lng);
       getPlace(allData.coordinates.lat, allData.coordinates.lng);
       insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
@@ -82,13 +87,10 @@ function runApp() {
     .then(() => setTime())
     .then(() => addText())
     .then(() => removePreloader())
-    .then(() => {
-      window.onload = () => {
-        changeLanguageOfMap();
-        getImageLink();
-      };
-    });
-
+    .then(() => changeLanguageOfMap());
+  window.onload = () => {
+    getImageLink();
+  };
   voiceSearch();
 }
 

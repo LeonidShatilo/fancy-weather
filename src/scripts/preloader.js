@@ -14,10 +14,15 @@ export function addPreloaderText() {
 }
 
 export function removePreloader() {
-  setTimeout(() => {
-    PRELOADER.classList.add('preloader--hide');
-  }, 800);
-  setTimeout(() => {
-    document.body.removeChild(document.body.children[1]);
-  }, 900);
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      PRELOADER.classList.add('preloader--hide');
+    }, 1000);
+    setTimeout(() => {
+      document.body.removeChild(document.body.children[1]);
+    }, 1100);
+    setTimeout(() => {
+      resolve();
+    }, 1200);
+  });
 }

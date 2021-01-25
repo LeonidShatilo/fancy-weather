@@ -974,13 +974,19 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
   background-color: #59a9c2;
   user-select: none;
   opacity: 1;
   z-index: 3; }
+  .preloader__box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 40vh; }
   .preloader__icon {
     width: 100px;
     height: 100px;
