@@ -64,17 +64,16 @@ function clearArray(arrayTemp) {
 function getDataWeatherForNextDays(data) {
   let temperatureArray = [];
   let indexTempArray = 0;
+  let year = allData.date.year;
+  let month = allData.date.month;
+  let today = Number(allData.date.day);
   let nextDay = 1;
 
   for (let indexDays = 0; indexDays <= 2; indexDays++) {
     for (let i = 0; i < data.list.length; i++) {
-      if (
-        data.list[i].dt_txt.includes(
-          `${allData.date.year}-${allData.date.month}-${
-            allData.date.day + nextDay
-          }`
-        )
-      ) {
+      let d = today + nextDay;
+      let day = (d < 10 ? '0' : '') + d;
+      if (data.list[i].dt_txt.includes(`${year}-${month}-${day}`)) {
         temperatureArray[indexTempArray] = data.list[i].main.temp;
         indexTempArray++;
         if (data.list[i].dt_txt.includes('12:00:00')) {

@@ -915,10 +915,6 @@ function showDate() {
     _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.month = "0".concat(dayMonth + 1);
   }
 
-  if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.day < 10) {
-    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.day = "0".concat(dayDate);
-  }
-
   DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayWeek], ",\n  ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayMonth]);
   today.setDate(today.getDate() + 1);
   var firstDay = today.getDay();
@@ -1084,11 +1080,17 @@ function clearArray(arrayTemp) {
 function getDataWeatherForNextDays(data) {
   var temperatureArray = [];
   var indexTempArray = 0;
+  var year = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.year;
+  var month = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.month;
+  var today = Number(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.day);
   var nextDay = 1;
 
   for (var indexDays = 0; indexDays <= 2; indexDays++) {
     for (var i = 0; i < data.list.length; i++) {
-      if (data.list[i].dt_txt.includes("".concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.year, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.month, "-").concat(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.day + nextDay))) {
+      var d = today + nextDay;
+      var day = (d < 10 ? '0' : '') + d;
+
+      if (data.list[i].dt_txt.includes("".concat(year, "-").concat(month, "-").concat(day))) {
         temperatureArray[indexTempArray] = data.list[i].main.temp;
         indexTempArray++;
 

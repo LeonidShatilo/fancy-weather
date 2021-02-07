@@ -30,9 +30,6 @@ export function showDate() {
   if (allData.date.month < 9) {
     allData.date.month = `0${dayMonth + 1}`;
   }
-  if (allData.date.day < 10) {
-    allData.date.day = `0${dayDate}`;
-  }
 
   DATE.innerHTML = `${
     LANGUAGE.shortDayOfWeek[allData.currentLanguage][dayWeek]
