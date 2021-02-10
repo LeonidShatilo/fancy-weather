@@ -1,0 +1,73 @@
+.error {
+  @include font-semi-bold;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  margin-top: $margin-top-error;
+  padding-bottom: 4rem;
+  max-width: max-content;
+  font-size: 2rem;
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transform: translateY(-100vh);
+  transition: transform 0.4s ease-in-out;
+  user-select: none;
+  opacity: 0;
+  z-index: 5;
+
+  &__message {
+    padding: 5rem 5rem 4rem 5rem;
+    text-align: center;
+
+    @media screen and (max-width: $width-mobile-1) {
+      padding: 4rem 3rem 3rem 4rem;
+    }
+  }
+
+  &__confirm-button {
+    width: 80px;
+    height: 40px;
+    border-radius: 1rem;
+    font-weight: 700;
+    background: $background-button-error;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &__hide {
+    transform: translateY(-100vh);
+  }
+
+  @media screen and (max-width: $width-tablet-2) {
+    margin-top: 3rem;
+  }
+
+  @media screen and (max-width: $width-tablet-3) {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width: $width-mobile-1) {
+    margin-top: 1rem;
+    border-radius: 1.5rem;
+    font-size: 1.3rem;
+  }
+}

@@ -1,0 +1,85 @@
+.map {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  height: max-content;
+
+  @media screen and (max-width: $width-laptop) {
+    margin-top: 2rem;
+  }
+
+  @media screen and (max-width: $width-tablet-1) {
+    margin-top: 1rem;
+  }
+
+  &__img {
+    width: 375px;
+    height: 375px;
+    min-width: 375px;
+    min-height: 375px;
+    border-radius: 3rem;
+
+    @media screen and (max-width: $width-tablet-1) {
+      width: 350px;
+      height: 350px;
+      min-width: 350px;
+      min-height: 350px;
+      border-radius: 2.5rem;
+    }
+
+    @media screen and (max-width: $width-tablet-3) {
+      width: 300px;
+      height: 300px;
+      min-width: 300px;
+      min-height: 300px;
+      border-radius: 2rem;
+    }
+
+    @media screen and (max-width: $width-mobile-1) {
+      border-radius: 1.5rem;
+    }
+
+    @media screen and (max-width: $width-mobile-2) {
+      width: 300px;
+      height: 300px;
+      min-width: 300px;
+      min-height: 300px;
+    }
+  }
+
+  &__coordinates {
+    @include font-semi-bold;
+    margin-top: 2rem;
+    font-size: 2rem;
+    text-align: right;
+    line-height: 3rem;
+    text-transform: capitalize;
+    user-select: none;
+
+    @media screen and (max-width: $width-laptop) {
+      margin-bottom: 2rem;
+      font-size: subtractPercent(2rem, 0.1);
+      line-height: subtractPercent(3rem, 0.1);
+    }
+
+    @media screen and (max-width: $width-tablet-1) {
+      font-size: subtractPercent(2rem, 0.2);
+      line-height: subtractPercent(3rem, 0.2);
+    }
+
+    @media screen and (max-width: $width-tablet-2) {
+      font-size: subtractPercent(2rem, 0.3);
+      line-height: subtractPercent(3rem, 0.3);
+    }
+
+    @media screen and (max-width: $width-tablet-3) {
+      font-size: subtractPercent(2rem, 0.4);
+      line-height: subtractPercent(3rem, 0.4);
+    }
+
+    @media screen and (max-width: $width-mobile-1) {
+      margin-top: 1rem;
+    }
+  }
+}
