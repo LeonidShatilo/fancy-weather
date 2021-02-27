@@ -34,4 +34,5 @@ export let allData = {
     nextDay: [0, 0, 0],
     nextDayMonth: [0, 0, 0],
   },
+  error: false,
 };

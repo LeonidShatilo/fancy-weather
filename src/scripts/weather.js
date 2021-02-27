@@ -94,12 +94,20 @@ function getDataWeatherForNextDays(data) {
 }
 
 function insertWeatherData() {
-  TEMP_TODAY.innerHTML = allData.temperatureToday;
-  TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
-  TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
-  TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
-  WEATHER.innerHTML = allData.weather;
-  FEELS_LIKE.innerHTML = allData.feelsLike;
+  if (allData.currentUnitOfTemperature === 'celsius') {
+    TEMP_TODAY.innerHTML = allData.temperatureToday;
+    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
+    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
+    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
+    FEELS_LIKE.innerHTML = allData.feelsLike;
+  }
+  if (allData.currentUnitOfTemperature === 'fahrenheit') {
+    TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
+    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
+    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
+    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
+    FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
+  }
   WIND.innerHTML = allData.wind;
   HUMIDITY.innerHTML = allData.humidity;
 }
@@ -127,7 +135,7 @@ export function getWeather(lat, lng) {
     })
     .catch((e) => {
       showError(LANGUAGE.error.weather[allData.currentLanguage]);
-
+      allData.error = true;
       return;
     });
 }

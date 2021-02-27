@@ -133,9 +133,10 @@ export function updateBackground() {
 }
 
 REFRESH_BUTTON.addEventListener('click', () => {
+  CIRCLE_ARROWS.style.transform = `rotate(${angleRotation}deg)`;
+  angleRotation += 360;
+
   try {
-    CIRCLE_ARROWS.style.transform = `rotate(${angleRotation}deg)`;
-    angleRotation += 360;
     updateBackground();
   } catch (error) {
     showError(LANGUAGE.error.background[allData.currentLanguage]);

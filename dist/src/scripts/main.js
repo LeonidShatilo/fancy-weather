@@ -174,7 +174,8 @@ var allData = {
     day: 0,
     nextDay: [0, 0, 0],
     nextDayMonth: [0, 0, 0]
-  }
+  },
+  error: false
 };
 
 /***/ }),
@@ -194,9 +195,11 @@ __webpack_require__.r(__webpack_exports__);
 var ERROR = document.querySelector('.error');
 var ERROR_MESSAGE = document.querySelector('.error__message');
 var ERROR_CONFIRM_BUTTON = document.querySelector('.error__confirm-button');
+var isShowError = false;
 function showError(descriprion) {
   ERROR_MESSAGE.innerHTML = descriprion;
   ERROR.classList.add('error__visible');
+  isShowError = true;
 }
 
 function hideError() {
@@ -207,7 +210,18 @@ function hideError() {
   setTimeout(function () {
     ERROR.classList.remove('error__hide');
   }, 500);
+  isShowError = false;
 }
+
+document.onclick = function (event) {
+  if (!isShowError) {
+    return;
+  }
+
+  if (event.target !== ERROR && event.target !== ERROR_MESSAGE) {
+    hideError();
+  }
+};
 
 ERROR_CONFIRM_BUTTON.addEventListener('click', hideError);
 
@@ -541,9 +555,10 @@ function updateBackground() {
   }, 100);
 }
 REFRESH_BUTTON.addEventListener('click', function () {
+  CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
+  angleRotation += 360;
+
   try {
-    CIRCLE_ARROWS.style.transform = "rotate(".concat(angleRotation, "deg)");
-    angleRotation += 360;
     updateBackground();
   } catch (error) {
     (0,_error_js__WEBPACK_IMPORTED_MODULE_3__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_2__.LANGUAGE.error.background[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage]);
@@ -758,6 +773,10 @@ function addPreloaderText() {
   });
 }
 function removePreloader() {
+  if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.error) {
+    return;
+  }
+
   setTimeout(function () {
     PRELOADER_ICON.classList.add('preloader__icon--hide');
     PRELOADER_TEXT.classList.add('preloader__text--hide');
@@ -1124,12 +1143,22 @@ function getDataWeatherForNextDays(data) {
 }
 
 function insertWeatherData() {
-  TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureToday;
-  TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[0];
-  TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[1];
-  TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[2];
-  WEATHER.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.weather;
-  FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLike;
+  if (_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentUnitOfTemperature === 'celsius') {
+    TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureToday;
+    TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[0];
+    TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[1];
+    TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[2];
+    FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLike;
+  }
+
+  if (_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentUnitOfTemperature === 'fahrenheit') {
+    TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureTodayInFahrenheit;
+    TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[0];
+    TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[1];
+    TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDaysInFahrenheit[2];
+    FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.feelsLikeInFahrenheit;
+  }
+
   WIND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.wind;
   HUMIDITY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.humidity;
 }
@@ -1155,6 +1184,7 @@ function getWeather(lat, lng) {
     addIcons();
   })["catch"](function (e) {
     (0,_error_js__WEBPACK_IMPORTED_MODULE_0__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_1__.LANGUAGE.error.weather[_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage]);
+    _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.error = true;
     return;
   });
 }
