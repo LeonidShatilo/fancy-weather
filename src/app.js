@@ -26,6 +26,7 @@ import {
   getUnitOfTemperatureInLocalStorage,
   setLanguageInLocalStorage,
   setUnitOfTemperatureInLocalStorage,
+  convertTemperature,
 } from './scripts/header.js';
 import { getWeather } from './scripts/weather.js';
 import { allData } from './scripts/data.js';
@@ -47,6 +48,7 @@ function getAndSetUnitOfTemperature() {
   return new Promise((resolve) => {
     getUnitOfTemperatureInLocalStorage();
     setUnitOfTemperatureInLocalStorage();
+
     setTimeout(() => {
       resolve();
     }, 0);
@@ -74,24 +76,26 @@ function addText() {
 }
 
 function runApp() {
-  getAndSetLanguage();
-  addPreloaderText()
-    .then(() => getUserCity())
-    .then(() => setMap(allData.coordinates.lat, allData.coordinates.lng))
-    .then(() => {
-      getWeather(allData.coordinates.lat, allData.coordinates.lng);
-      getPlace(allData.coordinates.lat, allData.coordinates.lng);
-      insertTextLocation(allData.coordinates.lat, allData.coordinates.lng);
-    })
-    .then(() => getAndSetUnitOfTemperature())
+  getAndSetLanguage()
+    .then(() => addPreloaderText())
     .then(() => setTime())
     .then(() => addText())
-    .then(() => removePreloader())
-    .then(() => changeLanguageOfMap());
+    .then(() => getUserCity())
+    .then(() => setMap(allData.coordinates.lat, allData.coordinates.lng))
+    .then(() => getWeather(allData.coordinates.lat, allData.coordinates.lng))
+    .then(() => getPlace(allData.coordinates.lat, allData.coordinates.lng))
+    .then(() =>
+      insertTextLocation(allData.coordinates.lat, allData.coordinates.lng)
+    )
+    .then(() => getAndSetUnitOfTemperature())
+    .then(() => convertTemperature())
+    .then(() => changeLanguageOfMap())
+    .then(() => removePreloader());
+
   window.onload = () => {
     getImageLink();
+    voiceSearch();
   };
-  voiceSearch();
 }
 
 runApp();

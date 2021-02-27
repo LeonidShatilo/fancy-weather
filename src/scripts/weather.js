@@ -124,8 +124,6 @@ export function getWeather(lat, lng) {
       getTemperatureInFahrenheit();
       insertWeatherData();
       addIcons();
-
-      return 'ok';
     })
     .catch((e) => {
       showError(LANGUAGE.error.weather[allData.currentLanguage]);

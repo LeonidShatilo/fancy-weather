@@ -92,32 +92,36 @@ function addText() {
 }
 
 function runApp() {
-  getAndSetLanguage();
-  (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.addPreloaderText)().then(function () {
-    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserCity)();
-  }).then(function () {
-    return (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.setMap)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
-  }).then(function () {
-    (0,_scripts_weather_js__WEBPACK_IMPORTED_MODULE_10__.getWeather)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
-    (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getPlace)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
-    (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.insertTextLocation)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
-  }).then(function () {
-    return getAndSetUnitOfTemperature();
+  getAndSetLanguage().then(function () {
+    return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.addPreloaderText)();
   }).then(function () {
     return setTime();
   }).then(function () {
     return addText();
   }).then(function () {
-    return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.removePreloader)();
+    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getUserCity)();
+  }).then(function () {
+    return (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.setMap)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+  }).then(function () {
+    return (0,_scripts_weather_js__WEBPACK_IMPORTED_MODULE_10__.getWeather)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+  }).then(function () {
+    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.getPlace)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+  }).then(function () {
+    return (0,_scripts_geolocation_js__WEBPACK_IMPORTED_MODULE_9__.insertTextLocation)(_scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lat, _scripts_data_js__WEBPACK_IMPORTED_MODULE_3__.allData.coordinates.lng);
+  }).then(function () {
+    return getAndSetUnitOfTemperature();
+  }).then(function () {
+    return (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.convertTemperature)();
   }).then(function () {
     return (0,_scripts_map_js__WEBPACK_IMPORTED_MODULE_12__.changeLanguageOfMap)();
+  }).then(function () {
+    return (0,_scripts_preloader_js__WEBPACK_IMPORTED_MODULE_11__.removePreloader)();
   });
 
   window.onload = function () {
     (0,_scripts_header_js__WEBPACK_IMPORTED_MODULE_7__.getImageLink)();
+    (0,_scripts_speechRecognition_js__WEBPACK_IMPORTED_MODULE_13__.voiceSearch)();
   };
-
-  (0,_scripts_speechRecognition_js__WEBPACK_IMPORTED_MODULE_13__.voiceSearch)();
 }
 
 runApp();
@@ -148,17 +152,17 @@ var allData = {
   },
   temperatureToday: 0,
   temperatureTodayInFahrenheit: 0,
-  temperatureNextThreeDays: [],
-  temperatureNextThreeDaysInFahrenheit: [],
+  temperatureNextThreeDays: [0, 0, 0],
+  temperatureNextThreeDaysInFahrenheit: [0, 0, 0],
   weatherIcon: {
     today: '',
     nextThreeDays: []
   },
-  weather: '',
-  feelsLike: '',
-  feelsLikeInFahrenheit: '',
-  humidity: '',
-  wind: '',
+  weather: 0,
+  feelsLike: 0,
+  feelsLikeInFahrenheit: 0,
+  humidity: 0,
+  wind: 0,
   place: '',
   city: '',
   country: '',
@@ -414,6 +418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getImageLink": () => /* binding */ getImageLink,
 /* harmony export */   "getLanguageInLocalStorage": () => /* binding */ getLanguageInLocalStorage,
 /* harmony export */   "setLanguageInLocalStorage": () => /* binding */ setLanguageInLocalStorage,
+/* harmony export */   "convertTemperature": () => /* binding */ convertTemperature,
 /* harmony export */   "getUnitOfTemperatureInLocalStorage": () => /* binding */ getUnitOfTemperatureInLocalStorage,
 /* harmony export */   "setUnitOfTemperatureInLocalStorage": () => /* binding */ setUnitOfTemperatureInLocalStorage,
 /* harmony export */   "updateBackground": () => /* binding */ updateBackground
@@ -486,14 +491,35 @@ function getLanguageInLocalStorage() {
 function setLanguageInLocalStorage() {
   localStorage.setItem('language', _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage);
 }
+function convertTemperature() {
+  return new Promise(function (resolve) {
+    if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature === 'celsius') {
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureToday;
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[0];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[1];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[2];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLike;
+    }
+
+    if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature === 'fahrenheit') {
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureTodayInFahrenheit;
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[0];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[1];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[2];
+      _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLikeInFahrenheit;
+    }
+
+    setTimeout(function () {
+      resolve();
+    }, 0);
+  });
+}
 function getUnitOfTemperatureInLocalStorage() {
   if (localStorage.getItem('unit-of-temperature') === null || localStorage.getItem('unit-of-temperature') === 'celsius') {
     _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'celsius';
-    convertTemperature();
     C_DEG_BUTTON.classList.toggle('header__button--active');
   } else {
     _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature = 'fahrenheit';
-    convertTemperature();
     F_DEG_BUTTON.classList.toggle('header__button--active');
   }
 }
@@ -506,24 +532,6 @@ function changeStateButtons(firstButton, secondButton) {
   secondButton.disabled = false;
   firstButton.classList.add('header__button--active');
   secondButton.classList.remove('header__button--active');
-}
-
-function convertTemperature() {
-  if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature === 'celsius') {
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureToday;
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[0];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[1];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDays[2];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLike;
-  }
-
-  if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentUnitOfTemperature === 'fahrenheit') {
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_TODAY.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureTodayInFahrenheit;
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_FIRST.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[0];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_SECOND.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[1];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.TEMP_THIRD.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.temperatureNextThreeDaysInFahrenheit[2];
-    _weather_js__WEBPACK_IMPORTED_MODULE_4__.FEELS_LIKE.innerHTML = _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.feelsLikeInFahrenheit;
-  }
 }
 
 function updateBackground() {
@@ -685,10 +693,15 @@ __webpack_require__.r(__webpack_exports__);
 var map;
 var marker;
 function changeLanguageOfMap() {
-  map.getStyle().layers.map(function (each) {
-    if (each.hasOwnProperty('layout') && each.layout.hasOwnProperty('text-field')) {
-      if (!each.id.includes('road')) map.setLayoutProperty(each.id, 'text-field', ['get', "name_".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage)]);
-    }
+  return new Promise(function (resolve) {
+    map.getStyle().layers.map(function (each) {
+      if (each.hasOwnProperty('layout') && each.layout.hasOwnProperty('text-field')) {
+        if (!each.id.includes('road')) map.setLayoutProperty(each.id, 'text-field', ['get', "name_".concat(_data_js__WEBPACK_IMPORTED_MODULE_0__.allData.currentLanguage)]);
+      }
+    });
+    setTimeout(function () {
+      resolve();
+    }, 0);
   });
 }
 function setMap(lat, lng) {
@@ -734,6 +747,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var PRELOADER = document.querySelector('.preloader');
+var PRELOADER_ICON = document.querySelector('.preloader__icon');
 var PRELOADER_TEXT = document.querySelector('.preloader__text');
 function addPreloaderText() {
   return new Promise(function (resolve) {
@@ -744,17 +758,19 @@ function addPreloaderText() {
   });
 }
 function removePreloader() {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      PRELOADER.classList.add('preloader--hide');
-    }, 1000);
-    setTimeout(function () {
-      document.body.removeChild(document.body.children[1]);
-    }, 1100);
-    setTimeout(function () {
-      resolve();
-    }, 1200);
-  });
+  setTimeout(function () {
+    PRELOADER_ICON.classList.add('preloader__icon--hide');
+    PRELOADER_TEXT.classList.add('preloader__text--hide');
+  }, 700);
+  setTimeout(function () {
+    PRELOADER.classList.add('preloader--hide');
+  }, 1600);
+  setTimeout(function () {
+    document.body.removeChild(document.body.children[1]);
+  }, 2400);
+  setTimeout(function () {
+    document.body.classList.remove('no-scroll');
+  }, 2500);
 }
 
 /***/ }),
@@ -1137,7 +1153,6 @@ function getWeather(lat, lng) {
     getTemperatureInFahrenheit();
     insertWeatherData();
     addIcons();
-    return 'ok';
   })["catch"](function (e) {
     (0,_error_js__WEBPACK_IMPORTED_MODULE_0__.showError)(_language_js__WEBPACK_IMPORTED_MODULE_1__.LANGUAGE.error.weather[_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.currentLanguage]);
     return;
@@ -1202,7 +1217,7 @@ var ___HTML_LOADER_IMPORT_1___ = __webpack_require__(/*! ../assets/images/svg/cu
 // Module
 var ___HTML_LOADER_REPLACEMENT_0___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_0___);
 var ___HTML_LOADER_REPLACEMENT_1___ = ___HTML_LOADER_GET_SOURCE_FROM_IMPORT___(___HTML_LOADER_IMPORT_1___);
-var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <script src=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js\"></script>\r\n    <link\r\n      href=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css\"\r\n      rel=\"stylesheet\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body>\r\n    <div class=\"error\">\r\n      <p class=\"error__message\"></p>\r\n      <button class=\"error__confirm-button\">Ok</button>\r\n    </div>\r\n    <div class=\"preloader\">\r\n      <div class=\"preloader__box\">\r\n        <div class=\"preloader__icon\"></div>\r\n        <div class=\"preloader__text\"></div>\r\n      </div>\r\n    </div>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background\">\r\n      <div class=\"background__image default\"></div>\r\n    </div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang\">EN</button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg\">°C</button>\r\n          </div>\r\n          <button class=\"header__button-current-location\">\r\n            <img\r\n              class=\"header__current-location-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"current-location\"\r\n            />\r\n          </button>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <div class=\"search__voice-icon\"></div>\r\n          </button>\r\n          <button class=\"search__button\"></button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\"></p>\r\n        <p class=\"date-time-wrapper\">\r\n          <span class=\"title__date\"></span>\r\n          <span class=\"title__time\"></span>\r\n        </p>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\"></span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-details\">\r\n                <p>\r\n                  <span class=\"weather__today-description\"></span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-feels-like\"></span>\r\n                  <span class=\"weather__feels-like\"></span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-wind\"></span>\r\n                  <span class=\"weather__wind\"></span>\r\n                  <span class=\"weather__wind-unit\">m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-humidity\"></span>\r\n                  <span class=\"weather__humidity\"></span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\"></span>\r\n              <span class=\"latitude\"></span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\"></span>\r\n              <span class=\"longitude\"></span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
+var code = "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\r\n    <link\r\n      type=\"image/ico\"\r\n      sizes=\"32x32\"\r\n      rel=\"icon\"\r\n      href=\"./assets/favicon.ico\"\r\n    />\r\n    <script src=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js\"></script>\r\n    <link\r\n      href=\"https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css\"\r\n      rel=\"stylesheet\"\r\n    />\r\n    <title>Fancy Weather</title>\r\n  </head>\r\n  <body class=\"no-scroll\">\r\n    <div class=\"error\">\r\n      <p class=\"error__message\"></p>\r\n      <button class=\"error__confirm-button\">Ok</button>\r\n    </div>\r\n    <div class=\"preloader\">\r\n      <div class=\"preloader__box\">\r\n        <div class=\"preloader__icon\"></div>\r\n        <div class=\"preloader__text\"></div>\r\n      </div>\r\n    </div>\r\n    <div class=\"overlay\"></div>\r\n    <div class=\"background\">\r\n      <div class=\"background__image default\"></div>\r\n    </div>\r\n    <div class=\"wrapper\">\r\n      <div class=\"header\">\r\n        <div class=\"header__buttons-panel\">\r\n          <button class=\"header__button-refresh-bg\">\r\n            <img\r\n              class=\"header__refresh-circle-arrows\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_0___ + "\"\r\n              alt=\"refresh-circle-arrows\"\r\n            />\r\n          </button>\r\n          <div class=\"header__language\">\r\n            <button class=\"header__button-eng-lang\">EN</button>\r\n            <button class=\"header__button-ru-lang\">RU</button>\r\n          </div>\r\n          <div class=\"header__temperature\">\r\n            <button class=\"header__button-fahrenheit-deg\">°F</button>\r\n            <button class=\"header__button-celsius-deg\">°C</button>\r\n          </div>\r\n          <button class=\"header__button-current-location\">\r\n            <img\r\n              class=\"header__current-location-icon\"\r\n              src=\"" + ___HTML_LOADER_REPLACEMENT_1___ + "\"\r\n              alt=\"current-location\"\r\n            />\r\n          </button>\r\n        </div>\r\n        <div class=\"search\">\r\n          <input\r\n            class=\"search__input\"\r\n            placeholder=\"Search city or ZIP\"\r\n            type=\"text\"\r\n          />\r\n          <button class=\"search__voice\">\r\n            <div class=\"search__voice-icon\"></div>\r\n          </button>\r\n          <button class=\"search__button\"></button>\r\n        </div>\r\n      </div>\r\n      <div class=\"title\">\r\n        <p class=\"title__location\"></p>\r\n        <p class=\"date-time-wrapper\">\r\n          <span class=\"title__date\"></span>\r\n          <span class=\"title__time\"></span>\r\n        </p>\r\n      </div>\r\n      <div class=\"container-weather-map\">\r\n        <div class=\"weather\">\r\n          <div class=\"weather__today\">\r\n            <span class=\"weather__temp-today\"></span\r\n            ><span class=\"weather__deg-today\">°</span>\r\n            <div class=\"weather__wrapper\">\r\n              <div class=\"weather__icon-today\"></div>\r\n              <div class=\"weather__today-details\">\r\n                <p>\r\n                  <span class=\"weather__today-description\"></span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-feels-like\"></span>\r\n                  <span class=\"weather__feels-like\"></span><span>°</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-wind\"></span>\r\n                  <span class=\"weather__wind\"></span>\r\n                  <span class=\"weather__wind-unit\">m/s</span>\r\n                </p>\r\n                <p>\r\n                  <span class=\"weather__title-humidity\"></span>\r\n                  <span class=\"weather__humidity\"></span><span>%</span>\r\n                </p>\r\n              </div>\r\n            </div>\r\n          </div>\r\n          <div class=\"weather__next-three-days\">\r\n            <div class=\"weather__day weather__first-day\">\r\n              <div class=\"weather__day-title weather__title-first-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-first-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-first-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__second-day\">\r\n              <div class=\"weather__day-title weather__title-second-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-second-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-second-day\"></div>\r\n              </div>\r\n            </div>\r\n            <div class=\"weather__day weather__third-day\">\r\n              <div class=\"weather__day-title weather__title-third-day\"></div>\r\n              <div class=\"weather__day-temp\">\r\n                <span class=\"weather__temp-third-day\"></span><span>°</span>\r\n                <div class=\"weather__icon weather__icon-third-day\"></div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n        <div class=\"map\">\r\n          <div id=\"map\" class=\"map__img\"></div>\r\n          <div class=\"map__coordinates\">\r\n            <p>\r\n              <span class=\"title-latitude\"></span>\r\n              <span class=\"latitude\"></span>\r\n            </p>\r\n            <p>\r\n              <span class=\"title-longitude\"></span>\r\n              <span class=\"longitude\"></span>\r\n            </p>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </body>\r\n</html>\r\n";
 // Exports
 module.exports = code;
 

@@ -79,17 +79,37 @@ export function setLanguageInLocalStorage() {
   localStorage.setItem('language', allData.currentLanguage);
 }
 
+export function convertTemperature() {
+  return new Promise((resolve) => {
+    if (allData.currentUnitOfTemperature === 'celsius') {
+      TEMP_TODAY.innerHTML = allData.temperatureToday;
+      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
+      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
+      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
+      FEELS_LIKE.innerHTML = allData.feelsLike;
+    }
+    if (allData.currentUnitOfTemperature === 'fahrenheit') {
+      TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
+      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
+      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
+      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
+      FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
+    }
+    setTimeout(() => {
+      resolve();
+    }, 0);
+  });
+}
+
 export function getUnitOfTemperatureInLocalStorage() {
   if (
     localStorage.getItem('unit-of-temperature') === null ||
     localStorage.getItem('unit-of-temperature') === 'celsius'
   ) {
     allData.currentUnitOfTemperature = 'celsius';
-    convertTemperature();
     C_DEG_BUTTON.classList.toggle('header__button--active');
   } else {
     allData.currentUnitOfTemperature = 'fahrenheit';
-    convertTemperature();
     F_DEG_BUTTON.classList.toggle('header__button--active');
   }
 }
@@ -103,23 +123,6 @@ function changeStateButtons(firstButton, secondButton) {
   secondButton.disabled = false;
   firstButton.classList.add('header__button--active');
   secondButton.classList.remove('header__button--active');
-}
-
-function convertTemperature() {
-  if (allData.currentUnitOfTemperature === 'celsius') {
-    TEMP_TODAY.innerHTML = allData.temperatureToday;
-    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
-    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
-    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
-    FEELS_LIKE.innerHTML = allData.feelsLike;
-  }
-  if (allData.currentUnitOfTemperature === 'fahrenheit') {
-    TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
-    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
-    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
-    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
-    FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
-  }
 }
 
 export function updateBackground() {
