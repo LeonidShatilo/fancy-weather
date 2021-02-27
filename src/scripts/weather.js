@@ -65,15 +65,18 @@ function getDataWeatherForNextDays(data) {
   let temperatureArray = [];
   let indexTempArray = 0;
   let year = allData.date.year;
-  let month = allData.date.month;
-  let today = Number(allData.date.day);
-  let nextDay = 1;
+  let month = allData.date.nextDayMonth.map(
+    (month) => (month < 10 ? '0' : '') + month
+  );
+  let day = allData.date.nextDay.map((day) => (day < 10 ? '0' : '') + day);
 
   for (let indexDays = 0; indexDays <= 2; indexDays++) {
     for (let i = 0; i < data.list.length; i++) {
-      let d = today + nextDay;
-      let day = (d < 10 ? '0' : '') + d;
-      if (data.list[i].dt_txt.includes(`${year}-${month}-${day}`)) {
+      if (
+        data.list[i].dt_txt.includes(
+          `${year}-${month[indexDays]}-${day[indexDays]}`
+        )
+      ) {
         temperatureArray[indexTempArray] = data.list[i].main.temp;
         indexTempArray++;
         if (data.list[i].dt_txt.includes('12:00:00')) {
@@ -87,7 +90,6 @@ function getDataWeatherForNextDays(data) {
     );
     temperatureArray = clearArray(temperatureArray);
     indexTempArray = 0;
-    nextDay++;
   }
 }
 

@@ -167,8 +167,9 @@ var allData = {
   offset: 0,
   date: {
     year: 0,
-    month: 0,
-    day: 0
+    day: 0,
+    nextDay: [0, 0, 0],
+    nextDayMonth: [0, 0, 0]
   }
 };
 
@@ -908,19 +909,19 @@ function showDate() {
   var dayMonth = today.getMonth();
   var year = today.getFullYear();
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.year = year;
-  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.month = dayMonth + 1;
   _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.day = dayDate;
-
-  if (_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.month < 9) {
-    _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.month = "0".concat(dayMonth + 1);
-  }
-
   DATE.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.shortDayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayWeek], ",\n  ").concat(dayDate, " ").concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.month[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][dayMonth]);
   today.setDate(today.getDate() + 1);
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDay[0] = today.getDate();
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDayMonth[0] = today.getMonth() + 1;
   var firstDay = today.getDay();
   today.setDate(today.getDate() + 1);
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDay[1] = today.getDate();
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDayMonth[1] = today.getMonth() + 1;
   var secondDay = today.getDay();
   today.setDate(today.getDate() + 1);
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDay[2] = today.getDate();
+  _data_js__WEBPACK_IMPORTED_MODULE_1__.allData.date.nextDayMonth[2] = today.getMonth() + 1;
   var thirdDay = today.getDay();
   FIRST_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][firstDay]);
   SECOND_DAY.innerHTML = "".concat(_language_js__WEBPACK_IMPORTED_MODULE_0__.LANGUAGE.dayOfWeek[_data_js__WEBPACK_IMPORTED_MODULE_1__.allData.currentLanguage][secondDay]);
@@ -1081,16 +1082,16 @@ function getDataWeatherForNextDays(data) {
   var temperatureArray = [];
   var indexTempArray = 0;
   var year = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.year;
-  var month = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.month;
-  var today = Number(_data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.day);
-  var nextDay = 1;
+  var month = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.nextDayMonth.map(function (month) {
+    return (month < 10 ? '0' : '') + month;
+  });
+  var day = _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.date.nextDay.map(function (day) {
+    return (day < 10 ? '0' : '') + day;
+  });
 
   for (var indexDays = 0; indexDays <= 2; indexDays++) {
     for (var i = 0; i < data.list.length; i++) {
-      var d = today + nextDay;
-      var day = (d < 10 ? '0' : '') + d;
-
-      if (data.list[i].dt_txt.includes("".concat(year, "-").concat(month, "-").concat(day))) {
+      if (data.list[i].dt_txt.includes("".concat(year, "-").concat(month[indexDays], "-").concat(day[indexDays]))) {
         temperatureArray[indexTempArray] = data.list[i].main.temp;
         indexTempArray++;
 
@@ -1103,7 +1104,6 @@ function getDataWeatherForNextDays(data) {
     _data_js__WEBPACK_IMPORTED_MODULE_2__.allData.temperatureNextThreeDays[indexDays] = averageTemperature(temperatureArray);
     temperatureArray = clearArray(temperatureArray);
     indexTempArray = 0;
-    nextDay++;
   }
 }
 

@@ -24,12 +24,7 @@ export function showDate() {
   let year = today.getFullYear();
 
   allData.date.year = year;
-  allData.date.month = dayMonth + 1;
   allData.date.day = dayDate;
-
-  if (allData.date.month < 9) {
-    allData.date.month = `0${dayMonth + 1}`;
-  }
 
   DATE.innerHTML = `${
     LANGUAGE.shortDayOfWeek[allData.currentLanguage][dayWeek]
@@ -37,10 +32,18 @@ export function showDate() {
   ${dayDate} ${LANGUAGE.month[allData.currentLanguage][dayMonth]}`;
 
   today.setDate(today.getDate() + 1);
+  allData.date.nextDay[0] = today.getDate();
+  allData.date.nextDayMonth[0] = today.getMonth() + 1;
   let firstDay = today.getDay();
+
   today.setDate(today.getDate() + 1);
+  allData.date.nextDay[1] = today.getDate();
+  allData.date.nextDayMonth[1] = today.getMonth() + 1;
   let secondDay = today.getDay();
+
   today.setDate(today.getDate() + 1);
+  allData.date.nextDay[2] = today.getDate();
+  allData.date.nextDayMonth[2] = today.getMonth() + 1;
   let thirdDay = today.getDay();
 
   FIRST_DAY.innerHTML = `${
