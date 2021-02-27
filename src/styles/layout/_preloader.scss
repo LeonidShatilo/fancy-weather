@@ -1,3 +1,7 @@
+.no-scroll {
+  overflow-y: hidden;
+}
+
 .preloader {
   position: fixed;
   width: 100%;
@@ -13,7 +17,8 @@
   background-color: $background-preloader;
   user-select: none;
   opacity: 1;
-  z-index: 3;
+  z-index: 100;
+  transition: opacity 0.7s ease-in-out;
 
   &__box {
     position: absolute;
@@ -30,10 +35,15 @@
     background-size: 100%;
     background-image: url('../../assets/images/svg/preloader.svg');
     background-repeat: no-repeat;
+    transition: opacity 0.7s ease-in-out;
 
     @media screen and (max-width: $width-mobile-1) {
       width: 70px;
       height: 70px;
+    }
+
+    &--hide {
+      opacity: 0;
     }
   }
 
@@ -42,10 +52,15 @@
     margin-top: 3rem;
     font-size: 3rem;
     text-transform: uppercase;
+    transition: opacity 0.7s ease-in-out;
 
     @media screen and (max-width: $width-mobile-1) {
       font-size: 2rem;
       margin-top: 2rem;
+    }
+
+    &--hide {
+      opacity: 0;
     }
   }
 
