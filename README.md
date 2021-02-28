@@ -2,7 +2,7 @@
 
 **[Task](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/stage-0/fancy-weather.md)**
 
-**[DEMO](https://leonidshatilo.github.io/fancy-weather/dist/)**
+**[DEMO](https://leonidshatilo-fancy-weather.netlify.app)**
 
 ---
 
