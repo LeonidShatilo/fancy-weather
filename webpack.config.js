@@ -72,8 +72,9 @@ const plugins = () => {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'assets'),
+          from: path.resolve(__dirname, 'src/assets'),
           to: path.resolve(__dirname, 'dist/assets'),
+          noErrorOnMissing: true
         },
       ],
     }),
@@ -151,7 +152,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: `../assets/images/[ext]/${filename('[ext]')}`,
+              name: `./assets/images/[ext]/[name].[ext]`,
             },
           },
         ],
@@ -162,7 +163,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: `../assets/fonts/${filename('[ext]')}`,
+              name: `./assets/fonts/[name].[ext]`,
             },
           },
         ],
