@@ -97,7 +97,7 @@ export function convertTemperature() {
     }
     setTimeout(() => {
       resolve();
-    }, 0);
+    }, 1000);
   });
 }
 
