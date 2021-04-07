@@ -16,8 +16,9 @@ export function addPreloaderText() {
 
 export function removePreloader() {
   if (allData.error) {
-    return;
+    return null;
   }
+  
   setTimeout(() => {
     PRELOADER_ICON.classList.add('preloader__icon--hide');
     PRELOADER_TEXT.classList.add('preloader__text--hide');
@@ -26,7 +27,7 @@ export function removePreloader() {
     PRELOADER.classList.add('preloader--hide');
   }, 1600);
   setTimeout(() => {
-    document.body.removeChild(document.body.children[1]);
+    PRELOADER.remove();
   }, 2400);
   setTimeout(() => {
     document.body.classList.remove('no-scroll');
