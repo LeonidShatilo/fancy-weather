@@ -161,10 +161,14 @@
       }
 
       @media screen and (max-width: $width-desktop-3) {
-        left: -50px;
+        left: subtractPercent(10px, 0.4);
         top: subtractPercent(-50px, 0.4);
         width: subtractPercent(200px, 0.4);
         height: subtractPercent(200px, 0.4);
+      }
+
+      @media screen and (max-width: $width-tablet-2) {
+        left: -50px;
       }
 
       @media screen and (max-width: $width-tablet-3) {
