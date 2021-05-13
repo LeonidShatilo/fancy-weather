@@ -17,7 +17,7 @@ export let allData = {
     today: '',
     nextThreeDays: [],
   },
-  weather: 0,
+  weather: '',
   feelsLike: 0,
   feelsLikeInFahrenheit: 0,
   humidity: 0,
