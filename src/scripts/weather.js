@@ -72,19 +72,19 @@ function getDataWeatherForNextDays(data) {
 
   for (let indexDays = 0; indexDays <= 2; indexDays++) {
     for (let i = 0; i < data.list.length; i++) {
-      if (
-        data.list[i].dt_txt.includes(
-          `${year}-${month[indexDays]}-${day[indexDays]}`
-        )
-      ) {
+      const date = data.list[i].dt_txt;
+
+      if (date.includes(`${year}-${month[indexDays]}-${day[indexDays]}`)) {
         temperatureArray[indexTempArray] = data.list[i].main.temp;
         indexTempArray++;
-        if (data.list[i].dt_txt.includes('12:00:00')) {
+
+        if (date.includes('12:00:00')) {
           allData.weatherIcon.nextThreeDays[indexDays] =
             data.list[i].weather[0].icon;
         }
       }
     }
+
     allData.temperatureNextThreeDays[indexDays] = averageTemperature(
       temperatureArray
     );
@@ -94,20 +94,27 @@ function getDataWeatherForNextDays(data) {
 }
 
 function insertWeatherData() {
-  if (allData.currentUnitOfTemperature === 'celsius') {
-    TEMP_TODAY.innerHTML = allData.temperatureToday;
-    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
-    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
-    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
-    FEELS_LIKE.innerHTML = allData.feelsLike;
+  const DATA = allData.currentUnitOfTemperature;
+
+  switch (DATA) {
+    case 'celsius':
+      TEMP_TODAY.innerHTML = allData.temperatureToday;
+      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
+      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
+      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
+      FEELS_LIKE.innerHTML = allData.feelsLike;
+      break;
+
+    case 'fahrenheit':
+      TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
+      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
+      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
+      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
+      FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
+      break;
   }
-  if (allData.currentUnitOfTemperature === 'fahrenheit') {
-    TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
-    TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
-    TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
-    TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
-    FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
-  }
+
+  WEATHER.innerHTML = allData.weather;
   WIND.innerHTML = allData.wind;
   HUMIDITY.innerHTML = allData.humidity;
 }
@@ -133,9 +140,11 @@ export function getWeather(lat, lng) {
       insertWeatherData();
       addIcons();
     })
-    .catch((e) => {
+    .catch((error) => {
       showError(LANGUAGE.error.weather[allData.currentLanguage]);
       allData.error = true;
+      console.error(error);
+
       return;
     });
 }
@@ -151,7 +160,9 @@ export function getWeatherDescription(lat, lng) {
       allData.weather = data.list[0].weather[0].description;
       WEATHER.innerHTML = allData.weather;
     })
-    .catch((e) => {
+    .catch((error) => {
+      console.error(error);
+
       return;
     });
 }
