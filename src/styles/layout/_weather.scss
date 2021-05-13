@@ -19,6 +19,12 @@
       width: max-content;
       user-select: none;
 
+      @media screen and (max-width: $width-laptop) {
+        width: auto;
+        justify-content: center;
+        margin-right: 0;
+      }
+
       &-details {
         @include font-bold;
         position: relative;
@@ -57,12 +63,6 @@
           line-height: subtractPercent(3.7rem, 0.5);
         }
       }
-
-      @media screen and (max-width: $width-laptop) {
-        width: auto;
-        justify-content: center;
-        margin-right: 0;
-      }
     }
 
     &__temp-today {
@@ -89,7 +89,6 @@
 
       @media screen and (max-width: $width-tablet-3) {
         font-size: subtractPercent(30.6rem, 0.85);
-        padding-top: 8.9rem;
       }
     }
 
@@ -130,7 +129,6 @@
       @media screen and (max-width: $width-tablet-3) {
         top: subtractPercent(25px, 0.85);
         font-size: subtractPercent(20rem, 0.85);
-        padding-top: 8.9rem;
       }
     }
 
@@ -163,14 +161,14 @@
       }
 
       @media screen and (max-width: $width-desktop-3) {
-        left: subtractPercent(10px, 0.4);
+        left: -50px;
         top: subtractPercent(-50px, 0.4);
         width: subtractPercent(200px, 0.4);
         height: subtractPercent(200px, 0.4);
       }
 
       @media screen and (max-width: $width-tablet-3) {
-        left: subtractPercent(10px, 0.55);
+        left: -25px;
         top: subtractPercent(-50px, 0.55);
         width: subtractPercent(200px, 0.55);
         height: subtractPercent(200px, 0.55);

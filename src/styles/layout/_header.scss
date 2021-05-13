@@ -132,8 +132,13 @@
     min-height: 44px;
     padding-left: 15px;
     font-size: $font-size-search;
-    border: $border-search-input;
+    border: 1px solid rgba(228, 227, 227, 0.2);
     background: $background-search-input;
+    transition: border 0.6s ease;
+
+    &:focus {
+      border: 1px solid rgba(228, 227, 227, 0.6);
+    }
 
     &::placeholder {
       color: $color-text;
@@ -155,16 +160,21 @@
     &-icon {
       width: 16px;
       height: 18px;
-      background-image: url('../../assets/images/svg/voice-search.svg');
-      background-repeat: no-repeat;
       cursor: pointer;
-      transition: background 0.5s ease;
 
-      &--active {
-        width: 16px;
-        height: 18px;
-        background-image: url('../../assets/images/svg/voice-search-active.svg');
-        background-repeat: no-repeat;
+      & path {
+        fill: #ffffff;
+        fill-opacity: 0.4;
+        transition: all 0.6s ease;
+      }
+
+      &:hover path {
+        fill-opacity: 0.8;
+      }
+
+      &--active path {
+        fill: #00dc5a;
+        fill-opacity: 0.8;
       }
     }
 
@@ -187,6 +197,10 @@
 
     &:hover {
       background: lighten($background-button-search, 15%);
+    }
+
+    &:active {
+      background: lighten($background-button-search, 30%);
     }
 
     @media screen and (max-width: $width-tablet-1) {
