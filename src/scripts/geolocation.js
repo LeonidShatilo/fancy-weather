@@ -33,7 +33,9 @@ export function getUserCity() {
       allData.city = data.city;
     })
     .then(() => findCity(allData.city))
-    .catch((e) => {
+    .catch((error) => {
+      console.error(error);
+
       return;
     });
 }
@@ -53,6 +55,8 @@ function success(position) {
     updateBackground();
   } catch (error) {
     showError(LANGUAGE.error.background[allData.currentLanguage]);
+    console.error(error);
+
     return;
   }
 
@@ -133,7 +137,9 @@ export function getPlace(lat, lng) {
 
       return 'ok';
     })
-    .catch((e) => {
+    .catch((error) => {
+      console.error(error);
+
       return;
     });
 }
@@ -169,8 +175,9 @@ export function findCity(query) {
 
       return data.total_results;
     })
-    .catch((e) => {
+    .catch((error) => {
       showError(LANGUAGE.error.query[allData.currentLanguage]);
+
       return;
     });
 }
