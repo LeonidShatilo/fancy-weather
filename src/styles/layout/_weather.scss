@@ -89,6 +89,7 @@
 
       @media screen and (max-width: $width-tablet-3) {
         font-size: subtractPercent(30.6rem, 0.85);
+        padding-top: 8.9rem;
       }
     }
 
@@ -129,6 +130,7 @@
       @media screen and (max-width: $width-tablet-3) {
         top: subtractPercent(25px, 0.85);
         font-size: subtractPercent(20rem, 0.85);
+        padding-top: 8.9rem;
       }
     }
 
