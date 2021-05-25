@@ -1,10 +1,7 @@
 # fancy-weather
 
-**[Task](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/stage-0/fancy-weather.md)**
-
-**[DEMO](https://leonidshatilo-fancy-weather.netlify.app)**
-
----
+[![TASK](https://img.shields.io/badge/-TASK-green?style=flat)](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/stage-0/fancy-weather.md)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4c519c57-9b27-4a7a-904e-e89b25167958/deploy-status)](https://leonidshatilo-fancy-weather.netlify.app)
 
 **Description**
 
