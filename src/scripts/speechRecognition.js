@@ -1,5 +1,5 @@
-import { SEARCH_INPUT, runSearch } from './search.js';
 import { allData } from './data.js';
+import { runSearch, SEARCH_INPUT } from './search.js';
 
 const VOICE_SEARCH_BUTTON = document.querySelector('.search__voice-icon');
 

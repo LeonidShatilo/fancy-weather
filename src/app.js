@@ -13,31 +13,32 @@ import './scripts/preloader.js';
 import './scripts/map.js';
 import './scripts/speechRecognition.js';
 
-import { showTime, showDate } from './scripts/time.js';
+import { allData } from './scripts/data.js';
+import { addPreloaderText, removePreloader } from './scripts/preloader.js';
+import { changeLanguageOfMap, setMap } from './scripts/map.js';
 import {
-  getUserCity,
-  getPlace,
-  insertTextLocation,
-} from './scripts/geolocation.js';
-import { translate, updateTime } from './scripts/utils.js';
-import {
+  convertTemperature,
   getImageLink,
   getLanguageInLocalStorage,
   getUnitOfTemperatureInLocalStorage,
   setLanguageInLocalStorage,
   setUnitOfTemperatureInLocalStorage,
-  convertTemperature,
 } from './scripts/header.js';
+import {
+  getPlace,
+  getUserCity,
+  insertTextLocation,
+} from './scripts/geolocation.js';
 import { getWeather } from './scripts/weather.js';
-import { allData } from './scripts/data.js';
-import { addPreloaderText, removePreloader } from './scripts/preloader.js';
-import { setMap, changeLanguageOfMap } from './scripts/map.js';
+import { showTime, showDate } from './scripts/time.js';
+import { translate, updateTime } from './scripts/utils.js';
 import { voiceSearch } from './scripts/speechRecognition.js';
 
 function getAndSetLanguage() {
   return new Promise((resolve) => {
     getLanguageInLocalStorage();
     setLanguageInLocalStorage();
+
     setTimeout(() => {
       resolve();
     }, 0);
@@ -60,6 +61,7 @@ export function setTime() {
     showTime();
     showDate();
     updateTime(allData.offset);
+
     setTimeout(() => {
       resolve();
     }, 0);
@@ -69,6 +71,7 @@ export function setTime() {
 function addText() {
   return new Promise((resolve) => {
     translate();
+
     setTimeout(() => {
       resolve();
     }, 0);

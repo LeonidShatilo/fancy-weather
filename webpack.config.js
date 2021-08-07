@@ -9,7 +9,8 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
-const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`);
+const filename = (ext) =>
+  isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 const babelOptions = (preset) => {
   const opts = {
@@ -74,14 +75,14 @@ const plugins = () => {
         {
           from: path.resolve(__dirname, 'src/assets'),
           to: path.resolve(__dirname, 'dist/assets'),
-          noErrorOnMissing: true
+          noErrorOnMissing: true,
         },
       ],
     }),
   ];
 
   return basePlugins;
-}
+};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -110,7 +111,6 @@ module.exports = {
     inline: true,
     compress: true,
     historyApiFallback: true,
-
   },
   plugins: plugins(),
   optimization: optimization(),

@@ -61,17 +61,102 @@
     transition: 0.8s;
   }
 
-  &__language,
+  &__language {
+    @include button;
+
+    width: 7.1rem;
+    margin-left: 1rem;
+
+    @media screen and (max-width: $width-tablet-1) {
+      margin-left: 1.2rem;
+    }
+
+    &-menu-button {
+      @include font-bold;
+      @include button;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 7.1rem;
+      border-radius: 0.5rem;
+      font-size: $font-size-language;
+      background: $background-button-active;
+      cursor: pointer;
+      transition: 1.7s cubic-bezier(0.1, 0.5, 0.5, 1);
+
+      &:hover {
+        background: lighten($background-button-active, 20%);
+      }
+
+      &--active {
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    position: relative;
+    width: fit-content;
+    max-height: 0;
+    transition: max-height 0.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+    overflow: hidden;
+    z-index: 5;
+
+    &--open {
+      max-height: 15rem;
+      height: auto;
+    }
+
+    &__item {
+      @include font-bold;
+      @include button;
+
+      width: 7.1rem;
+      font-size: $font-size-language;
+      background: rgba(50, 55, 58, 0.9);
+
+      &:last-child {
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &--active,
+      &:hover {
+        background: rgba(174, 181, 185, 0.8);
+      }
+
+      &--active {
+        cursor: default;
+      }
+    }
+  }
+
+  .current-language {
+    position: relative;
+    left: -0.6rem;
+  }
+
+  .arrow-language {
+    position: relative;
+    right: -0.7rem;
+    width: 1rem;
+    transition: transform 0.5s ease-in-out;
+
+    &--up {
+      transform: rotate(180deg);
+    }
+  }
+
   &__temperature {
     @include buttons-wrapper;
 
     @media screen and (max-width: $width-tablet-1) {
-      margin: 0 0 0 1.2rem;
+      margin-left: 1.2rem;
     }
   }
 
-  &__button-eng-lang,
-  &__button-ru-lang,
   &__button-fahrenheit-deg,
   &__button-celsius-deg {
     @include button;
@@ -81,12 +166,10 @@
     }
   }
 
-  &__button-eng-lang,
   &__button-fahrenheit-deg {
     @include border-radius-left;
   }
 
-  &__button-ru-lang,
   &__button-celsius-deg {
     @include border-radius-right;
   }
@@ -127,9 +210,8 @@
   @media screen and (max-width: $width-tablet-1) {
     margin-left: 0;
     margin-top: 2rem;
-
     font-size: 1.2rem;
-    width: 300px;
+    width: 283px;
   }
 
   @media screen and (max-width: $width-mobile-1) {
@@ -139,6 +221,7 @@
   &__input {
     @include font-regular;
     @include border-radius-left;
+
     width: 274px;
     height: 44px;
     min-width: 274px;
@@ -158,10 +241,10 @@
     }
 
     @media screen and (max-width: $width-tablet-1) {
-      width: 230px;
-      min-width: 230px;
-      padding-left: 10px;
-      font-size: 1.1rem;
+      width: 213px;
+      min-width: 213px;
+      padding-left: 1rem;
+      font-size: 1.05rem;
     }
   }
 
@@ -192,7 +275,7 @@
     }
 
     @media screen and (max-width: $width-tablet-1) {
-      transform: translate(205px, 13px);
+      transform: translate(183px, 13px);
     }
   }
 

@@ -1,10 +1,10 @@
 import { allData } from './data.js';
-import { showError } from './error.js';
-import { LANGUAGE } from './language.js';
-import { updateMap } from './map.js';
 import { getWeather } from './weather.js';
-import { updateBackground } from './header.js';
+import { LANGUAGE } from './language.js';
 import { setTime } from '../app.js';
+import { showError } from './error.js';
+import { updateBackground } from './header.js';
+import { updateMap } from './map.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
 export const LATITUDE = document.querySelector('.latitude');
@@ -19,8 +19,8 @@ let options = {
 };
 
 export function insertTextLocation(lat, lng) {
-  LATITUDE.innerHTML = convertCoordinates(lat, 'latitude');
-  LONGITUDE.innerHTML = convertCoordinates(lng, 'longitude');
+  LATITUDE.textContent = convertCoordinates(lat, 'latitude');
+  LONGITUDE.textContent = convertCoordinates(lng, 'longitude');
 }
 
 export function getUserCity() {
@@ -43,8 +43,11 @@ export function getUserCity() {
 function success(position) {
   let coordinates = position.coords;
 
+  console.log(coordinates);
+
   allData.coordinates.lat = coordinates.latitude;
   allData.coordinates.lng = coordinates.longitude;
+
   updateMap(allData.coordinates.lat, allData.coordinates.lng);
   getWeather(allData.coordinates.lat, allData.coordinates.lng);
   getPlace(allData.coordinates.lat, allData.coordinates.lng);
@@ -71,7 +74,10 @@ export function getUserLocation() {
   navigator.geolocation.getCurrentPosition(success, error, options);
 }
 
-export function convertCoordinates(loc, coordinate) {
+export function convertCoordinates(loc, coord) {
+  const LAT = 'latitude';
+  const LNG = 'longitude';
+
   let x = String(loc).split('.');
   let ddd = Number(loc);
   let dd = `${x[0]}`;
@@ -84,55 +90,46 @@ export function convertCoordinates(loc, coordinate) {
   mm = Math.abs(mm);
   ss = Math.abs(ss);
 
-  if (mm < 10) {
-    mm = `0${mm}`;
-  }
-  if (ss < 10) {
-    ss = `0${ss}`;
-  }
-  if (Number.isInteger(ss)) {
-    ss = `${ss}.0`;
-  }
+  if (mm < 10) mm = `0${mm}`;
+  if (ss < 10) ss = `0${ss}`;
+  if (Number.isInteger(ss)) ss = `${ss}.0`;
 
-  if (loc > 0 && coordinate === 'latitude') {
-    return `${dd}°${mm}'${ss}"N`;
-  }
-  if (loc < 0 && coordinate === 'latitude') {
-    return `${dd}°${mm}'${ss}"S`;
-  }
-  if (loc > 0 && coordinate === 'longitude') {
-    return `${dd}°${mm}'${ss}"E`;
-  }
-  if (loc < 0 && coordinate === 'longitude') {
-    return `${dd}°${mm}'${ss}"W`;
-  }
+  if (loc > 0 && coord === LAT) return `${dd}°${mm}'${ss}"N`;
+  if (loc < 0 && coord === LAT) return `${dd}°${mm}'${ss}"S`;
+  if (loc > 0 && coord === LNG) return `${dd}°${mm}'${ss}"E`;
+  if (loc < 0 && coord === LNG) return `${dd}°${mm}'${ss}"W`;
 }
 
 export function getPlace(lat, lng) {
+  const LANG = allData.currentLanguage;
   const KEY = `504abf1b2bce4c898926036946d632ee`;
-  const URL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=${KEY}&language=${allData.currentLanguage}`;
+  const URL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=${KEY}&language=${LANG}`;
 
   return fetch(URL)
     .then((response) => response.json())
     .then((data) => {
-      if (data.results[0].components.city) {
-        allData.city = data.results[0].components.city;
-      } else {
-        allData.city = data.results[0].components.county;
-      }
-      allData.country = data.results[0].components.country;
-      allData.state = data.results[0].components.state;
-      allData.offset = data.results[0].annotations.timezone.offset_sec;
+      const CITY = data.results[0].components.city;
+      const COUNTY = data.results[0].components.county;
+      const COUNTRY = data.results[0].components.country;
+      const STATE = data.results[0].components.state;
+      const OFFSET = data.results[0].annotations.timezone.offset_sec;
 
-      if (
-        data.results[0].components.city ||
-        data.results[0].components.county
-      ) {
-        TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
-      } else if (data.results[0].components.state) {
-        TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
+      if (CITY) {
+        allData.city = CITY;
       } else {
-        TITLE_LOCATION.innerHTML = `${allData.country}`;
+        allData.city = COUNTY;
+      }
+
+      allData.country = COUNTRY;
+      allData.state = STATE;
+      allData.offset = OFFSET;
+
+      if (CITY || COUNTY) {
+        TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
+      } else if (STATE) {
+        TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.textContent = `${allData.country}`;
       }
 
       return 'ok';
@@ -151,32 +148,38 @@ export function findCity(query) {
   return fetch(URL)
     .then((response) => response.json())
     .then((data) => {
-      if (data.results[0].components.city) {
-        allData.city = data.results[0].components.city;
-      } else {
-        allData.city = data.results[0].components.county;
-      }
-      allData.country = data.results[0].components.country;
-      allData.state = data.results[0].components.state;
-      allData.coordinates.lat = data.results[0].geometry.lat;
-      allData.coordinates.lng = data.results[0].geometry.lng;
-      allData.offset = data.results[0].annotations.timezone.offset_sec;
+      const CITY = data.results[0].components.city;
+      const COUNTY = data.results[0].components.county;
+      const COUNTRY = data.results[0].components.country;
+      const STATE = data.results[0].components.state;
+      const OFFSET = data.results[0].annotations.timezone.offset_sec;
+      const LAT = data.results[0].geometry.lat;
+      const LNG = data.results[0].geometry.lng;
 
-      if (
-        data.results[0].components.city ||
-        data.results[0].components.county
-      ) {
-        TITLE_LOCATION.innerHTML = `${allData.city}, ${allData.country}`;
-      } else if (data.results[0].components.state) {
-        TITLE_LOCATION.innerHTML = `${allData.state}, ${allData.country}`;
+      if (CITY) {
+        allData.city = CITY;
       } else {
-        TITLE_LOCATION.innerHTML = `${allData.country}`;
+        allData.city = COUNTY;
+      }
+      allData.country = COUNTRY;
+      allData.state = STATE;
+      allData.coordinates.lat = LAT;
+      allData.coordinates.lng = LNG;
+      allData.offset = OFFSET;
+
+      if (CITY || COUNTY) {
+        TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
+      } else if (STATE) {
+        TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
+      } else {
+        TITLE_LOCATION.textContent = `${allData.country}`;
       }
 
       return data.total_results;
     })
     .catch((error) => {
       showError(LANGUAGE.error.query[allData.currentLanguage]);
+      console.error(error);
 
       return;
     });

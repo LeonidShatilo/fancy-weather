@@ -1,6 +1,6 @@
-import { LANGUAGE } from './language.js';
 import { allData } from './data.js';
 import { getWeather } from './weather.js';
+import { LANGUAGE } from './language.js';
 
 const DATE = document.querySelector('.title__date');
 const TIME = document.querySelector('.title__time');
@@ -26,7 +26,7 @@ export function showDate() {
   allData.date.year = year;
   allData.date.day = dayDate;
 
-  DATE.innerHTML = `${
+  DATE.textContent = `${
     LANGUAGE.shortDayOfWeek[allData.currentLanguage][dayWeek]
   },
   ${dayDate} ${LANGUAGE.month[allData.currentLanguage][dayMonth]}`;
@@ -46,13 +46,13 @@ export function showDate() {
   allData.date.nextDayMonth[2] = today.getMonth() + 1;
   let thirdDay = today.getDay();
 
-  FIRST_DAY.innerHTML = `${
+  FIRST_DAY.textContent = `${
     LANGUAGE.dayOfWeek[allData.currentLanguage][firstDay]
   }`;
-  SECOND_DAY.innerHTML = `${
+  SECOND_DAY.textContent = `${
     LANGUAGE.dayOfWeek[allData.currentLanguage][secondDay]
   }`;
-  THIRD_DAY.innerHTML = `${
+  THIRD_DAY.textContent = `${
     LANGUAGE.dayOfWeek[allData.currentLanguage][thirdDay]
   }`;
 }
@@ -73,7 +73,7 @@ export function showTime(offset) {
   let min = today.getMinutes();
   let sec = today.getSeconds();
 
-  TIME.innerHTML = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
+  TIME.textContent = `${addZero(hour)}:${addZero(min)}:${addZero(sec)}`;
 
   if (hour === 0 && min === 0) {
     showDate();

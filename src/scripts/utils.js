@@ -1,35 +1,35 @@
-import { SEARCH_INPUT, SEARCH_BUTTON } from './search.js';
 import { allData } from './data.js';
-import { LANGUAGE } from './language.js';
-import { showDate, showTime } from './time.js';
 import {
-  TITLE_LATITUDE,
-  TITLE_LONGITUDE,
+  convertCoordinates,
   LATITUDE,
   LONGITUDE,
-  convertCoordinates,
+  TITLE_LATITUDE,
+  TITLE_LONGITUDE,
 } from './geolocation.js';
+import { LANGUAGE } from './language.js';
+import { SEARCH_BUTTON, SEARCH_INPUT } from './search.js';
+import { showDate, showTime } from './time.js';
 import {
   TITLE_FEELS_LIKE,
+  TITLE_HUMIDITY,
   TITLE_WIND,
   WIND_UNIT,
-  TITLE_HUMIDITY,
 } from './weather.js';
 
 let time = setInterval(showTime, 1000);
 
 export function translate() {
   SEARCH_INPUT.placeholder = LANGUAGE.searchInput[allData.currentLanguage];
-  SEARCH_BUTTON.innerHTML = LANGUAGE.searchButton[allData.currentLanguage];
-  TITLE_LATITUDE.innerHTML = LANGUAGE.latitude[allData.currentLanguage];
-  TITLE_LONGITUDE.innerHTML = LANGUAGE.longitude[allData.currentLanguage];
-  TITLE_FEELS_LIKE.innerHTML =
+  SEARCH_BUTTON.textContent = LANGUAGE.searchButton[allData.currentLanguage];
+  TITLE_LATITUDE.textContent = LANGUAGE.latitude[allData.currentLanguage];
+  TITLE_LONGITUDE.textContent = LANGUAGE.longitude[allData.currentLanguage];
+  TITLE_FEELS_LIKE.textContent =
     LANGUAGE.weatherConditions.feelsLike[allData.currentLanguage];
-  TITLE_WIND.innerHTML =
+  TITLE_WIND.textContent =
     LANGUAGE.weatherConditions.wind[allData.currentLanguage];
-  WIND_UNIT.innerHTML =
+  WIND_UNIT.textContent =
     LANGUAGE.weatherConditions.windUnit[allData.currentLanguage];
-  TITLE_HUMIDITY.innerHTML =
+  TITLE_HUMIDITY.textContent =
     LANGUAGE.weatherConditions.humidity[allData.currentLanguage];
   showDate();
 }
@@ -38,8 +38,8 @@ export function insertCoordinatesData(lat, lng) {
   allData.convertedCoordinates.lat = convertCoordinates(lat, 'latitude');
   allData.convertedCoordinates.lng = convertCoordinates(lng, 'longitude');
 
-  LATITUDE.innerHTML = allData.convertedCoordinates.lat;
-  LONGITUDE.innerHTML = allData.convertedCoordinates.lng;
+  LATITUDE.textContent = allData.convertedCoordinates.lat;
+  LONGITUDE.textContent = allData.convertedCoordinates.lng;
 }
 
 export function updateTime(offset) {

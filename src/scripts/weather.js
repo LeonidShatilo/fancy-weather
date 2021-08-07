@@ -1,6 +1,6 @@
-import { showError } from './error.js';
-import { LANGUAGE } from './language.js';
 import { allData } from './data.js';
+import { LANGUAGE } from './language.js';
+import { showError } from './error.js';
 
 const WEATHER = document.querySelector('.weather__today-description');
 const WIND = document.querySelector('.weather__wind');
@@ -58,6 +58,7 @@ function clearArray(arrayTemp) {
   while (arrayTemp.length) {
     arrayTemp.pop();
   }
+
   return arrayTemp;
 }
 
@@ -98,25 +99,25 @@ function insertWeatherData() {
 
   switch (DATA) {
     case 'celsius':
-      TEMP_TODAY.innerHTML = allData.temperatureToday;
-      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
-      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
-      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
-      FEELS_LIKE.innerHTML = allData.feelsLike;
+      TEMP_TODAY.textContent = allData.temperatureToday;
+      TEMP_FIRST.textContent = allData.temperatureNextThreeDays[0];
+      TEMP_SECOND.textContent = allData.temperatureNextThreeDays[1];
+      TEMP_THIRD.textContent = allData.temperatureNextThreeDays[2];
+      FEELS_LIKE.textContent = allData.feelsLike;
       break;
 
     case 'fahrenheit':
-      TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
-      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
-      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
-      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
-      FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
+      TEMP_TODAY.textContent = allData.temperatureTodayInFahrenheit;
+      TEMP_FIRST.textContent = allData.temperatureNextThreeDaysInFahrenheit[0];
+      TEMP_SECOND.textContent = allData.temperatureNextThreeDaysInFahrenheit[1];
+      TEMP_THIRD.textContent = allData.temperatureNextThreeDaysInFahrenheit[2];
+      FEELS_LIKE.textContent = allData.feelsLikeInFahrenheit;
       break;
   }
 
-  WEATHER.innerHTML = allData.weather;
-  WIND.innerHTML = allData.wind;
-  HUMIDITY.innerHTML = allData.humidity;
+  WEATHER.textContent = allData.weather;
+  WIND.textContent = allData.wind;
+  HUMIDITY.textContent = allData.humidity;
 }
 
 function addIcons() {
@@ -129,7 +130,7 @@ function addIcons() {
 export function getWeather(lat, lng) {
   const LANG = allData.currentLanguage;
   const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
-  let URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
+  const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
 
   fetch(URL)
     .then((response) => response.json())
@@ -152,13 +153,13 @@ export function getWeather(lat, lng) {
 export function getWeatherDescription(lat, lng) {
   const LANG = allData.currentLanguage;
   const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
-  let URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
+  const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
 
   fetch(URL)
     .then((response) => response.json())
     .then((data) => {
       allData.weather = data.list[0].weather[0].description;
-      WEATHER.innerHTML = allData.weather;
+      WEATHER.textContent = allData.weather;
     })
     .catch((error) => {
       console.error(error);
