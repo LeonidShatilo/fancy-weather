@@ -1,17 +1,17 @@
-import { translate } from './utils.js';
 import { allData } from './data.js';
-import { LANGUAGE } from './language.js';
-import { showError } from './error.js';
+import { changeLanguageOfMap } from './map.js';
 import {
+  FEELS_LIKE,
   getWeatherDescription,
-  TEMP_TODAY,
   TEMP_FIRST,
   TEMP_SECOND,
   TEMP_THIRD,
-  FEELS_LIKE,
+  TEMP_TODAY,
 } from './weather.js';
 import { getPlace, getUserLocation } from './geolocation.js';
-import { changeLanguageOfMap } from './map.js';
+import { LANGUAGE } from './language.js';
+import { showError } from './error.js';
+import { translate } from './utils.js';
 
 const ARROW_LANGUAGE = document.querySelector('.arrow-language');
 const BACKGROUND = document.querySelector('.background');
@@ -39,6 +39,7 @@ function changeBackgroundVisibility() {
   const BACKGROUND_IMAGES = document.querySelectorAll('.background__image');
 
   BACKGROUND_IMAGES[1].classList.add('visible');
+
   setTimeout(() => {
     removeBackgroundElement();
   }, 700);
@@ -63,7 +64,9 @@ export function getImageLink() {
     .then((data) => {
       loadImage(data.urls.regular);
     })
-    .catch(() => {
+    .catch((error) => {
+      console.error(error);
+
       return;
     });
 }
@@ -99,21 +102,27 @@ export function setLanguageInLocalStorage() {
 }
 
 export function convertTemperature() {
+  const CELSIUS = 'celsius';
+  const FAHRENHEIT = 'fahrenheit';
+  const TEMPERATURE_UNIT = allData.currentUnitOfTemperature;
+
   return new Promise((resolve) => {
-    if (allData.currentUnitOfTemperature === 'celsius') {
-      TEMP_TODAY.innerHTML = allData.temperatureToday;
-      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDays[0];
-      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDays[1];
-      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDays[2];
-      FEELS_LIKE.innerHTML = allData.feelsLike;
+    if (TEMPERATURE_UNIT === CELSIUS) {
+      TEMP_TODAY.textContent = allData.temperatureToday;
+      TEMP_FIRST.textContent = allData.temperatureNextThreeDays[0];
+      TEMP_SECOND.textContent = allData.temperatureNextThreeDays[1];
+      TEMP_THIRD.textContent = allData.temperatureNextThreeDays[2];
+      FEELS_LIKE.textContent = allData.feelsLike;
     }
-    if (allData.currentUnitOfTemperature === 'fahrenheit') {
-      TEMP_TODAY.innerHTML = allData.temperatureTodayInFahrenheit;
-      TEMP_FIRST.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[0];
-      TEMP_SECOND.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[1];
-      TEMP_THIRD.innerHTML = allData.temperatureNextThreeDaysInFahrenheit[2];
-      FEELS_LIKE.innerHTML = allData.feelsLikeInFahrenheit;
+
+    if (TEMPERATURE_UNIT === FAHRENHEIT) {
+      TEMP_TODAY.textContent = allData.temperatureTodayInFahrenheit;
+      TEMP_FIRST.textContent = allData.temperatureNextThreeDaysInFahrenheit[0];
+      TEMP_SECOND.textContent = allData.temperatureNextThreeDaysInFahrenheit[1];
+      TEMP_THIRD.textContent = allData.temperatureNextThreeDaysInFahrenheit[2];
+      FEELS_LIKE.textContent = allData.feelsLikeInFahrenheit;
     }
+
     setTimeout(() => {
       resolve();
     }, 1000);
@@ -121,10 +130,9 @@ export function convertTemperature() {
 }
 
 export function getUnitOfTemperatureInLocalStorage() {
-  if (
-    localStorage.getItem('unit-of-temperature') === null ||
-    localStorage.getItem('unit-of-temperature') === 'celsius'
-  ) {
+  const TEMPERATURE_UNIT = localStorage.getItem('unit-of-temperature');
+
+  if (TEMPERATURE_UNIT === null || TEMPERATURE_UNIT === 'celsius') {
     allData.currentUnitOfTemperature = 'celsius';
     C_DEG_BUTTON.classList.toggle('header__button--active');
   } else {
@@ -151,6 +159,7 @@ function changeStateButtons(temperature) {
 
 export function updateBackground() {
   changeBackgroundVisibility();
+
   setTimeout(() => {
     getImageLink();
   }, 100);
@@ -186,6 +195,8 @@ REFRESH_BUTTON.addEventListener('click', () => {
     updateBackground();
   } catch (error) {
     showError(LANGUAGE.error.background[allData.currentLanguage]);
+    console.error(error);
+
     return;
   }
 });
