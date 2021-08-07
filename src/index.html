@@ -42,12 +42,24 @@
             />
           </button>
           <div class="header__language">
-            <button class="header__button-eng-lang">EN</button>
-            <button class="header__button-ru-lang">RU</button>
+            <button class="header__language-menu-button">
+              <span class="current-language"></span>
+              <img
+                class="arrow-language"
+                src="./assets/images/svg/arrow.svg"
+                alt="arrow"
+              />
+            </button>
+            <div class="dropdown-menu">
+              <button class="dropdown-menu__item" id="en">EN</button>
+              <button class="dropdown-menu__item" id="ru">RU</button>
+            </div>
           </div>
           <div class="header__temperature">
-            <button class="header__button-fahrenheit-deg">°F</button>
-            <button class="header__button-celsius-deg">°C</button>
+            <button class="header__button-fahrenheit-deg" id="fahrenheit">
+              °F
+            </button>
+            <button class="header__button-celsius-deg" id="celsius">°C</button>
           </div>
           <button class="header__button-current-location">
             <img

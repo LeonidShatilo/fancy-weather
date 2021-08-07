@@ -19,7 +19,7 @@
 @mixin buttons-wrapper {
   display: flex;
   align-content: stretch;
-  margin: 0 0 0 1rem;
+  margin-left: 1rem;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-size: $font-size-language;
 }
