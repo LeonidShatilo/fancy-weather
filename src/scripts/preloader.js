@@ -18,7 +18,7 @@ export function removePreloader() {
   if (allData.error) {
     return null;
   }
-  
+
   setTimeout(() => {
     PRELOADER_ICON.classList.add('preloader__icon--hide');
     PRELOADER_TEXT.classList.add('preloader__text--hide');

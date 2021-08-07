@@ -20,7 +20,7 @@ const F_DEG_BUTTON = document.querySelector('.header__button-fahrenheit-deg');
 const CIRCLE_ARROWS = document.querySelector('.header__refresh-circle-arrows');
 const CURRENT_LANG = document.querySelector('.current-language');
 const CURRENT_LOCATION = document.querySelector(
-  '.header__button-current-location',
+  '.header__button-current-location'
 );
 const DROPDOWN_MENU = document.querySelector('.dropdown-menu');
 const DROPDOWN_MENU_ITEMS = document.querySelectorAll('.dropdown-menu__item');

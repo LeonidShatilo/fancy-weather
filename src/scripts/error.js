@@ -25,10 +25,7 @@ document.onclick = (event) => {
   if (!isShowError) {
     return;
   }
-  if (
-    event.target !== ERROR &&
-    event.target !== ERROR_MESSAGE
-  ) {
+  if (event.target !== ERROR && event.target !== ERROR_MESSAGE) {
     hideError();
   }
 };
