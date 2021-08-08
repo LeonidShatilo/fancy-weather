@@ -80,7 +80,9 @@ const plugins = () => {
         },
       ],
     }),
-    new Dotenv(),
+    new Dotenv({
+      ignoreStub: true,
+    }),
   ];
 
   return basePlugins;
