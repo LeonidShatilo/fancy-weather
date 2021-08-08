@@ -1,18 +1,11 @@
 const path = require('path');
-const dotenv = require('dotenv');
-const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-
-const env = dotenv.config().parsed;
-const envKeys = Object.keys(env).reduce((prev, next) => {
-  prev[`process.env.${next}`] = JSON.stringify(env[next]);
-  return prev;
-}, {});
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
@@ -87,7 +80,7 @@ const plugins = () => {
         },
       ],
     }),
-    new webpack.DefinePlugin(envKeys),
+    new Dotenv(),
   ];
 
   return basePlugins;
