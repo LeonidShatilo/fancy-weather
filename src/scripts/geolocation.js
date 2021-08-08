@@ -24,7 +24,7 @@ export function insertTextLocation(lat, lng) {
 }
 
 export function getUserCity() {
-  const TOKEN = 'a360badf914741';
+  const TOKEN = process.env.IP_INFO_TOKEN;
   const URL = `https://ipinfo.io/json?token=${TOKEN}`;
 
   return fetch(URL)
@@ -102,7 +102,7 @@ export function convertCoordinates(loc, coord) {
 
 export function getPlace(lat, lng) {
   const LANG = allData.currentLanguage;
-  const KEY = `504abf1b2bce4c898926036946d632ee`;
+  const KEY = process.env.OPEN_CAGE_DATA_KEY;
   const URL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=${KEY}&language=${LANG}`;
 
   return fetch(URL)
@@ -142,7 +142,7 @@ export function getPlace(lat, lng) {
 }
 
 export function findCity(query) {
-  const KEY = `504abf1b2bce4c898926036946d632ee`;
+  const KEY = process.env.OPEN_CAGE_DATA_KEY;
   const URL = `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${KEY}&language=${allData.currentLanguage}`;
 
   return fetch(URL)

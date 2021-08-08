@@ -129,7 +129,7 @@ function addIcons() {
 
 export function getWeather(lat, lng) {
   const LANG = allData.currentLanguage;
-  const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
+  const APP_ID = process.env.OPEN_WEATHER_MAP_APP_ID;
   const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
 
   fetch(URL)
@@ -152,7 +152,7 @@ export function getWeather(lat, lng) {
 
 export function getWeatherDescription(lat, lng) {
   const LANG = allData.currentLanguage;
-  const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
+  const APP_ID = process.env.OPEN_WEATHER_MAP_APP_ID;
   const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
 
   fetch(URL)

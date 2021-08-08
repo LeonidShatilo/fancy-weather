@@ -56,7 +56,7 @@ function loadImage(url) {
 
 export function getImageLink() {
   const PARAMETERS = 'orientation=landscape&query=nature&per_page=1';
-  const ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
+  const ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
   const URL = `https://api.unsplash.com/photos/random?${PARAMETERS}&client_id=${ACCESS_KEY}`;
 
   fetch(URL)
