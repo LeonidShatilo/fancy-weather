@@ -1,6 +1,7 @@
 import { allData } from './data.js';
 import { getWeather } from './weather.js';
 import { LANGUAGE } from './language.js';
+import { addZero } from './utils.js';
 
 const DATE = document.querySelector('.title__date');
 const TIME = document.querySelector('.title__time');
@@ -11,39 +12,35 @@ const THIRD_DAY = document.querySelector('.weather__title-third-day');
 let timeOffset = 0;
 let incomeOffset;
 
-function addZero(n) {
-  return (parseInt(n, 10) < 10 ? '0' : '') + n;
-}
-
 export function showDate() {
   let today = new Date();
   today.setSeconds(today.getSeconds() + incomeOffset + timeOffset);
   let dayWeek = today.getDay();
-  let dayDate = today.getDate();
-  let dayMonth = today.getMonth();
+  let day = today.getDate();
+  let month = today.getMonth();
   let year = today.getFullYear();
 
   allData.date.year = year;
-  allData.date.day = dayDate;
+  allData.date.month = month + 1;
+  allData.date.day = day;
 
   DATE.textContent = `${
     LANGUAGE.shortDayOfWeek[allData.currentLanguage][dayWeek]
-  },
-  ${dayDate} ${LANGUAGE.month[allData.currentLanguage][dayMonth]}`;
+  }, ${day} ${LANGUAGE.month[allData.currentLanguage][month]}`;
 
   today.setDate(today.getDate() + 1);
-  allData.date.nextDay[0] = today.getDate();
-  allData.date.nextDayMonth[0] = today.getMonth() + 1;
+  allData.date.nextDays[0] = today.getDate();
+  allData.date.monthsOfNextDays[0] = today.getMonth() + 1;
   let firstDay = today.getDay();
 
   today.setDate(today.getDate() + 1);
-  allData.date.nextDay[1] = today.getDate();
-  allData.date.nextDayMonth[1] = today.getMonth() + 1;
+  allData.date.nextDays[1] = today.getDate();
+  allData.date.monthsOfNextDays[1] = today.getMonth() + 1;
   let secondDay = today.getDay();
 
   today.setDate(today.getDate() + 1);
-  allData.date.nextDay[2] = today.getDate();
-  allData.date.nextDayMonth[2] = today.getMonth() + 1;
+  allData.date.nextDays[2] = today.getDate();
+  allData.date.monthsOfNextDays[2] = today.getMonth() + 1;
   let thirdDay = today.getDay();
 
   FIRST_DAY.textContent = `${
