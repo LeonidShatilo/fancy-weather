@@ -51,7 +51,7 @@
   &__coordinates {
     @include font-semi-bold;
     margin-top: 2rem;
-    font-size: 2rem;
+    font-size: 1.76rem;
     text-align: right;
     line-height: 3rem;
     text-transform: capitalize;
@@ -59,22 +59,22 @@
 
     @media screen and (max-width: $width-laptop) {
       margin-bottom: 2rem;
-      font-size: subtractPercent(2rem, 0.1);
+      font-size: subtractPercent(1.76rem, 0.1);
       line-height: subtractPercent(3rem, 0.1);
     }
 
     @media screen and (max-width: $width-tablet-1) {
-      font-size: subtractPercent(2rem, 0.2);
+      font-size: subtractPercent(1.76rem, 0.2);
       line-height: subtractPercent(3rem, 0.2);
     }
 
     @media screen and (max-width: $width-tablet-2) {
-      font-size: subtractPercent(2rem, 0.3);
+      font-size: subtractPercent(1.76rem, 0.3);
       line-height: subtractPercent(3rem, 0.3);
     }
 
     @media screen and (max-width: $width-tablet-3) {
-      font-size: subtractPercent(2rem, 0.4);
+      font-size: subtractPercent(1.76rem, 0.4);
       line-height: subtractPercent(3rem, 0.4);
     }
 
