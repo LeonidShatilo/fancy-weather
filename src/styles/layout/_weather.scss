@@ -35,7 +35,8 @@
         line-height: 3.7rem;
         text-transform: uppercase;
 
-        @media screen and (max-width: $width-desktop-1) {
+        @media screen and (max-width: $width-desktop-1),
+          screen and (min-width: $width-desktop-1) {
           top: subtractPercent(-50px, 0.2);
           margin-left: subtractPercent(3.2rem, 0.2);
           font-size: subtractPercent(2.2rem, 0.2);
@@ -70,7 +71,8 @@
       font-size: 30.6rem;
       text-transform: uppercase;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         font-size: subtractPercent(30.6rem, 0.2);
       }
 
@@ -102,7 +104,8 @@
       vertical-align: top;
       font-size: 20rem;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         top: subtractPercent(25px, 0.2);
         font-size: subtractPercent(20rem, 0.2);
       }
@@ -148,7 +151,8 @@
       background-size: cover;
       background-position: center;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         left: subtractPercent(10px, 0.2);
         top: subtractPercent(-50px, 0.2);
         width: subtractPercent(200px, 0.2);
@@ -190,7 +194,8 @@
       text-transform: uppercase;
       user-select: none;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         font-size: subtractPercent(2.2rem, 0.2);
       }
 
@@ -229,7 +234,8 @@
       display: flex;
       font-size: 8rem;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         font-size: subtractPercent(8rem, 0.2);
       }
 
@@ -261,7 +267,8 @@
       width: 100px;
       height: 100px;
 
-      @media screen and (max-width: $width-desktop-1) {
+      @media screen and (max-width: $width-desktop-1),
+        screen and (min-width: $width-desktop-1) {
         top: subtractPercent(-15px, 0.2);
         width: subtractPercent(100px, 0.2);
         height: subtractPercent(100px, 0.2);

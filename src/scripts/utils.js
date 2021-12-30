@@ -48,3 +48,7 @@ export function updateTime(offset) {
   time = setInterval(showTime, 1000, offset);
   showDate();
 }
+
+export function addZero(n) {
+  return (parseInt(n, 10) < 10 ? '0' : '') + n;
+}

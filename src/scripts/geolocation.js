@@ -43,8 +43,6 @@ export function getUserCity() {
 function success(position) {
   let coordinates = position.coords;
 
-  console.log(coordinates);
-
   allData.coordinates.lat = coordinates.latitude;
   allData.coordinates.lng = coordinates.longitude;
 

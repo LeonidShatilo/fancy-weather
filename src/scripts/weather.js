@@ -1,6 +1,7 @@
 import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
+import { addZero } from './utils.js';
 
 const WEATHER = document.querySelector('.weather__today-description');
 const WIND = document.querySelector('.weather__wind');
@@ -64,33 +65,46 @@ function clearArray(arrayTemp) {
 
 function getDataWeatherForNextDays(data) {
   let temperatureArray = [];
-  let indexTempArray = 0;
+  let tempArrayIndex = 0;
   let year = allData.date.year;
-  let month = allData.date.nextDayMonth.map(
-    (month) => (month < 10 ? '0' : '') + month
+  let nextYear = allData.date.year + 1;
+  let monthsOfNextDays = allData.date.monthsOfNextDays.map((month) =>
+    addZero(month)
   );
-  let day = allData.date.nextDay.map((day) => (day < 10 ? '0' : '') + day);
+  let currentMonth = addZero(allData.date.month);
+  let nextDays = allData.date.nextDays.map((day) => addZero(day));
 
-  for (let indexDays = 0; indexDays <= 2; indexDays++) {
+  for (let dayIndex = 0; dayIndex <= 2; dayIndex++) {
     for (let i = 0; i < data.list.length; i++) {
+      const january = '01';
+      const december = '12';
+      const noon = '12:00:00';
       const date = data.list[i].dt_txt;
 
-      if (date.includes(`${year}-${month[indexDays]}-${day[indexDays]}`)) {
-        temperatureArray[indexTempArray] = data.list[i].main.temp;
-        indexTempArray++;
+      if (currentMonth === december && monthsOfNextDays[dayIndex] === january) {
+        year = nextYear;
+      }
 
-        if (date.includes('12:00:00')) {
-          allData.weatherIcon.nextThreeDays[indexDays] =
+      if (
+        date.includes(
+          `${year}-${monthsOfNextDays[dayIndex]}-${nextDays[dayIndex]}`
+        )
+      ) {
+        temperatureArray[tempArrayIndex] = data.list[i].main.temp;
+        tempArrayIndex++;
+
+        if (date.includes(noon)) {
+          allData.weatherIcon.nextThreeDays[dayIndex] =
             data.list[i].weather[0].icon;
         }
       }
     }
 
-    allData.temperatureNextThreeDays[indexDays] = averageTemperature(
+    allData.temperatureNextThreeDays[dayIndex] = averageTemperature(
       temperatureArray
     );
     temperatureArray = clearArray(temperatureArray);
-    indexTempArray = 0;
+    tempArrayIndex = 0;
   }
 }
 

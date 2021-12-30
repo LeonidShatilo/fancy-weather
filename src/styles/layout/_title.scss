@@ -25,7 +25,8 @@
     line-height: 5.4rem;
     text-transform: uppercase;
 
-    @media screen and (max-width: $width-desktop-1) {
+    @media screen and (max-width: $width-desktop-1),
+      screen and (min-width: $width-desktop-1) {
       font-size: subtractPercent($font-size-location, 0.1);
       line-height: subtractPercent(5.4rem, 0.1);
     }

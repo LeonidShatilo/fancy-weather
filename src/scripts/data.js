@@ -30,9 +30,10 @@ export let allData = {
   offset: 0,
   date: {
     year: 0,
+    month: 0,
     day: 0,
-    nextDay: [0, 0, 0],
-    nextDayMonth: [0, 0, 0],
+    nextDays: [0, 0, 0],
+    monthsOfNextDays: [0, 0, 0],
   },
   error: false,
 };
