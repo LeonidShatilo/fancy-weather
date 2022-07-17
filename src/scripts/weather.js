@@ -158,7 +158,7 @@ export function getWeather(lat, lng) {
     .catch((error) => {
       showError(LANGUAGE.error.weather[allData.currentLanguage]);
       allData.error = true;
-      console.error(error);
+      console.error('getWeather:', error);
 
       return;
     });
@@ -176,7 +176,7 @@ export function getWeatherDescription(lat, lng) {
       WEATHER.textContent = allData.weather;
     })
     .catch((error) => {
-      console.error(error);
+      console.error('getWeatherDescription:', error);
 
       return;
     });

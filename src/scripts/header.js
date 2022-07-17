@@ -65,7 +65,7 @@ export function getImageLink() {
       loadImage(data.urls.regular);
     })
     .catch((error) => {
-      console.error(error);
+      console.error('getImageLink:', error);
 
       return;
     });
@@ -195,7 +195,7 @@ REFRESH_BUTTON.addEventListener('click', () => {
     updateBackground();
   } catch (error) {
     showError(LANGUAGE.error.background[allData.currentLanguage]);
-    console.error(error);
+    console.error('REFRESH_BUTTON – updateBackground:', error);
 
     return;
   }
