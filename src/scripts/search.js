@@ -30,13 +30,13 @@ export function runSearch() {
           }
         } catch (error) {
           showError(LANGUAGE.error.background[allData.currentLanguage]);
-          console.error(error);
+          console.error('runSearch – updateBackground:', error);
 
           return;
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error('runSearch:', error);
 
         return;
       });
