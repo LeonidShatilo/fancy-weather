@@ -5,6 +5,10 @@ import { setTime } from '../app.js';
 import { showError } from './error.js';
 import { updateBackground } from './header.js';
 import { updateMap } from './map.js';
+import {
+  OPENCAGEDATA_API_ROUTE,
+  IPINFO_API_ROUTE,
+} from '../constants/index.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
 export const LATITUDE = document.querySelector('.latitude');
@@ -24,10 +28,7 @@ export function insertTextLocation(lat, lng) {
 }
 
 export function getUserCity() {
-  const TOKEN = 'a360badf914741';
-  const URL = `https://ipinfo.io/json?token=${TOKEN}`;
-
-  return fetch(URL)
+  return fetch(IPINFO_API_ROUTE)
     .then((response) => response.json())
     .then((data) => {
       allData.city = data.city;
@@ -101,8 +102,7 @@ export function convertCoordinates(loc, coord) {
 
 export function getPlace(lat, lng) {
   const LANG = allData.currentLanguage;
-  const KEY = `504abf1b2bce4c898926036946d632ee`;
-  const URL = `https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C%20${lng}&key=${KEY}&language=${LANG}`;
+  const URL = `${OPENCAGEDATA_API_ROUTE}&q=${lat}%2C%20${lng}&language=${LANG}`;
 
   return fetch(URL)
     .then((response) => response.json())
@@ -141,8 +141,7 @@ export function getPlace(lat, lng) {
 }
 
 export function findCity(query) {
-  const KEY = `504abf1b2bce4c898926036946d632ee`;
-  const URL = `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${KEY}&language=${allData.currentLanguage}`;
+  const URL = `${OPENCAGEDATA_API_ROUTE}&q=${query}&language=${allData.currentLanguage}`;
 
   return fetch(URL)
     .then((response) => response.json())

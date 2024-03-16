@@ -2,6 +2,7 @@ import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { addZero } from './utils.js';
+import { OPENWEATHERMAP_API_ROUTE } from '../constants/index.js';
 
 const WEATHER = document.querySelector('.weather__today-description');
 const WIND = document.querySelector('.weather__wind');
@@ -142,9 +143,7 @@ function addIcons() {
 }
 
 export function getWeather(lat, lng) {
-  const LANG = allData.currentLanguage;
-  const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
-  const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
+  const URL = `${OPENWEATHERMAP_API_ROUTE}&lat=${lat}&lon=${lng}&lang=${allData.currentLanguage}&units=metric`;
 
   fetch(URL)
     .then((response) => response.json())
@@ -165,9 +164,7 @@ export function getWeather(lat, lng) {
 }
 
 export function getWeatherDescription(lat, lng) {
-  const LANG = allData.currentLanguage;
-  const APP_ID = '1d82dbf3046ed45fdb18c16592d6f620';
-  const URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&lang=${LANG}&units=metric&appid=${APP_ID}`;
+  const URL = `${OPENWEATHERMAP_API_ROUTE}&lat=${lat}&lon=${lng}&lang=${allData.currentLanguage}&units=metric`;
 
   fetch(URL)
     .then((response) => response.json())

@@ -12,6 +12,7 @@ import { getPlace, getUserLocation } from './geolocation.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { translate } from './utils.js';
+import { UNSPLASH_API_ROUTE } from '../constants/index.js';
 
 const ARROW_LANGUAGE = document.querySelector('.arrow-language');
 const BACKGROUND = document.querySelector('.background');
@@ -55,9 +56,7 @@ function loadImage(url) {
 }
 
 export function getImageLink() {
-  const PARAMETERS = 'orientation=landscape&query=nature&per_page=1';
-  const ACCESS_KEY = 'eolw5MBc3CTg7x5r_JuJRPpvIqIGAX6LIE9fyDcStps';
-  const URL = `https://api.unsplash.com/photos/random?${PARAMETERS}&client_id=${ACCESS_KEY}`;
+  const URL = `${UNSPLASH_API_ROUTE}&orientation=landscape&query=nature&per_page=1`;
 
   fetch(URL)
     .then((response) => response.json())
