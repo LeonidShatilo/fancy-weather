@@ -101,9 +101,8 @@ function getDataWeatherForNextDays(data) {
       }
     }
 
-    allData.temperatureNextThreeDays[dayIndex] = averageTemperature(
-      temperatureArray
-    );
+    allData.temperatureNextThreeDays[dayIndex] =
+      averageTemperature(temperatureArray);
     temperatureArray = clearArray(temperatureArray);
     tempArrayIndex = 0;
   }
@@ -136,10 +135,10 @@ function insertWeatherData() {
 }
 
 function addIcons() {
-  ICON_TODAY.style.backgroundImage = `url('./assets/images/svg/${allData.weatherIcon.today}.svg')`;
-  ICON_FIRST.style.backgroundImage = `url('./assets/images/svg/${allData.weatherIcon.nextThreeDays[0]}.svg')`;
-  ICON_SECOND.style.backgroundImage = `url('./assets/images/svg/${allData.weatherIcon.nextThreeDays[1]}.svg')`;
-  ICON_THIRD.style.backgroundImage = `url('./assets/images/svg/${allData.weatherIcon.nextThreeDays[2]}.svg')`;
+  ICON_TODAY.style.backgroundImage = `url('assets/images/svg/${allData.weatherIcon.today}.svg')`;
+  ICON_FIRST.style.backgroundImage = `url('assets/images/svg/${allData.weatherIcon.nextThreeDays[0]}.svg')`;
+  ICON_SECOND.style.backgroundImage = `url('assets/images/svg/${allData.weatherIcon.nextThreeDays[1]}.svg')`;
+  ICON_THIRD.style.backgroundImage = `url('assets/images/svg/${allData.weatherIcon.nextThreeDays[2]}.svg')`;
 }
 
 export function getWeather(lat, lng) {

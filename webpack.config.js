@@ -6,25 +6,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
 const filename = (ext) =>
   isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
-
-const babelOptions = (preset) => {
-  const opts = {
-    presets: ['@babel/preset-env'],
-    plugins: ['@babel/plugin-proposal-class-properties'],
-  };
-
-  if (preset) {
-    opts.presets.push(preset);
-  }
-
-  return opts;
-};
 
 const optimization = () => {
   const config = {
@@ -44,21 +32,6 @@ const optimization = () => {
   return config;
 };
 
-const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: 'babel-loader',
-      options: babelOptions(),
-    },
-  ];
-
-  if (isDev) {
-    loaders.push('eslint-loader');
-  }
-
-  return loaders;
-};
-
 const plugins = () => {
   const basePlugins = [
     new CleanWebpackPlugin(),
@@ -69,7 +42,7 @@ const plugins = () => {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: `./src/styles/${filename('css')}`,
+      filename: filename('css'),
     }),
     new CopyWebpackPlugin({
       patterns: [
@@ -83,6 +56,7 @@ const plugins = () => {
     new Dotenv({
       systemvars: true,
     }),
+    new ESLintPlugin(),
   ];
 
   return basePlugins;
@@ -101,24 +75,25 @@ module.exports = {
     extensions: ['.js', '.json', '.png'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@assets': path.resolve(__dirname, 'assets'),
-      '@images': path.resolve(__dirname, 'assets/images'),
+      '@assets': path.resolve(__dirname, 'src/assets'),
+      '@images': path.resolve(__dirname, 'src/assets/images'),
       '@scripts': path.resolve(__dirname, 'src/scripts'),
       '@styles': path.resolve(__dirname, 'src/styles'),
     },
   },
   devServer: {
     port: 3000,
-    contentBase: path.resolve(__dirname, 'dist'),
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+    },
     hot: true,
     open: true,
-    inline: true,
     compress: true,
     historyApiFallback: true,
   },
   plugins: plugins(),
   optimization: optimization(),
-  devtool: isProd ? false : 'source-map',
+  devtool: isDev ? 'source-map' : false,
   module: {
     rules: [
       {
@@ -130,47 +105,47 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-            },
           },
-          'css-loader?url=false',
+          'css-loader',
         ],
       },
       {
         test: /\.s[ac]ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader?url=false',
-          'sass-loader?sourceMap',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: isDev,
+            },
+          },
         ],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: jsLoaders(),
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
       },
       {
-        test: /\.(?:svg|png|jpg|jpeg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: `./assets/images/[ext]/[name].[ext]`,
-            },
-          },
-        ],
+        test: /\.(?:svg|png|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[name][ext]',
+        },
       },
       {
-        test: /\.(?:ttf|woff|woff2|eot)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: `./assets/fonts/[name].[ext]`,
-            },
-          },
-        ],
+        test: /\.(?:ttf|woff|woff2|eot)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/fonts/[name][ext]',
+        },
       },
     ],
   },
