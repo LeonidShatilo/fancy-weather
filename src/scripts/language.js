@@ -132,8 +132,7 @@ export const LANGUAGE = {
     },
     weather: {
       en: 'The weather data could not be obtained.<br>Please, try again later.',
-      ru:
-        'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.',
+      ru: 'Не удалось получить данные о погоде.<br>Пожалуйста, попробуйте позже.',
       be: `Не атрымалася атрымаць дадзеныя пра надвор'е.<br>Калі ласка, паспрабуйце пазней.`,
     },
     currentCoordinates: {
