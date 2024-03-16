@@ -80,7 +80,9 @@ const plugins = () => {
         },
       ],
     }),
-    new Dotenv(),
+    new Dotenv({
+      systemvars: true,
+    }),
   ];
 
   return basePlugins;
