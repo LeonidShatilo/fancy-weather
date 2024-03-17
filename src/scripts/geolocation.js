@@ -5,10 +5,8 @@ import { setTime } from '../app.js';
 import { showError } from './error.js';
 import { updateBackground } from './header.js';
 import { updateMap } from './map.js';
-import {
-  OPENCAGEDATA_API_ROUTE,
-  IPINFO_API_ROUTE,
-} from '../constants/index.js';
+import { OPENCAGEDATA_API_ROUTE } from '../constants/index.js';
+import { getApiRoute } from '../helpers/getApiRoute.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
 export const LATITUDE = document.querySelector('.latitude');
@@ -27,19 +25,18 @@ export function insertTextLocation(lat, lng) {
   LONGITUDE.textContent = convertCoordinates(lng, 'longitude');
 }
 
-export function getUserCity() {
-  return fetch(IPINFO_API_ROUTE)
-    .then((response) => response.json())
-    .then((data) => {
-      allData.city = data.city;
-    })
-    .then(() => findCity(allData.city))
-    .catch((error) => {
-      console.error('getUserCity:', error);
+export const getUserCity = async () => {
+  try {
+    const response = await fetch(getApiRoute('geolocation'));
+    const data = await response.json();
+    const { city } = data;
 
-      return;
-    });
-}
+    allData.city = city;
+    await findCity(city);
+  } catch (error) {
+    console.error('getUserCity:', error);
+  }
+};
 
 function success(position) {
   let coordinates = position.coords;
