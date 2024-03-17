@@ -1,8 +1,13 @@
+import axios from 'axios';
+
 import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { addZero } from './utils.js';
-import { OPENWEATHERMAP_API_ROUTE } from '../constants/index.js';
+import {
+  OPENWEATHERMAP_API_ROUTE,
+  OPENWEATHERMAP_API_KEY,
+} from '../constants/index.js';
 
 const WEATHER = document.querySelector('.weather__today-description');
 const WIND = document.querySelector('.weather__wind');
@@ -141,39 +146,45 @@ function addIcons() {
   ICON_THIRD.style.backgroundImage = `url('assets/images/svg/${allData.weatherIcon.nextThreeDays[2]}.svg')`;
 }
 
-export function getWeather(lat, lng) {
-  const URL = `${OPENWEATHERMAP_API_ROUTE}&lat=${lat}&lon=${lng}&lang=${allData.currentLanguage}&units=metric`;
-
-  fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      getDataWeatherToday(data);
-      getDataWeatherForNextDays(data);
-      getTemperatureInFahrenheit();
-      insertWeatherData();
-      addIcons();
-    })
-    .catch((error) => {
-      showError(LANGUAGE.error.weather[allData.currentLanguage]);
-      allData.error = true;
-      console.error('getWeather:', error);
-
-      return;
+export const getWeather = async (lat, lng) => {
+  try {
+    const { data } = await axios.get(OPENWEATHERMAP_API_ROUTE, {
+      params: {
+        lat: lat,
+        lon: lng,
+        lang: allData.currentLanguage,
+        units: 'metric',
+        appid: OPENWEATHERMAP_API_KEY,
+      },
     });
-}
 
-export function getWeatherDescription(lat, lng) {
-  const URL = `${OPENWEATHERMAP_API_ROUTE}&lat=${lat}&lon=${lng}&lang=${allData.currentLanguage}&units=metric`;
+    getDataWeatherToday(data);
+    getDataWeatherForNextDays(data);
+    getTemperatureInFahrenheit();
+    insertWeatherData();
+    addIcons();
+  } catch (error) {
+    showError(LANGUAGE.error.weather[allData.currentLanguage]);
+    allData.error = true;
+    console.error('getWeather:', error);
+  }
+};
 
-  fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      allData.weather = data.list[0].weather[0].description;
-      WEATHER.textContent = allData.weather;
-    })
-    .catch((error) => {
-      console.error('getWeatherDescription:', error);
-
-      return;
+export const getWeatherDescription = async (lat, lng) => {
+  try {
+    const { data } = await axios.get(OPENWEATHERMAP_API_ROUTE, {
+      params: {
+        lat: lat,
+        lon: lng,
+        lang: allData.currentLanguage,
+        units: 'metric',
+        appid: OPENWEATHERMAP_API_KEY,
+      },
     });
-}
+
+    allData.weather = data.list[0].weather[0].description;
+    WEATHER.textContent = allData.weather;
+  } catch (error) {
+    console.error('getWeatherDescription:', error);
+  }
+};

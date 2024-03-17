@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { allData } from './data.js';
 import { changeLanguageOfMap } from './map.js';
 import {
@@ -12,7 +14,7 @@ import { getPlace, getUserLocation } from './geolocation.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { translate } from './utils.js';
-import { UNSPLASH_API_ROUTE } from '../constants/index.js';
+import { UNSPLASH_API_KEY, UNSPLASH_API_ROUTE } from '../constants/index.js';
 
 const ARROW_LANGUAGE = document.querySelector('.arrow-language');
 const BACKGROUND = document.querySelector('.background');
@@ -55,20 +57,24 @@ function loadImage(url) {
   BACKGROUND.append(IMAGE_ELEMENT);
 }
 
-export function getImageLink() {
-  const URL = `${UNSPLASH_API_ROUTE}&orientation=landscape&query=nature&per_page=1`;
-
-  fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      loadImage(data.urls.regular);
-    })
-    .catch((error) => {
-      console.error('getImageLink:', error);
-
-      return;
+export const getImageLink = async () => {
+  try {
+    const { data } = await axios.get(UNSPLASH_API_ROUTE, {
+      params: {
+        query: 'nature',
+        orientation: 'landscape',
+        per_page: 1,
+      },
+      headers: {
+        Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+      },
     });
-}
+
+    loadImage(data.urls.regular);
+  } catch (error) {
+    console.error('getImageLink:', error);
+  }
+};
 
 function changeLanguage(language) {
   allData.currentLanguage = language;

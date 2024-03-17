@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { allData } from './data.js';
 import { getWeather } from './weather.js';
 import { LANGUAGE } from './language.js';
@@ -8,6 +10,8 @@ import { updateMap } from './map.js';
 import {
   OPENCAGEDATA_API_ROUTE,
   IPINFO_API_ROUTE,
+  IPINFO_API_KEY,
+  OPENCAGEDATA_API_KEY,
 } from '../constants/index.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
@@ -27,19 +31,22 @@ export function insertTextLocation(lat, lng) {
   LONGITUDE.textContent = convertCoordinates(lng, 'longitude');
 }
 
-export function getUserCity() {
-  return fetch(IPINFO_API_ROUTE)
-    .then((response) => response.json())
-    .then((data) => {
-      allData.city = data.city;
-    })
-    .then(() => findCity(allData.city))
-    .catch((error) => {
-      console.error('getUserCity:', error);
-
-      return;
+export const getUserCity = async () => {
+  try {
+    const { data } = await axios.get(IPINFO_API_ROUTE, {
+      headers: {
+        Authorization: `Bearer ${IPINFO_API_KEY}`,
+      },
     });
-}
+
+    const { city } = data;
+
+    allData.city = city;
+    await findCity(city);
+  } catch (error) {
+    console.error('getUserCity:', error);
+  }
+};
 
 function success(position) {
   let coordinates = position.coords;
@@ -100,85 +107,78 @@ export function convertCoordinates(loc, coord) {
   if (loc < 0 && coord === LNG) return `${dd}°${mm}'${ss}"W`;
 }
 
-export function getPlace(lat, lng) {
-  const LANG = allData.currentLanguage;
-  const URL = `${OPENCAGEDATA_API_ROUTE}&q=${lat}%2C%20${lng}&language=${LANG}`;
-
-  return fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      const CITY = data.results[0].components.city;
-      const COUNTY = data.results[0].components.county;
-      const COUNTRY = data.results[0].components.country;
-      const STATE = data.results[0].components.state;
-      const OFFSET = data.results[0].annotations.timezone.offset_sec;
-
-      if (CITY) {
-        allData.city = CITY;
-      } else {
-        allData.city = COUNTY;
-      }
-
-      allData.country = COUNTRY;
-      allData.state = STATE;
-      allData.offset = OFFSET;
-
-      if (CITY || COUNTY) {
-        TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
-      } else if (STATE) {
-        TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
-      } else {
-        TITLE_LOCATION.textContent = `${allData.country}`;
-      }
-
-      return 'ok';
-    })
-    .catch((error) => {
-      console.error('getPlace:', error);
-
-      return;
+export const getPlace = async (lat, lng) => {
+  try {
+    const { data } = await axios.get(OPENCAGEDATA_API_ROUTE, {
+      params: {
+        q: `${lat}, ${lng}`,
+        language: allData.currentLanguage,
+        key: OPENCAGEDATA_API_KEY,
+      },
     });
-}
 
-export function findCity(query) {
-  const URL = `${OPENCAGEDATA_API_ROUTE}&q=${query}&language=${allData.currentLanguage}`;
+    const { city, county, country, state } = data.results[0].components;
+    const OFFSET = data.results[0].annotations.timezone.offset_sec;
 
-  return fetch(URL)
-    .then((response) => response.json())
-    .then((data) => {
-      const CITY = data.results[0].components.city;
-      const COUNTY = data.results[0].components.county;
-      const COUNTRY = data.results[0].components.country;
-      const STATE = data.results[0].components.state;
-      const OFFSET = data.results[0].annotations.timezone.offset_sec;
-      const LAT = data.results[0].geometry.lat;
-      const LNG = data.results[0].geometry.lng;
+    allData.city = city || county;
+    allData.country = country;
+    allData.state = state;
+    allData.offset = OFFSET;
 
-      if (CITY) {
-        allData.city = CITY;
-      } else {
-        allData.city = COUNTY;
-      }
-      allData.country = COUNTRY;
-      allData.state = STATE;
-      allData.coordinates.lat = LAT;
-      allData.coordinates.lng = LNG;
-      allData.offset = OFFSET;
+    if (city || county) {
+      TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
+    } else if (state) {
+      TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
+    } else {
+      TITLE_LOCATION.textContent = `${allData.country}`;
+    }
 
-      if (CITY || COUNTY) {
-        TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
-      } else if (STATE) {
-        TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
-      } else {
-        TITLE_LOCATION.textContent = `${allData.country}`;
-      }
+    return 'ok';
+  } catch (error) {
+    console.error('getPlace:', error);
+  }
+};
 
-      return data.total_results;
-    })
-    .catch((error) => {
-      showError(LANGUAGE.error.query[allData.currentLanguage]);
-      console.error('findCity:', error);
-
-      return;
+export const findCity = async (query) => {
+  try {
+    const { data } = await axios.get(OPENCAGEDATA_API_ROUTE, {
+      params: {
+        q: query,
+        language: allData.currentLanguage,
+        key: OPENCAGEDATA_API_KEY,
+      },
     });
-}
+
+    const CITY = data.results[0].components.city;
+    const COUNTY = data.results[0].components.county;
+    const COUNTRY = data.results[0].components.country;
+    const STATE = data.results[0].components.state;
+    const OFFSET = data.results[0].annotations.timezone.offset_sec;
+    const LAT = data.results[0].geometry.lat;
+    const LNG = data.results[0].geometry.lng;
+
+    if (CITY) {
+      allData.city = CITY;
+    } else {
+      allData.city = COUNTY;
+    }
+    allData.country = COUNTRY;
+    allData.state = STATE;
+    allData.coordinates.lat = LAT;
+    allData.coordinates.lng = LNG;
+    allData.offset = OFFSET;
+
+    if (CITY || COUNTY) {
+      TITLE_LOCATION.textContent = `${allData.city}, ${allData.country}`;
+    } else if (STATE) {
+      TITLE_LOCATION.textContent = `${allData.state}, ${allData.country}`;
+    } else {
+      TITLE_LOCATION.textContent = `${allData.country}`;
+    }
+
+    return data.total_results;
+  } catch (error) {
+    showError(LANGUAGE.error.query[allData.currentLanguage]);
+    console.error('findCity:', error);
+  }
+};
