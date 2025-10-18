@@ -1,3 +1,5 @@
+@use '../abstract' as *;
+
 .error {
   @include font-semi-bold;
   position: absolute;

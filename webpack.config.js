@@ -1,10 +1,9 @@
-const path = require('path');
+const path = require('node:path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
-const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
@@ -15,61 +14,43 @@ const filename = (ext) =>
   isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 const optimization = () => {
-  const config = {
-    splitChunks: {
-      chunks: 'all',
-    },
-  };
-
+  const config = { splitChunks: { chunks: 'all' } };
   if (isProd) {
     config.minimize = true;
-    config.minimizer = [
-      new OptimizeCssAssetsWebpackPlugin(),
-      new TerserWebpackPlugin(),
-    ];
+    config.minimizer = ['...', new CssMinimizerPlugin()];
   }
 
   return config;
 };
 
-const plugins = () => {
-  const basePlugins = [
-    new CleanWebpackPlugin(),
-    new HTMLWebpackPlugin({
-      template: './index.html',
-      minify: {
-        collapseWhitespace: isProd,
+const plugins = () => [
+  new CleanWebpackPlugin(),
+  new HTMLWebpackPlugin({
+    template: './index.html',
+    minify: { collapseWhitespace: isProd },
+  }),
+  new MiniCssExtractPlugin({ filename: filename('css') }),
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: path.resolve(__dirname, 'src/assets'),
+        to: path.resolve(__dirname, 'dist/assets'),
+        noErrorOnMissing: true,
       },
-    }),
-    new MiniCssExtractPlugin({
-      filename: filename('css'),
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'src/assets'),
-          to: path.resolve(__dirname, 'dist/assets'),
-          noErrorOnMissing: true,
-        },
-      ],
-    }),
-    new Dotenv({
-      systemvars: true,
-    }),
-    new ESLintPlugin(),
-  ];
-
-  return basePlugins;
-};
+    ],
+  }),
+  new Dotenv({ systemvars: true }),
+  new ESLintPlugin(),
+];
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  mode: 'development',
+  mode: isDev ? 'development' : 'production',
   entry: ['@babel/polyfill', './app.js'],
   output: {
-    filename: `./src/scripts/${filename('js')}`,
+    filename: `scripts/${filename('js')}`,
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.json', '.png'],
@@ -82,10 +63,8 @@ module.exports = {
     },
   },
   devServer: {
-    port: 3000,
-    static: {
-      directory: path.resolve(__dirname, 'dist'),
-    },
+    port: 8080,
+    static: { directory: path.resolve(__dirname, 'dist') },
     hot: true,
     open: true,
     compress: true,
@@ -96,18 +75,10 @@ module.exports = {
   devtool: isDev ? 'source-map' : false,
   module: {
     rules: [
-      {
-        test: /\.html/,
-        loader: 'html-loader',
-      },
+      { test: /\.html/, loader: 'html-loader' },
       {
         test: /\.css$/i,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.s[ac]ss$/,
@@ -115,9 +86,15 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           'css-loader',
           {
-            loader: 'sass-loader',
+            loader: 'resolve-url-loader',
             options: {
               sourceMap: isDev,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
             },
           },
         ],
@@ -136,16 +113,12 @@ module.exports = {
       {
         test: /\.(?:svg|png|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
-        generator: {
-          filename: 'assets/images/[name][ext]',
-        },
+        generator: { filename: 'assets/images/[name][ext]' },
       },
       {
         test: /\.(?:ttf|woff|woff2|eot)$/i,
         type: 'asset/resource',
-        generator: {
-          filename: 'assets/fonts/[name][ext]',
-        },
+        generator: { filename: 'assets/fonts/[name][ext]' },
       },
     ],
   },
