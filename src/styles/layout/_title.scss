@@ -1,3 +1,5 @@
+@use '../abstract' as *;
+
 .title {
   display: inline-block;
   padding-top: $padding-top-title;

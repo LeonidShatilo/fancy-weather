@@ -10,8 +10,6 @@ import { updateMap } from './map.js';
 import {
   OPENCAGEDATA_API_ROUTE,
   IPINFO_API_ROUTE,
-  IPINFO_API_KEY,
-  OPENCAGEDATA_API_KEY,
 } from '../constants/index.js';
 
 const TITLE_LOCATION = document.querySelector('.title__location');
@@ -33,11 +31,7 @@ export function insertTextLocation(lat, lng) {
 
 export const getUserCity = async () => {
   try {
-    const { data } = await axios.get(IPINFO_API_ROUTE, {
-      headers: {
-        Authorization: `Bearer ${IPINFO_API_KEY}`,
-      },
-    });
+    const { data } = await axios.get(IPINFO_API_ROUTE);
 
     const { city } = data;
 
@@ -113,7 +107,6 @@ export const getPlace = async (lat, lng) => {
       params: {
         q: `${lat}, ${lng}`,
         language: allData.currentLanguage,
-        key: OPENCAGEDATA_API_KEY,
       },
     });
 
@@ -145,7 +138,6 @@ export const findCity = async (query) => {
       params: {
         q: query,
         language: allData.currentLanguage,
-        key: OPENCAGEDATA_API_KEY,
       },
     });
 

@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use '../abstract' as *;
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -32,7 +35,7 @@
     min-height: $height-button;
     border-radius: $border-radius;
     background: $background-button-refresh;
-    background-image: url('assets/images/svg/refresh-button.svg');
+    background-image: url('~@assets/images/svg/refresh-button.svg');
     background-repeat: no-repeat;
     cursor: pointer;
     transition: 0.5s;
@@ -86,7 +89,7 @@
       transition: 1.7s cubic-bezier(0.1, 0.5, 0.5, 1);
 
       &:hover {
-        background: lighten($background-button-active, 20%);
+        background: color.adjust($background-button-active, $lightness: 20%);
       }
 
       &--active {
@@ -184,7 +187,7 @@
     transition: 0.5s;
 
     &:hover {
-      background: lighten($background-button-location, 20%);
+      background: color.adjust($background-button-location, $lightness: 20%);
     }
 
     @media screen and (max-width: $width-tablet-1) {
@@ -292,11 +295,11 @@
     cursor: pointer;
 
     &:hover {
-      background: lighten($background-button-search, 15%);
+      background: color.adjust($background-button-search, $lightness: 15%);
     }
 
     &:active {
-      background: lighten($background-button-search, 30%);
+      background: color.adjust($background-button-search, $lightness: 30%);
     }
 
     @media screen and (max-width: $width-tablet-1) {

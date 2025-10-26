@@ -1,3 +1,5 @@
+@use '../abstract' as *;
+
 .container-weather-map {
   display: flex;
   justify-content: space-between;

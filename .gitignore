@@ -6,3 +6,18 @@
 .cache
 .eslintcache
 package-lock.json
+*.sh
+*.txt
+*.diff
+*.patch
+
+# Local Netlify folder
+.netlify
+
+# Yarn
+/.yarn/*
+!/.yarn/patches
+!/.yarn/plugins
+!/.yarn/releases
+!/.yarn/sdks
+!/.yarn/versions

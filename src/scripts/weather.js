@@ -4,10 +4,7 @@ import { allData } from './data.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { addZero } from './utils.js';
-import {
-  OPENWEATHERMAP_API_ROUTE,
-  OPENWEATHERMAP_API_KEY,
-} from '../constants/index.js';
+import { OPENWEATHERMAP_API_ROUTE } from '../constants/index.js';
 
 const WEATHER = document.querySelector('.weather__today-description');
 const WIND = document.querySelector('.weather__wind');
@@ -154,7 +151,6 @@ export const getWeather = async (lat, lng) => {
         lon: lng,
         lang: allData.currentLanguage,
         units: 'metric',
-        appid: OPENWEATHERMAP_API_KEY,
       },
     });
 
@@ -178,7 +174,6 @@ export const getWeatherDescription = async (lat, lng) => {
         lon: lng,
         lang: allData.currentLanguage,
         units: 'metric',
-        appid: OPENWEATHERMAP_API_KEY,
       },
     });
 
