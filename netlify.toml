@@ -1,0 +1,12 @@
+[build]
+  command = "yarn build"
+  functions = "netlify/functions"
+  publish = "dist"
+
+[dev]
+  autoLaunch = true
+  command = "yarn start"
+  targetPort = 8080
+
+[functions]
+  node_bundler = "esbuild"

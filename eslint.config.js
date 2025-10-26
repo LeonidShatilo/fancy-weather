@@ -16,6 +16,16 @@ module.exports = [
     },
   },
   {
+    files: ['netlify/functions/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      globals: {
+        ...globals.node,
+      },
+      sourceType: 'module',
+    },
+  },
+  {
     files: ['src/**/*.js'],
     languageOptions: {
       ecmaVersion: 2021,

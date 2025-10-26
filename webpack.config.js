@@ -66,7 +66,7 @@ module.exports = {
     port: 8080,
     static: { directory: path.resolve(__dirname, 'dist') },
     hot: true,
-    open: true,
+    open: false,
     compress: true,
     historyApiFallback: true,
   },

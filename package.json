@@ -6,10 +6,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "dev": "cross-env NODE_ENV=development webpack --mode development",
+    "netlify": "netlify dev",
     "prettier": "prettier --config .prettierrc **/*.{js,scss,html} --write",
-    "start": "cross-env NODE_ENV=development webpack serve --mode development --open",
-    "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-    "upgrade_packages": "yarn upgrade --latest --exact"
+    "start": "cross-env NODE_ENV=development webpack serve --mode development",
+    "upgrade_packages": "yarn upgrade --latest --exact",
+    "watch": "cross-env NODE_ENV=development webpack --mode development --watch"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "html-loader": "5.1.0",
     "html-webpack-plugin": "5.6.4",
     "mini-css-extract-plugin": "2.9.4",
+    "netlify-cli": "^23.9.5",
     "prettier": "3.6.2",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.93.2",

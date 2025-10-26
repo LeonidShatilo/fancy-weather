@@ -14,7 +14,7 @@ import { getPlace, getUserLocation } from './geolocation.js';
 import { LANGUAGE } from './language.js';
 import { showError } from './error.js';
 import { translate } from './utils.js';
-import { UNSPLASH_API_KEY, UNSPLASH_API_ROUTE } from '../constants/index.js';
+import { UNSPLASH_API_ROUTE } from '../constants/index.js';
 
 const ARROW_LANGUAGE = document.querySelector('.arrow-language');
 const BACKGROUND = document.querySelector('.background');
@@ -64,9 +64,6 @@ export const getImageLink = async () => {
         query: 'nature',
         orientation: 'landscape',
         per_page: 1,
-      },
-      headers: {
-        Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
       },
     });
 
