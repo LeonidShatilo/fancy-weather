@@ -1,6 +1,5 @@
 const path = require('node:path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -24,7 +23,6 @@ const optimization = () => {
 };
 
 const plugins = () => [
-  new CleanWebpackPlugin(),
   new HTMLWebpackPlugin({
     template: './index.html',
     minify: { collapseWhitespace: isProd },
@@ -51,6 +49,7 @@ module.exports = {
     filename: `scripts/${filename('js')}`,
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
+    clean: true,
   },
   resolve: {
     extensions: ['.js', '.json', '.png'],
