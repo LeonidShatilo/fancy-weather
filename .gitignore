@@ -21,3 +21,11 @@ package-lock.json
 !/.yarn/releases
 !/.yarn/sdks
 !/.yarn/versions
+
+# AI tool artifacts (junctions from devbrain)
+.ai/
+.claude/
+.cursor/
+.codex/
+.gemini/
+.agents/
