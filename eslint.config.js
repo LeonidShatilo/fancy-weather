@@ -3,7 +3,18 @@ const js = require('@eslint/js');
 const globals = require('globals');
 
 module.exports = [
-  { ignores: ['.ai/', '.claude/', '.cursor/', '.codex/', '.gemini/', '.agents/', '.netlify/'] },
+  {
+    ignores: [
+      '.ai/',
+      '.claude/',
+      '.cursor/',
+      '.codex/',
+      '.gemini/',
+      '.agents/',
+      '.netlify/',
+      'dist/',
+    ],
+  },
   js.configs.recommended,
   {
     files: ['*.js'],
